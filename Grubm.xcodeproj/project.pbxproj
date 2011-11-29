@@ -33,6 +33,8 @@
 		49B22947148428EE0061EBB1 /* Capture.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 49B22946148428EE0061EBB1 /* Capture.bundle */; };
 		49B22949148428EE0061EBB1 /* PhoneGap.plist in Resources */ = {isa = PBXBuildFile; fileRef = 49B22948148428EE0061EBB1 /* PhoneGap.plist */; };
 		49B2294D148428EE0061EBB1 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 49B2294C148428EE0061EBB1 /* AppDelegate.m */; };
+		49B22956148429990061EBB1 /* www in Resources */ = {isa = PBXBuildFile; fileRef = 49B22955148429990061EBB1 /* www */; };
+		49B22958148441840061EBB1 /* grubm.js in Sources */ = {isa = PBXBuildFile; fileRef = 49B22957148441840061EBB1 /* grubm.js */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,9 +52,9 @@
 		49B22920148428EE0061EBB1 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		49B22922148428EE0061EBB1 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		49B22924148428EE0061EBB1 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		49B22928148428EE0061EBB1 /* Grubm-Info.plist */ = {isa = PBXFileReference; path = "Grubm-Info.plist"; sourceTree = "<group>"; };
+		49B22928148428EE0061EBB1 /* Grubm-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Grubm-Info.plist"; sourceTree = "<group>"; };
 		49B2292A148428EE0061EBB1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		49B2292C148428EE0061EBB1 /* Grubm-Prefix.pch */ = {isa = PBXFileReference; path = "Grubm-Prefix.pch"; sourceTree = "<group>"; };
+		49B2292C148428EE0061EBB1 /* Grubm-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Grubm-Prefix.pch"; sourceTree = "<group>"; };
 		49B2292D148428EE0061EBB1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		49B2292F148428EE0061EBB1 /* PhoneGap.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhoneGap.framework; path = /Users/Shared/PhoneGap/Frameworks/PhoneGap.framework; sourceTree = "<absolute>"; };
 		49B22934148428EE0061EBB1 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = Resources/en.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -64,9 +66,11 @@
 		49B22944148428EE0061EBB1 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "Resources/splash/Default@2x.png"; sourceTree = "<group>"; };
 		49B22946148428EE0061EBB1 /* Capture.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Capture.bundle; path = Resources/Capture.bundle; sourceTree = "<group>"; };
 		49B22948148428EE0061EBB1 /* PhoneGap.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = PhoneGap.plist; sourceTree = "<group>"; };
-		49B2294B148428EE0061EBB1 /* AppDelegate.h */ = {isa = PBXFileReference; name = AppDelegate.h; path = Classes/AppDelegate.h; sourceTree = "<group>"; };
+		49B2294B148428EE0061EBB1 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Classes/AppDelegate.h; sourceTree = "<group>"; };
 		49B2294C148428EE0061EBB1 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Classes/AppDelegate.m; sourceTree = "<group>"; };
-		49B2294F148428EE0061EBB1 /* README */ = {isa = PBXFileReference; name = README; path = Plugins/README; sourceTree = "<group>"; };
+		49B2294F148428EE0061EBB1 /* README */ = {isa = PBXFileReference; lastKnownFileType = text; name = README; path = Plugins/README; sourceTree = "<group>"; };
+		49B22955148429990061EBB1 /* www */ = {isa = PBXFileReference; lastKnownFileType = folder; path = www; sourceTree = "<group>"; };
+		49B22957148441840061EBB1 /* grubm.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = grubm.js; path = www/grubm.js; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +108,8 @@
 		49B228FA148428EE0061EBB1 = {
 			isa = PBXGroup;
 			children = (
+				49B22957148441840061EBB1 /* grubm.js */,
+				49B22955148429990061EBB1 /* www */,
 				49B22926148428EE0061EBB1 /* Grubm */,
 				49B2290B148428EE0061EBB1 /* Frameworks */,
 				49B22909148428EE0061EBB1 /* Products */,
@@ -290,6 +296,7 @@
 				49B22945148428EE0061EBB1 /* Default@2x.png in Resources */,
 				49B22947148428EE0061EBB1 /* Capture.bundle in Resources */,
 				49B22949148428EE0061EBB1 /* PhoneGap.plist in Resources */,
+				49B22956148429990061EBB1 /* www in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -318,6 +325,7 @@
 			files = (
 				49B2292E148428EE0061EBB1 /* main.m in Sources */,
 				49B2294D148428EE0061EBB1 /* AppDelegate.m in Sources */,
+				49B22958148441840061EBB1 /* grubm.js in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -370,7 +378,7 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -384,7 +392,7 @@
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				SDKROOT = iphoneos;
 			};
 			name = Release;
