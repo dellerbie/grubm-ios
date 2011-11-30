@@ -33,6 +33,9 @@ Ext.define('Grubm.controller.Main', {
   },{
   	ref: 'moreBusinessPhotos',
     selector: 'morebusinessphotos'
+  },{
+  	ref: 'deleteImageBtn',
+    selector: 'imagedetail button'
   }],
   
   config: {
@@ -61,7 +64,7 @@ Ext.define('Grubm.controller.Main', {
         searchclear: this.onSearchClear
       },
       'myphotostab': {
-        select: this.showDetailsSheet
+        select: this.showDetailsSheet,
       },
       'imagedetail': {
         hideanimationstart: this.onDetailHideAnimationStart
@@ -118,9 +121,14 @@ Ext.define('Grubm.controller.Main', {
     
     if (this.getProfile() == "phone") {
       view.setWidth(null);
-      view.setHeight('80%');
+      view.setHeight('75%');
       view.setTop(null);
       view.setLeft(0);
+    }
+    
+    if(list.isXType('imagesview')) {
+    	console.log('hiding button');
+    	this.getDeleteImageBtn().hide();
     }
         
     view.show();
