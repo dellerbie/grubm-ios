@@ -3,7 +3,7 @@ Ext.define('Grubm.view.ImageInfo', {
   xtype: 'imageinfo',
   config: {
   	tpl: new Ext.XTemplate(
-      '<img src={url} width="{width}" height="{height}" />',
+      '<img class="large" src={url} width="{width}" height="{height}" />',
       '<span class="what">{description}</span>'
     )
   }

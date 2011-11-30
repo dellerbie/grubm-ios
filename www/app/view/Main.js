@@ -8,11 +8,7 @@ Ext.define('Grubm.view.Main', {
   config: {
     fullscreen: true,
     tabBarPosition: 'bottom',
-    defaults: {
-    	styleHtmlContent: true
-    },
-    items: [
-    {
+    items: [{
       id: 'maincontainer',
       xtype: 'container',
       layout: 'card',
@@ -33,9 +29,9 @@ Ext.define('Grubm.view.Main', {
         flex: 1
       }]
     },{
-    	xtype: 'myphotostab',
-      title: 'My Photos',
-      iconCls: 'user'
+    	title: 'My Photos',
+      iconCls: 'user',
+    	xtype: 'myphotostab'
     }]
   }
 });

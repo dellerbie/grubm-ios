@@ -2803,7 +2803,7 @@ var noArgs = [],
                     }
                 }
             }
-
+            
             for (i = 0,ln = defaultConfigList.length; i < ln; i++) {
                 name = defaultConfigList[i];
                 nameMap = configNameCache[name];
@@ -2814,7 +2814,7 @@ var noArgs = [],
                     this[nameMap.set](config[name]);
                 }
             }
-
+            
             return this;
         },
 
@@ -32056,6 +32056,17 @@ Ext.define('Ext.fx.runner.CssTransition', {
 
            document.body.appendChild(iframe);
            iframeDocument = iframe.contentDocument;
+           
+           // START PATCH
+
+          // Fix for iOS < 5.0
+          if(Ext.os.is.iOS && !Ext.os.is.iOS5) {
+             iframeDocument.open();
+             iframeDocument.writeln('</body>');
+             iframeDocument.close();
+          }
+
+          // END PATCH
 
            this.testElement = testElement = iframeDocument.createElement('div');
            testElement.style.position = 'absolute !important';

@@ -6,5 +6,5 @@ Ext.define('Grubm.store.Images', {
     type: 'jsonp',
     url: 'http://la.grubm.com/.json'
   },
-  autoLoad: true
+  autoLoad: false
 });

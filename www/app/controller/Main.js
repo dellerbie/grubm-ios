@@ -4,9 +4,11 @@ Ext.define('Grubm.controller.Main', {
     'Main',
     'Food',
     'Business',
-    'MyPhotosTab'
+    'MyPhotosTab',
+    'ImageDetail',
+    'MoreBusinessPhotos'
   ],
-  stores: ['Cities', 'Images', 'Businesses'],
+  stores: ['Cities', 'Images', 'Businesses', 'MyImages'],
   refs: [{
     ref     : 'main',
     selector: 'mainview'
@@ -22,14 +24,25 @@ Ext.define('Grubm.controller.Main', {
   },{
     ref: 'business',
     selector: 'businessview'
+  },{
+  	ref: 'myPhotosTab',
+    selector: 'myphotostab'
+  },{
+    ref: 'imageDetail',
+    selector: 'imagedetail'
+  },{
+  	ref: 'moreBusinessPhotos',
+    selector: 'morebusinessphotos'
   }],
   
   config: {
-    baseUrl: "http://la.grubm.com"
+    baseUrl: "http://la.grubm.com",
+    profile: Ext.os.deviceType.toLowerCase()
   },
   
   init: function() {
     this.getMainView().create();
+    this.getMyPhotosTabView().create();
     this.control({
       'citypickerview': {
         select: this.onCitySelect
@@ -38,7 +51,7 @@ Ext.define('Grubm.controller.Main', {
         tap: this.onBackToCityPicker
       },
       'imagesview': {
-        select: this.onImageSelect
+        select: this.showDetailsSheet
       },
       'businessview button': {
         tap: this.onBackToFoodView
@@ -46,6 +59,12 @@ Ext.define('Grubm.controller.Main', {
       'searchbar searchfield': {
         action: this.onSearch,
         searchclear: this.onSearchClear
+      },
+      'myphotostab': {
+        select: this.showDetailsSheet
+      },
+      'imagedetail': {
+        hideanimationstart: this.onDetailHideAnimationStart
       }
     });
   },
@@ -83,5 +102,31 @@ Ext.define('Grubm.controller.Main', {
   
   onSearchClear: function(searchField, newVal, oldVal) {
     this.getImages().getStore().load();
+  },
+  
+  showDetailsSheet: function(list, image) {
+    if (!this.getImageDetail()) {
+      Ext.Viewport.add(this.getImageDetailView().create());
+    }
+    
+    var business = image.get('business').normalized_name;
+    this.getBusinessesStore().proxy.url = this.getBaseUrl() + "/business/" + business + ".json";
+    this.getBusinessesStore().load({params: {limit: 12}});
+    
+    var view = this.getImageDetail();
+    view.setImage(image);
+    
+    if (this.getProfile() == "phone") {
+      view.setWidth(null);
+      view.setHeight('80%');
+      view.setTop(null);
+      view.setLeft(0);
+    }
+        
+    view.show();
+  },    
+  
+  onDetailHideAnimationStart: function() {
+    this.getMyPhotosTab().deselectAll();
   }
 });

@@ -6,7 +6,7 @@ Ext.define('Grubm.controller.MyPhotos', {
     },
     
     views: ['MyPhotosTab', 'ImageDetail'],
-    stores: ['Images'],
+    stores: ['MyImages'],
     
     refs: [{
     	ref: 'myPhotos',
@@ -17,7 +17,6 @@ Ext.define('Grubm.controller.MyPhotos', {
     }],
 
     init: function() {
-    	console.log('init');
 			this.getMyPhotosTabView().create();
 
       this.control({

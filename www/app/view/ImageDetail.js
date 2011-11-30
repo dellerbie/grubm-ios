@@ -1,7 +1,11 @@
 Ext.define('Grubm.view.ImageDetail', {
   extend: 'Ext.Sheet',
   xtype: 'imagedetail',
-  requires: ['Grubm.view.ImageInfo', 'Grubm.view.BusinessInfo'],
+  requires: [
+  	'Grubm.view.ImageInfo', 
+    'Grubm.view.BusinessInfo',
+    'Grubm.view.MoreBusinessPhotos'
+  ],
 
   config: {
     modal: true,
@@ -26,6 +30,8 @@ Ext.define('Grubm.view.ImageDetail', {
       flex: 1,
       items: [{ 
       	xtype: 'imageinfo'
+      },{
+      	xtype: 'morebusinessphotos'
       },{
       	xtype: 'businessinfo'
       }]
