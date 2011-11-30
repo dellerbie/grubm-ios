@@ -1,4 +1,4 @@
-Ext.define('Grubm.store.Images', {
+Ext.define('Grubm.store.MyImages', {
   extend  : 'Ext.data.Store',
   model   : 'Grubm.model.Image',
   requires: ['Grubm.model.Image'],

@@ -3,7 +3,8 @@ Ext.define('Grubm.controller.Main', {
   views: [
     'Main',
     'Food',
-    'Business'
+    'Business',
+    'MyPhotosTab'
   ],
   stores: ['Cities', 'Images', 'Businesses'],
   refs: [{
@@ -21,9 +22,6 @@ Ext.define('Grubm.controller.Main', {
   },{
     ref: 'business',
     selector: 'businessview'
-  },{
-    ref: 'searchfield',
-    selector: 'searchbar searchfield'
   }],
   
   config: {
@@ -31,7 +29,6 @@ Ext.define('Grubm.controller.Main', {
   },
   
   init: function() {
-    console.log('inside main controller');
     this.getMainView().create();
     this.control({
       'citypickerview': {

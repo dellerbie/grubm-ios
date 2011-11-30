@@ -1,5 +1,7 @@
+Ext.Loader.setConfig({ enabled: true });
+
 Ext.application({
   name: 'Grubm',
-  controllers: ['Main'],
-  models: ['City']
+  controllers: ['MyPhotos'],
+  models: ['Image']
 });

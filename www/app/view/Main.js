@@ -2,12 +2,17 @@ Ext.define('Grubm.view.Main', {
   extend: 'Ext.TabPanel',
   xtype: 'mainview',
   requires: [
-    'Grubm.view.CityPicker'
+    'Grubm.view.CityPicker',
+    'Grubm.view.MyPhotosTab'
   ],
   config: {
     fullscreen: true,
     tabBarPosition: 'bottom',
-    items: [{
+    defaults: {
+    	styleHtmlContent: true
+    },
+    items: [
+    {
       id: 'maincontainer',
       xtype: 'container',
       layout: 'card',
@@ -27,6 +32,10 @@ Ext.define('Grubm.view.Main', {
         xtype: 'businessview',
         flex: 1
       }]
+    },{
+    	xtype: 'myphotostab',
+      title: 'My Photos',
+      iconCls: 'user'
     }]
   }
 });

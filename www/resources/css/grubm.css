@@ -3,7 +3,8 @@
 }
 
 .x-dataview-images-view img,
-.x-dataview-business img {
+.x-dataview-business img,
+.x-sheet-image-detail img {
   display: block;
   margin: .75em auto;
   padding: 0.5em;
@@ -42,28 +43,28 @@
 }
 
 
-.x-dataview-business .business-wrapper {
-  margin-bottom: .5em;
+.business-wrapper {
+  margin: 0 auto .5em auto;
   padding: .5em 1em;
-  font-family: 'Palatino-Roman';
-  width: 100%;
+  width: 85%;
+  font-family: 'Copperplate';
+  text-align: center;
+  color: #595959;
   background: #fff;
+  -webkit-box-shadow: 5px 5px 8px #888;
 }
 
-.x-dataview-business .place,
-.x-dataview-business .street,
-.x-dataview-business .city-state-zip,
-.x-dataview-business .map {
-  text-align: left;
+.business-wrapper span,
+.business-wrapper a {
   font-size: .8em;
   display: block;
 }
 
-.x-dataview-business .place {
-  font-family: 'MarkerFelt-Thin';
+.business-wrapper .place {
+  font-family: 'Copperplate';
   font-size: 1.1em;
   font-weight: bold;
-  color: #000;
+  color: #415D75;
 }
 
 .x-dataview-business h3 {
@@ -80,4 +81,36 @@
   padding: .2em;
   background: #f2f2f2;
   -webkit-box-shadow: 5px 5px 8px #888;
+}
+
+.x-dataview-myphotos-tab-view {
+	padding: .5em 0 0 1.5em;
+}
+
+.x-dataview-myphotos-tab-view img {
+  padding: 5px;
+	border: 1px solid #CCC;
+  background: white;
+}
+
+.x-dataview-myphotos-tab-view .image {
+	float: left;
+	width: 90px;
+  height: 90px;
+}
+
+.x-sheet-image-detail {
+	background: #f2f2f2;
+  border: none;
+  -webkit-border-top-left-radius: .5em;
+  -webkit-border-top-right-radius: .5em;
+  -webkit-border-bottom-left-radius: 0;
+}
+
+.x-sheet-image-detail img {
+  display: block;
+  margin: .75em auto;
+  padding: 0.5em;
+  border: 1px solid #CCC;
+  background: white;
 }
