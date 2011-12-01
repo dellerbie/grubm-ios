@@ -24,9 +24,6 @@ Ext.define('Grubm.view.Main', {
       },{
         xtype: 'foodview',
         flex: 1
-      },{
-        xtype: 'businessview',
-        flex: 1
       }]
     },{
     	title: 'My Photos',

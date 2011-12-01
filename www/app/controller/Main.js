@@ -7,7 +7,8 @@ Ext.define('Grubm.controller.Main', {
     'MyPhotosTab',
     'ImageDetail',
     'MoreBusinessPhotos',
-    'UploadPhoto'
+    'UploadPhoto',
+    'ChoosePhoto'
   ],
   stores: ['Cities', 'Images', 'Businesses', 'MyImages', 'Places'],
   refs: [{
@@ -42,7 +43,13 @@ Ext.define('Grubm.controller.Main', {
     selector: 'uploadphoto #uploaded-image'
   },{
   	ref: 'uploadPhoto',
-    selector: 'uploadPhoto'
+    selector: 'uploadphoto'
+  },{
+  	ref: 'choosePhoto',
+    selector: 'choosephoto'
+  },{
+  	ref: 'whereAreYou',
+    selector: 'whereareyou'
   }],
   
   config: {
@@ -79,6 +86,21 @@ Ext.define('Grubm.controller.Main', {
       },
       'uploadphoto #select-pic': {
       	tap: this.selectExistingImage
+      },
+      'uploadphoto': {
+      	show: this.onUploadPhotoShow
+      },
+      'choosephoto button[ui="cancel"]': {
+      	tap: this.cancelUploadPhoto
+      },
+      'choosephoto #take-photo': {
+      	tap: function() { alert('tap'); }
+      },
+      'choosephoto #choose-photo': {
+      	tap: this.selectExistingImage
+      },
+      'uploadphoto #select-location': {
+      	tap: this.selectLocation
       }
     });
   },
@@ -139,10 +161,11 @@ Ext.define('Grubm.controller.Main', {
     
     if(list.isXType('imagesview')) {
     	this.getDeleteImageBtn().hide();
+      this.getImages().deselectAll();
+    } else {
+    	this.getMyPhotosTab().deselectAll();
     }
     
-    this.getImages().deselectAll();
-        
     view.show();
   },    
   
@@ -163,9 +186,26 @@ Ext.define('Grubm.controller.Main', {
   
   onGetImageSuccess: function(imageURI) {
   	this.getUploadedImage().setSrc(imageURI);
+    this.getChoosePhoto().hide();
   },
   
   onGetImageError: function() {
   	console.log('get image error');
-  }	
+  },
+  
+  onUploadPhotoShow: function(uploadPhoto) {
+  	if(!this.getChoosePhoto()) {
+    	Ext.Viewport.add(this.getChoosePhotoView().create());
+    }
+    this.getChoosePhoto().show();
+  },
+  
+  cancelUploadPhoto: function() {
+    this.getChoosePhoto().hide();
+    this.getMain().setActiveItem(0);
+  },
+  
+  selectLocation: function() {
+  	this.getUploadPhoto().setActiveItem(this.getWhereAreYou(), {type: 'slide', direction: 'left'});
+  }
 });
