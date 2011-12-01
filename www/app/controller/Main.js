@@ -6,9 +6,10 @@ Ext.define('Grubm.controller.Main', {
     'Business',
     'MyPhotosTab',
     'ImageDetail',
-    'MoreBusinessPhotos'
+    'MoreBusinessPhotos',
+    'UploadPhoto'
   ],
-  stores: ['Cities', 'Images', 'Businesses', 'MyImages'],
+  stores: ['Cities', 'Images', 'Businesses', 'MyImages', 'Places'],
   refs: [{
     ref     : 'main',
     selector: 'mainview'
@@ -36,6 +37,12 @@ Ext.define('Grubm.controller.Main', {
   },{
   	ref: 'deleteImageBtn',
     selector: 'imagedetail button'
+  },{
+  	ref: 'uploadedImage',
+    selector: 'uploadphoto #uploaded-image'
+  },{
+  	ref: 'uploadPhoto',
+    selector: 'uploadPhoto'
   }],
   
   config: {
@@ -46,6 +53,7 @@ Ext.define('Grubm.controller.Main', {
   init: function() {
     this.getMainView().create();
     this.getMyPhotosTabView().create();
+    this.getUploadPhotoView().create();
     this.control({
       'citypickerview': {
         select: this.onCitySelect
@@ -68,6 +76,9 @@ Ext.define('Grubm.controller.Main', {
       },
       'imagedetail': {
         hideanimationstart: this.onDetailHideAnimationStart
+      },
+      'uploadphoto #select-pic': {
+      	tap: this.selectExistingImage
       }
     });
   },
@@ -136,5 +147,24 @@ Ext.define('Grubm.controller.Main', {
   
   onDetailHideAnimationStart: function() {
     this.getMyPhotosTab().deselectAll();
-  }
+  },
+  
+  selectExistingImage: function() {
+    navigator.camera.getPicture(Ext.bind(this.onGetImageSuccess, this), this.onGetImageError, { 
+    	quality: 70,
+      encodingType: Camera.EncodingType.JPEG,
+      targetWidth: 240,
+      targetHeight: 240, 
+      sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+      destinationType: Camera.DestinationType.FILE_URI
+    });
+  },
+  
+  onGetImageSuccess: function(imageURI) {
+  	this.getUploadedImage().setSrc(imageURI);
+  },
+  
+  onGetImageError: function() {
+  	console.log('get image error');
+  }	
 });

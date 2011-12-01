@@ -103,3 +103,10 @@ h3 {
   border: 1px solid #CCC;
   background: white;
 }
+
+#uploaded-image {
+	display: block;
+  margin: 0 auto;
+  padding: .2em;
+  border: 1px solid #ccc;
+}

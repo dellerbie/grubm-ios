@@ -10,6 +10,8 @@
 		490CF08A14859603000EBB48 /* ImageDetail.js in Sources */ = {isa = PBXBuildFile; fileRef = 490CF08914859603000EBB48 /* ImageDetail.js */; };
 		490CF08F14859836000EBB48 /* BusinessInfo.js in Sources */ = {isa = PBXBuildFile; fileRef = 490CF08E14859836000EBB48 /* BusinessInfo.js */; };
 		490CF0911486C319000EBB48 /* MoreBusinessPhotos.js in Sources */ = {isa = PBXBuildFile; fileRef = 490CF0901486C319000EBB48 /* MoreBusinessPhotos.js */; };
+		490CF0931486DB8A000EBB48 /* UploadPhoto.js in Sources */ = {isa = PBXBuildFile; fileRef = 490CF0921486DB8A000EBB48 /* UploadPhoto.js */; };
+		490CF095148708B2000EBB48 /* Places.js in Sources */ = {isa = PBXBuildFile; fileRef = 490CF094148708B2000EBB48 /* Places.js */; };
 		49B2290D148428EE0061EBB1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B2290C148428EE0061EBB1 /* Foundation.framework */; };
 		49B2290F148428EE0061EBB1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B2290E148428EE0061EBB1 /* UIKit.framework */; };
 		49B22911148428EE0061EBB1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B22910148428EE0061EBB1 /* CoreGraphics.framework */; };
@@ -40,13 +42,14 @@
 		49B22958148441840061EBB1 /* grubm.js in Sources */ = {isa = PBXBuildFile; fileRef = 49B22957148441840061EBB1 /* grubm.js */; };
 		49B22964148566390061EBB1 /* MyPhotosTab.js in Sources */ = {isa = PBXBuildFile; fileRef = 49B22963148566390061EBB1 /* MyPhotosTab.js */; };
 		49B2296614856AEB0061EBB1 /* MyImages.js in Sources */ = {isa = PBXBuildFile; fileRef = 49B2296514856AEB0061EBB1 /* MyImages.js */; };
-		49BF895A14857D5C00304ED6 /* MyPhotos.js in Sources */ = {isa = PBXBuildFile; fileRef = 49BF895914857D5C00304ED6 /* MyPhotos.js */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		490CF08914859603000EBB48 /* ImageDetail.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = ImageDetail.js; path = www/app/view/ImageDetail.js; sourceTree = "<group>"; };
 		490CF08E14859836000EBB48 /* BusinessInfo.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = BusinessInfo.js; path = www/app/view/BusinessInfo.js; sourceTree = "<group>"; };
 		490CF0901486C319000EBB48 /* MoreBusinessPhotos.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = MoreBusinessPhotos.js; path = www/app/view/MoreBusinessPhotos.js; sourceTree = "<group>"; };
+		490CF0921486DB8A000EBB48 /* UploadPhoto.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = UploadPhoto.js; path = www/app/view/UploadPhoto.js; sourceTree = "<group>"; };
+		490CF094148708B2000EBB48 /* Places.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = Places.js; path = www/app/store/Places.js; sourceTree = "<group>"; };
 		49B22908148428EE0061EBB1 /* Grubm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Grubm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49B2290C148428EE0061EBB1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		49B2290E148428EE0061EBB1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -82,7 +85,6 @@
 		49B22957148441840061EBB1 /* grubm.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = grubm.js; path = www/grubm.js; sourceTree = "<group>"; };
 		49B22963148566390061EBB1 /* MyPhotosTab.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = MyPhotosTab.js; path = www/app/view/MyPhotosTab.js; sourceTree = "<group>"; };
 		49B2296514856AEB0061EBB1 /* MyImages.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = MyImages.js; path = www/app/store/MyImages.js; sourceTree = "<group>"; };
-		49BF895914857D5C00304ED6 /* MyPhotos.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = MyPhotos.js; path = www/app/controller/MyPhotos.js; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,10 +122,11 @@
 		49B228FA148428EE0061EBB1 = {
 			isa = PBXGroup;
 			children = (
+				490CF094148708B2000EBB48 /* Places.js */,
+				490CF0921486DB8A000EBB48 /* UploadPhoto.js */,
 				490CF0901486C319000EBB48 /* MoreBusinessPhotos.js */,
 				490CF08E14859836000EBB48 /* BusinessInfo.js */,
 				490CF08914859603000EBB48 /* ImageDetail.js */,
-				49BF895914857D5C00304ED6 /* MyPhotos.js */,
 				49B2296514856AEB0061EBB1 /* MyImages.js */,
 				49B22963148566390061EBB1 /* MyPhotosTab.js */,
 				49B22957148441840061EBB1 /* grubm.js */,
@@ -346,10 +349,11 @@
 				49B22958148441840061EBB1 /* grubm.js in Sources */,
 				49B22964148566390061EBB1 /* MyPhotosTab.js in Sources */,
 				49B2296614856AEB0061EBB1 /* MyImages.js in Sources */,
-				49BF895A14857D5C00304ED6 /* MyPhotos.js in Sources */,
 				490CF08A14859603000EBB48 /* ImageDetail.js in Sources */,
 				490CF08F14859836000EBB48 /* BusinessInfo.js in Sources */,
 				490CF0911486C319000EBB48 /* MoreBusinessPhotos.js in Sources */,
+				490CF0931486DB8A000EBB48 /* UploadPhoto.js in Sources */,
+				490CF095148708B2000EBB48 /* Places.js in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

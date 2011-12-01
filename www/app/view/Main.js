@@ -32,6 +32,10 @@ Ext.define('Grubm.view.Main', {
     	title: 'My Photos',
       iconCls: 'user',
     	xtype: 'myphotostab'
+    },{
+    	title: 'Upload',
+      iconCls: 'upload',
+      xtype: 'uploadphoto'
     }]
   }
 });
