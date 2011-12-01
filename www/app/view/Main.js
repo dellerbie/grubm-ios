@@ -17,7 +17,7 @@ Ext.define('Grubm.view.Main', {
         direction: 'left'
       },
       title: 'Find Food',
-      iconCls: 'home',
+      iconCls: 'search',
       items:[{
         xtype: 'citypickerview',
         flex: 1

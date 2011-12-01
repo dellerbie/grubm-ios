@@ -138,9 +138,10 @@ Ext.define('Grubm.controller.Main', {
     }
     
     if(list.isXType('imagesview')) {
-    	console.log('hiding button');
     	this.getDeleteImageBtn().hide();
     }
+    
+    this.getImages().deselectAll();
         
     view.show();
   },    
