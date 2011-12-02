@@ -4988,7 +4988,7 @@
 				<integer>417</integer>
 			</dict>
 		</dict>
-		<string>UploadPhoto.js</string>
+		<string>Main.js</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -5001,7 +5001,7 @@
 				<integer>419</integer>
 			</dict>
 		</dict>
-		<string>view</string>
+		<string>controller</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -5064,7 +5064,7 @@
 				<integer>137</integer>
 			</dict>
 			<key>NS.string</key>
-			<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/view/UploadPhoto.js</string>
+			<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/controller/Main.js</string>
 		</dict>
 		<dict>
 			<key>$class</key>
@@ -5732,9 +5732,9 @@
 				</dict>
 			</array>
 		</dict>
-		<real>344485132.11097503</real>
-		<string>{0, 926}</string>
-		<string>{520, 0}</string>
+		<real>344487118.85633498</real>
+		<string>{4587, 2166}</string>
+		<string>{6688, 0}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -5752,7 +5752,7 @@
 				<integer>462</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/view/UploadPhoto.js</string>
+		<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/controller/Main.js</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -6131,8 +6131,8 @@
 		</dict>
 		<string>Grubm</string>
 		<string>app</string>
-		<string>view</string>
-		<string>UploadPhoto.js</string>
+		<string>controller</string>
+		<string>Main.js</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -6159,11 +6159,11 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>495</integer>
+					<integer>494</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>497</integer>
+					<integer>496</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
@@ -6191,10 +6191,6 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>507</integer>
-				</dict>
-				<dict>
-					<key>CF$UID</key>
 					<integer>508</integer>
 				</dict>
 				<dict>
@@ -6203,7 +6199,7 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>512</integer>
+					<integer>511</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
@@ -6212,6 +6208,10 @@
 				<dict>
 					<key>CF$UID</key>
 					<integer>514</integer>
+				</dict>
+				<dict>
+					<key>CF$UID</key>
+					<integer>515</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
@@ -6247,7 +6247,7 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>64</integer>
+					<integer>72</integer>
 				</dict>
 			</array>
 		</dict>
@@ -6291,16 +6291,15 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>493</integer>
+					<integer>485</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>494</integer>
+					<integer>493</integer>
 				</dict>
 			</array>
 		</dict>
-		<string>resources</string>
-		<string>images</string>
+		<string>store</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -6323,7 +6322,7 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>496</integer>
+					<integer>495</integer>
 				</dict>
 			</array>
 		</dict>
@@ -6350,10 +6349,11 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>486</integer>
+					<integer>497</integer>
 				</dict>
 			</array>
 		</dict>
+		<string>view</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -6497,10 +6497,38 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>493</integer>
+					<integer>507</integer>
 				</dict>
 			</array>
 		</dict>
+		<string>resources</string>
+		<dict>
+			<key>$class</key>
+			<dict>
+				<key>CF$UID</key>
+				<integer>45</integer>
+			</dict>
+			<key>NS.objects</key>
+			<array>
+				<dict>
+					<key>CF$UID</key>
+					<integer>484</integer>
+				</dict>
+				<dict>
+					<key>CF$UID</key>
+					<integer>64</integer>
+				</dict>
+				<dict>
+					<key>CF$UID</key>
+					<integer>507</integer>
+				</dict>
+				<dict>
+					<key>CF$UID</key>
+					<integer>509</integer>
+				</dict>
+			</array>
+		</dict>
+		<string>images</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -6541,42 +6569,15 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>493</integer>
+					<integer>507</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>509</integer>
+					<integer>512</integer>
 				</dict>
 			</array>
 		</dict>
 		<string>css</string>
-		<dict>
-			<key>$class</key>
-			<dict>
-				<key>CF$UID</key>
-				<integer>45</integer>
-			</dict>
-			<key>NS.objects</key>
-			<array>
-				<dict>
-					<key>CF$UID</key>
-					<integer>484</integer>
-				</dict>
-				<dict>
-					<key>CF$UID</key>
-					<integer>64</integer>
-				</dict>
-				<dict>
-					<key>CF$UID</key>
-					<integer>485</integer>
-				</dict>
-				<dict>
-					<key>CF$UID</key>
-					<integer>511</integer>
-				</dict>
-			</array>
-		</dict>
-		<string>store</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -6613,7 +6614,7 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>72</integer>
+					<integer>64</integer>
 				</dict>
 			</array>
 		</dict>
@@ -6639,11 +6640,10 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>515</integer>
+					<integer>486</integer>
 				</dict>
 			</array>
 		</dict>
-		<string>controller</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -6852,7 +6852,7 @@
 			</array>
 		</dict>
 		<real>260</real>
-		<string>UploadPhoto.js</string>
+		<string>Main.js</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -10182,7 +10182,7 @@
 				</dict>
 				<dict>
 					<key>CF$UID</key>
-					<integer>788</integer>
+					<integer>787</integer>
 				</dict>
 				<dict>
 					<key>CF$UID</key>
@@ -11211,17 +11211,8 @@
 			<key>NS.relative</key>
 			<dict>
 				<key>CF$UID</key>
-				<integer>787</integer>
+				<integer>426</integer>
 			</dict>
-		</dict>
-		<dict>
-			<key>$class</key>
-			<dict>
-				<key>CF$UID</key>
-				<integer>137</integer>
-			</dict>
-			<key>NS.string</key>
-			<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/controller/Main.js</string>
 		</dict>
 		<dict>
 			<key>$class</key>
@@ -11237,8 +11228,17 @@
 			<key>NS.relative</key>
 			<dict>
 				<key>CF$UID</key>
-				<integer>426</integer>
+				<integer>788</integer>
 			</dict>
+		</dict>
+		<dict>
+			<key>$class</key>
+			<dict>
+				<key>CF$UID</key>
+				<integer>137</integer>
+			</dict>
+			<key>NS.string</key>
+			<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/view/UploadPhoto.js</string>
 		</dict>
 		<dict>
 			<key>$class</key>
@@ -11463,7 +11463,7 @@
 				</dict>
 			</array>
 		</dict>
-		<real>344476868.47260398</real>
+		<real>344486006.35720199</real>
 		<string>{0, 356}</string>
 		<string>{254, 0}</string>
 		<dict>
@@ -11896,9 +11896,9 @@
 				</dict>
 			</array>
 		</dict>
-		<real>344484825.67645597</real>
-		<string>{0, 915}</string>
-		<string>{385, 8}</string>
+		<real>344486976.39323997</real>
+		<string>{0, 839}</string>
+		<string>{728, 0}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -12135,7 +12135,7 @@
 				</dict>
 			</array>
 		</dict>
-		<real>344484758.71967101</real>
+		<real>344486226.23892403</real>
 		<string>{0, 490}</string>
 		<dict>
 			<key>$class</key>
@@ -12229,9 +12229,9 @@
 				</dict>
 			</array>
 		</dict>
-		<real>344301601.88329399</real>
+		<real>344485958.04966801</real>
 		<string>{1068, 2258}</string>
-		<string>{3240, 0}</string>
+		<string>{3242, 0}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -12802,7 +12802,7 @@
 				</dict>
 			</array>
 		</dict>
-		<real>344480896.938766</real>
+		<real>344486338.82643598</real>
 		<string>{0, 227}</string>
 		<dict>
 			<key>$class</key>
@@ -12945,9 +12945,9 @@
 				</dict>
 			</array>
 		</dict>
-		<real>344484992.492441</real>
-		<string>{4514, 2062}</string>
-		<string>{6566, 0}</string>
+		<real>344487118.85578799</real>
+		<string>{4587, 2166}</string>
+		<string>{6688, 0}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -12993,9 +12993,9 @@
 				</dict>
 			</array>
 		</dict>
-		<real>344485132.11038601</real>
-		<string>{0, 926}</string>
-		<string>{520, 0}</string>
+		<real>344486672.741696</real>
+		<string>{0, 1069}</string>
+		<string>{771, 0}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -13041,9 +13041,9 @@
 				</dict>
 			</array>
 		</dict>
-		<real>344483980.518417</real>
-		<string>{30677, 1626}</string>
-		<string>{355, 0}</string>
+		<real>344487018.08366001</real>
+		<string>{0, 2432}</string>
+		<string>{834, 0}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -13798,7 +13798,7 @@
 				<integer>1001</integer>
 			</dict>
 			<key>NS.time</key>
-			<real>344485002.39029801</real>
+			<real>344487065.92583001</real>
 		</dict>
 		<dict>
 			<key>$classes</key>
@@ -13809,7 +13809,7 @@
 			<key>$classname</key>
 			<string>NSDate</string>
 		</dict>
-		<string>Today at 6:16 PM</string>
+		<string>Today at 6:51 PM</string>
 		<integer>106</integer>
 		<dict>
 			<key>$class</key>
@@ -14354,7 +14354,7 @@
 				<integer>1049</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/view/UploadPhoto.js</string>
+		<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/controller/Main.js</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -14372,7 +14372,7 @@
 				<integer>1051</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/controller/Main.js</string>
+		<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/store/Places.js</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -14408,7 +14408,7 @@
 				<integer>1055</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/view/ChoosePhoto.js</string>
+		<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/view/UploadPhoto.js</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -14426,7 +14426,7 @@
 				<integer>1057</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/view/BusinessInfo.js</string>
+		<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/store/MyImages.js</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -14444,7 +14444,7 @@
 				<integer>1059</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/view/Business.js</string>
+		<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/view/BusinessInfo.js</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -14462,7 +14462,7 @@
 				<integer>1061</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/store/Places.js</string>
+		<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/view/Images.js</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -14480,7 +14480,7 @@
 				<integer>1063</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/store/Images.js</string>
+		<string>file://localhost/Users/derrick/Documents/Development/Grubm/Grubm/Classes/AppDelegate.m</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -14498,7 +14498,7 @@
 				<integer>1065</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/store/MyImages.js</string>
+		<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/view/ChoosePhoto.js</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -14516,7 +14516,7 @@
 				<integer>1067</integer>
 			</dict>
 		</dict>
-		<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/model/PlacesLocation.js</string>
+		<string>file://localhost/Users/derrick/Documents/Development/Grubm/www/app/view/Business.js</string>
 		<dict>
 			<key>$class</key>
 			<dict>

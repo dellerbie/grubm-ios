@@ -1,9 +1,14 @@
 Ext.define('Grubm.store.Places', {
   extend: 'Ext.data.Store',
-	fields: ['response'],
+	fields: ['name', 'categories'],
   autoLoad : true,
   proxy: {
   	type: 'jsonp',
+    reader: {
+    	type: 'json',
+    	root: 'response.venues'
+    },
+    
     url: "https://api.foursquare.com/v2/venues/search?client_id=ZMKLRTL0V4P1IFW5SGEZZW4UDLXA5E5SQPQ0UYBOFYSEF3AR&client_secret=FBITQXCVAZMB23XM0COS5ZNTZZDSZU2XXCQ5LDUFBJ35QXDB&v=20111201&limit=50&intent=browse&radius=1620"
   }
 /*	data: {

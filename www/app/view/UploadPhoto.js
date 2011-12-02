@@ -27,6 +27,12 @@ Ext.define('Grubm.view.UploadPhoto', {
           required: true
         }]
       },{
+      	xtype: 'panel',
+        id: 'location',
+        html: '',
+        height: 30,
+        style: 'background: #fff; color: #666;'
+      },{
         xtype: 'button',
         id: 'select-location',
         text: 'Select Your Location'

@@ -50,6 +50,9 @@ Ext.define('Grubm.controller.Main', {
   },{
   	ref: 'whereAreYou',
     selector: 'whereareyou'
+  },{
+  	ref: 'locationHolder',
+    selector: 'uploadphoto #location'
   }],
   
   config: {
@@ -238,6 +241,8 @@ Ext.define('Grubm.controller.Main', {
   },
   
   onLocationSelected: function(dataview, place) {
-  	this.getUploadPhoto().setActiveItem(0);
+    this.getUploadPhoto().setActiveItem(0);
+    console.log('name => ' + place.get('name'));
+    this.getLocationHolder().setHtml(place.get('name'));
   }
 });
