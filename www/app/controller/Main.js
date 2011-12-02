@@ -54,7 +54,8 @@ Ext.define('Grubm.controller.Main', {
   
   config: {
     baseUrl: "http://la.grubm.com",
-    profile: Ext.os.deviceType.toLowerCase()
+    profile: Ext.os.deviceType.toLowerCase(),
+    currentPosition: null
   },
   
   init: function() {
@@ -70,9 +71,6 @@ Ext.define('Grubm.controller.Main', {
       },
       'imagesview': {
         select: this.showDetailsSheet
-      },
-      'businessview button': {
-        tap: this.onBackToFoodView
       },
       'searchbar searchfield': {
         action: this.onSearch,
@@ -101,6 +99,12 @@ Ext.define('Grubm.controller.Main', {
       },
       'uploadphoto #select-location': {
       	tap: this.selectLocation
+      },
+      'whereareyou searchfield': {
+      	keyup: this.filterPlaces
+      },
+      'whereareyou dataview': {
+      	select: this.onLocationSelected
       }
     });
   },
@@ -190,7 +194,7 @@ Ext.define('Grubm.controller.Main', {
   },
   
   onGetImageError: function() {
-  	console.log('get image error');
+  	alert('There was an error getting the image.  Please try again');
   },
   
   onUploadPhotoShow: function(uploadPhoto) {
@@ -206,6 +210,34 @@ Ext.define('Grubm.controller.Main', {
   },
   
   selectLocation: function() {
+  	navigator.geolocation.getCurrentPosition(
+    	Ext.bind(this.onGetCurrentPositionSuccess, this), 
+    	Ext.bind(this.onGetCurrentPositionError, this),
+      { maximumAge: 60000, timeout: 5000, enableHighAccuracy: true }
+    );
   	this.getUploadPhoto().setActiveItem(this.getWhereAreYou(), {type: 'slide', direction: 'left'});
+  },
+  
+  onGetCurrentPositionSuccess: function(position) {
+  	this.setCurrentPosition(position.coords.latitude + ',' + position.coords.longitude);
+    this.getPlacesStore().load({params: {ll: this.getCurrentPosition()}});
+  },
+  
+  onGetCurrentPositionError: function(error) {
+  	alert("Error getting your current position.\ncode: " + error.code + "\nmessage: " + error.message);
+  },
+  
+  filterPlaces: function(searchField) {
+    this.getPlacesStore().load({
+    	params: {
+      	limit: 50, 
+        query: searchField.getValue(),
+        ll: this.getCurrentPosition()
+      }
+    });
+  },
+  
+  onLocationSelected: function(dataview, place) {
+  	this.getUploadPhoto().setActiveItem(0);
   }
 });

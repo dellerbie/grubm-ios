@@ -30,6 +30,9 @@ Ext.define('Grubm.view.UploadPhoto', {
         xtype: 'button',
         id: 'select-location',
         text: 'Select Your Location'
+      },{
+        xtype: 'spacer',
+        height: 10
       }]
     },{
     	xtype: 'whereareyou',

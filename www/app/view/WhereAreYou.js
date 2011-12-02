@@ -15,9 +15,22 @@ Ext.define('Grubm.view.WhereAreYou', {
         name: 'search'
       }]
     },{
-      xtype: 'list',
+      xtype: 'dataview',
       store: 'Places',
-      itemTpl: '{name}'
+      ui: 'places',
+      itemTpl: new Ext.XTemplate(
+      	'<tpl for="response.venues">',
+        	'<div class="place-wrapper">',
+            '<p class="place">{name}</p>',
+            '<tpl for="categories">',
+              '{% if (xindex > 2) break; %}',
+              '<p class="categories">{name} &#8226; </p>',
+            '</tpl>',
+          '</div>',
+        '</tpl>'
+      ),
+      emptyText: "Couldn't find any places. Try a different search",
+      deferEmptyText: true
     }]
   }
 });

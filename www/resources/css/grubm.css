@@ -6,7 +6,7 @@ img.large {
   background: white;
 }
 
-.what, .at, 
+/*.what, .at, 
 .place, .city {
   display: block;
   color: #595959;
@@ -21,7 +21,7 @@ img.large {
 
 .city {
   display: inline;
-}
+}*/
 
 .business-wrapper {
   width: 85%;
@@ -96,6 +96,14 @@ h3 {
   height: 67px;
 }
 
+.x-sheet-image-detail .what {
+  display: block;
+  color: #595959;
+  font-family: 'AmericanTypewriter';
+  font-size: .75em;
+  text-align: center;
+}
+
 .x-sheet-image-detail img.large {
   display: block;
   margin: .75em auto;
@@ -108,4 +116,25 @@ h3 {
 	display: block;
   margin: 0 auto;
   padding: .2em;
+}
+
+.x-dataview-places {
+	text-align: left;
+  font-family: 'Helvetica';
+  color: #666;
+}
+
+.x-dataview-places div.place-wrapper {
+	padding: .2em;
+  border-bottom: 1px solid #ccc;
+  min-height: 50px;
+}
+
+.x-dataview-places .place {
+  font-weight: bold;
+  font-size: .7em;
+}
+
+.x-dataview-places .categories {
+	font-size: .6em;
 }
