@@ -6,23 +6,6 @@ img.large {
   background: white;
 }
 
-/*.what, .at, 
-.place, .city {
-  display: block;
-  color: #595959;
-  font-family: 'AmericanTypewriter';
-  font-size: .75em;
-  text-align: center;
-}
- 
-.place {
-  font-weight: bold;
-}
-
-.city {
-  display: inline;
-}*/
-
 .business-wrapper {
   width: 85%;
   font-family: 'Arial';
@@ -116,6 +99,13 @@ h3 {
 	display: block;
   margin: 0 auto;
   padding: .2em;
+}
+
+#uploaded-image img {
+	width: 100;
+  height: 100;
+  display: block;
+  margin: 0 auto;
 }
 
 .x-dataview-places {

@@ -53,6 +53,12 @@ Ext.define('Grubm.controller.Main', {
   },{
   	ref: 'locationHolder',
     selector: 'uploadphoto #location'
+  },{
+  	ref: 'locationText',
+    selector: 'uploadphoto #location-text'
+  },{
+  	ref: 'businessMap',
+    selector: 'imagedetail map'
   }],
   
   config: {
@@ -152,8 +158,8 @@ Ext.define('Grubm.controller.Main', {
       Ext.Viewport.add(this.getImageDetailView().create());
     }
     
-    var business = image.get('business').normalized_name;
-    this.getBusinessesStore().proxy.url = this.getBaseUrl() + "/business/" + business + ".json";
+    var business = image.get('business');
+    this.getBusinessesStore().proxy.url = this.getBaseUrl() + "/business/" + business.normalized_name+ ".json";
     this.getBusinessesStore().load({params: {limit: 12}});
     
     var view = this.getImageDetail();
@@ -173,8 +179,29 @@ Ext.define('Grubm.controller.Main', {
     	this.getMyPhotosTab().deselectAll();
     }
     
+    this.positionBusinessMap(business);
+    
     view.show();
   },    
+  
+  positionBusinessMap: function(business) {
+    var address = [business.street, business.city, business.state].join(',');
+    this.getBusinessMap().geocoder.geocode( { 'address': address}, Ext.bind(this.onGeocodeSuccess, this));
+  },
+  
+  onGeocodeSuccess: function(results, status) {
+  	if (status == google.maps.GeocoderStatus.OK) {
+      var map = this.getBusinessMap().getMap();
+      map.setCenter(results[0].geometry.location);
+      map.setZoom(16);
+      var marker = new google.maps.Marker({
+        map: map,
+        position: results[0].geometry.location
+      });
+    } else {
+      this.getBusinessMap().hide();
+    }
+  },
   
   onDetailHideAnimationStart: function() {
     this.getMyPhotosTab().deselectAll();
@@ -182,7 +209,7 @@ Ext.define('Grubm.controller.Main', {
   
   selectExistingImage: function() {
     navigator.camera.getPicture(Ext.bind(this.onGetImageSuccess, this), this.onGetImageError, { 
-    	quality: 70,
+    	quality: 45,
       encodingType: Camera.EncodingType.JPEG,
       targetWidth: 240,
       targetHeight: 240, 
@@ -192,7 +219,8 @@ Ext.define('Grubm.controller.Main', {
   },
   
   onGetImageSuccess: function(imageURI) {
-  	this.getUploadedImage().setSrc(imageURI);
+  	var img = '<img src="' + imageURI + '" width="100" height="100" />';
+  	this.getUploadedImage().setHtml(img);
     this.getChoosePhoto().hide();
   },
   
@@ -242,7 +270,6 @@ Ext.define('Grubm.controller.Main', {
   
   onLocationSelected: function(dataview, place) {
     this.getUploadPhoto().setActiveItem(0);
-    console.log('name => ' + place.get('name'));
-    this.getLocationHolder().setHtml(place.get('name'));
+    this.getLocationText().setHtml('&#64; ' + place.get('name'));
   }
 });

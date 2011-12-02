@@ -16,6 +16,8 @@
 	<false/>
 	<key>ExternalHosts</key>
 	<array>
+		<string>*.gstatic.com</string>
+		<string>*googleapis.com</string>
 		<string>api.foursquare.com</string>
 		<string>maps.google.com</string>
 		<string>s3.amazonaws.com</string>

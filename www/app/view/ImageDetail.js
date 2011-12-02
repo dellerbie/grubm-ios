@@ -31,9 +31,21 @@ Ext.define('Grubm.view.ImageDetail', {
       items: [{ 
       	xtype: 'imageinfo'
       },{
-      	xtype: 'morebusinessphotos'
+      	xtype: 'panel',
+        items: [{
+        	xtype: 'businessinfo'
+        },{
+        	xtype: 'map',
+          height: 200,
+          mapOptions: {
+//            zoom: 18,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            navigationControl: false
+          },
+          geocoder: new google.maps.Geocoder()
+        }]
       },{
-      	xtype: 'businessinfo'
+      	xtype: 'morebusinessphotos'
       }]
     },{
       xtype: 'button',

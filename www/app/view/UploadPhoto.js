@@ -6,43 +6,45 @@ Ext.define('Grubm.view.UploadPhoto', {
   	layout: 'card',
   	items: [{
     	xtype: 'panel',
-      flex: 1,
+			layout: 'vbox',
       items: [{
-        xtype: 'image',
-        id: 'uploaded-image',
-        src: '',
-        height: 240,
-        width: 240
-      },{
-        xtype: 'spacer',
-        height: 10
-      },{
-        xtype: 'fieldset',
-        style: 'margin-bottom: .5em; margin-top: 0;',
+      	xtype: 'toolbar',
+        docked: 'top',
         items: [{
-          xtype: 'textareafield',
-          name: 'description',
-          placeHolder: 'Enter a description...',
-          maxLength: 140,
-          required: true
+        	xtype: 'spacer'
+        },{
+        	id: 'select-location',
+        	iconCls: 'locate',
+          iconMask: true,
+          ui: 'action-round'
+        },{
+        	text: 'Save',
+          ui: 'confirm'
         }]
       },{
-      	xtype: 'panel',
-        id: 'location',
-        html: '',
-        height: 30,
-        style: 'background: #fff; color: #666;'
-      },{
-        xtype: 'button',
-        id: 'select-location',
-        text: 'Select Your Location'
+        xtype: 'panel',
+        id: 'uploaded-image'
       },{
         xtype: 'spacer',
         height: 10
+      },{
+      	xtype: 'panel',
+        items: [{
+        	xtype: 'fieldset',
+          items: [{
+            xtype: 'textareafield',
+            name: 'description',
+            placeHolder: 'Enter a description...',
+            maxLength: 140
+          }]
+        },{
+        	xtype: 'panel',
+        	id: 'location-text',
+          style: 'color: #15c; font-size: .85em; text-align: center;'
+        }]
       }]
     },{
-    	xtype: 'whereareyou',
-      flex: 1
+    	xtype: 'whereareyou'
     }]
   }
 });
