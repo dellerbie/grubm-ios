@@ -17,6 +17,8 @@
 		490CF09B1488387F000EBB48 /* Place.js in Sources */ = {isa = PBXBuildFile; fileRef = 490CF09A1488387F000EBB48 /* Place.js */; };
 		490CF09D14883955000EBB48 /* PlacesCategory.js in Sources */ = {isa = PBXBuildFile; fileRef = 490CF09C14883955000EBB48 /* PlacesCategory.js */; };
 		490CF09F148839D2000EBB48 /* PlacesLocation.js in Sources */ = {isa = PBXBuildFile; fileRef = 490CF09E148839D2000EBB48 /* PlacesLocation.js */; };
+		490CF0A11489988A000EBB48 /* application.scss in Resources */ = {isa = PBXBuildFile; fileRef = 490CF0A01489988A000EBB48 /* application.scss */; };
+		490CF0A314899893000EBB48 /* config.rb in Resources */ = {isa = PBXBuildFile; fileRef = 490CF0A214899893000EBB48 /* config.rb */; };
 		49B2290D148428EE0061EBB1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B2290C148428EE0061EBB1 /* Foundation.framework */; };
 		49B2290F148428EE0061EBB1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B2290E148428EE0061EBB1 /* UIKit.framework */; };
 		49B22911148428EE0061EBB1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B22910148428EE0061EBB1 /* CoreGraphics.framework */; };
@@ -60,6 +62,8 @@
 		490CF09A1488387F000EBB48 /* Place.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = Place.js; path = www/app/model/Place.js; sourceTree = "<group>"; };
 		490CF09C14883955000EBB48 /* PlacesCategory.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = PlacesCategory.js; path = www/app/model/PlacesCategory.js; sourceTree = "<group>"; };
 		490CF09E148839D2000EBB48 /* PlacesLocation.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = PlacesLocation.js; path = www/app/model/PlacesLocation.js; sourceTree = "<group>"; };
+		490CF0A01489988A000EBB48 /* application.scss */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = application.scss; path = www/resources/scss/application.scss; sourceTree = "<group>"; };
+		490CF0A214899893000EBB48 /* config.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; name = config.rb; path = www/resources/scss/config.rb; sourceTree = "<group>"; };
 		49B22908148428EE0061EBB1 /* Grubm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Grubm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49B2290C148428EE0061EBB1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		49B2290E148428EE0061EBB1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -132,6 +136,8 @@
 		49B228FA148428EE0061EBB1 = {
 			isa = PBXGroup;
 			children = (
+				490CF0A214899893000EBB48 /* config.rb */,
+				490CF0A01489988A000EBB48 /* application.scss */,
 				490CF09E148839D2000EBB48 /* PlacesLocation.js */,
 				490CF09C14883955000EBB48 /* PlacesCategory.js */,
 				490CF09A1488387F000EBB48 /* Place.js */,
@@ -333,6 +339,8 @@
 				49B22947148428EE0061EBB1 /* Capture.bundle in Resources */,
 				49B22949148428EE0061EBB1 /* PhoneGap.plist in Resources */,
 				49B22956148429990061EBB1 /* www in Resources */,
+				490CF0A11489988A000EBB48 /* application.scss in Resources */,
+				490CF0A314899893000EBB48 /* config.rb in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

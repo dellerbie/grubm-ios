@@ -11,12 +11,15 @@ Ext.define('Grubm.view.UploadPhoto', {
       	xtype: 'toolbar',
         docked: 'top',
         items: [{
-        	xtype: 'spacer'
-        },{
         	id: 'select-location',
         	iconCls: 'locate',
           iconMask: true,
           ui: 'action-round'
+        },{
+        	xtype: 'spacer'
+        },{
+        	text: 'Cancel',
+          id: 'cancel'
         },{
         	text: 'Save',
           ui: 'confirm'

@@ -45,14 +45,14 @@ Ext.define('Grubm.controller.Main', {
   	ref: 'uploadPhoto',
     selector: 'uploadphoto'
   },{
+  	ref: 'photoDescription',
+    selector: 'uploadphoto textareafield'
+  },{
   	ref: 'choosePhoto',
     selector: 'choosephoto'
   },{
   	ref: 'whereAreYou',
     selector: 'whereareyou'
-  },{
-  	ref: 'locationHolder',
-    selector: 'uploadphoto #location'
   },{
   	ref: 'locationText',
     selector: 'uploadphoto #location-text'
@@ -91,11 +91,21 @@ Ext.define('Grubm.controller.Main', {
       'imagedetail': {
         hideanimationstart: this.onDetailHideAnimationStart
       },
+      'imagedetail button[ui="decline"]': {
+      	tap: function() { alert('delete image'); }
+      },
       'uploadphoto #select-pic': {
       	tap: this.selectExistingImage
       },
       'uploadphoto': {
-      	show: this.onUploadPhotoShow
+      	show: this.onUploadPhotoShow,
+        hide: this.resetUploadPhoto
+      },
+      'uploadphoto #select-location': {
+      	tap: this.selectLocation
+      },
+      'uploadphoto #cancel': {
+      	tap: this.cancelUploadPhoto
       },
       'choosephoto button[ui="cancel"]': {
       	tap: this.cancelUploadPhoto
@@ -105,9 +115,6 @@ Ext.define('Grubm.controller.Main', {
       },
       'choosephoto #choose-photo': {
       	tap: this.selectExistingImage
-      },
-      'uploadphoto #select-location': {
-      	tap: this.selectLocation
       },
       'whereareyou searchfield': {
       	keyup: this.filterPlaces
@@ -176,6 +183,7 @@ Ext.define('Grubm.controller.Main', {
     	this.getDeleteImageBtn().hide();
       this.getImages().deselectAll();
     } else {
+    	this.getDeleteImageBtn().show();
     	this.getMyPhotosTab().deselectAll();
     }
     
@@ -237,7 +245,14 @@ Ext.define('Grubm.controller.Main', {
   
   cancelUploadPhoto: function() {
     this.getChoosePhoto().hide();
+    this.resetUploadPhoto();
     this.getMain().setActiveItem(0);
+  },
+  
+  resetUploadPhoto: function() {
+  	this.getUploadedImage().setHtml('');
+    this.getLocationText().setHtml('');
+    this.getPhotoDescription().setValue('');
   },
   
   selectLocation: function() {

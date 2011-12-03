@@ -28,8 +28,19 @@ Ext.define('Grubm.view.ImageDetail', {
     items: [{
       xtype: 'carousel',
       flex: 1,
-      items: [{ 
-      	xtype: 'imageinfo'
+      items: [{
+      	xtype: 'panel',
+        autoScroll: true,
+        items: [{ 
+          xtype: 'imageinfo'
+        },{
+        	xtype: 'spacer',
+          height: 15
+        },{
+          xtype: 'button',
+          ui: 'decline',
+          text: 'Delete'
+        }]
       },{
       	xtype: 'panel',
         items: [{
@@ -38,7 +49,6 @@ Ext.define('Grubm.view.ImageDetail', {
         	xtype: 'map',
           height: 200,
           mapOptions: {
-//            zoom: 18,
             mapTypeId: google.maps.MapTypeId.ROADMAP,
             navigationControl: false
           },
@@ -47,10 +57,6 @@ Ext.define('Grubm.view.ImageDetail', {
       },{
       	xtype: 'morebusinessphotos'
       }]
-    },{
-      xtype: 'button',
-      ui: 'decline',
-      text: 'Delete'
     }]
   },
 

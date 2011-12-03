@@ -1,3 +1,27 @@
+$base-color: #404040;
+$base-gradient: 'glossy';
+$active-color: #214E9C;
+$tabs-dark-active-color: #336fd4;
+$tabs-bottom-active-gradient: 'bevel';
+
+@import 'sencha-touch/default/all';
+
+//include all the components we need styling for
+@include sencha-panel;
+@include sencha-buttons;
+@include sencha-toolbar;
+@include sencha-list;
+@include sencha-sheet;
+@include sencha-carousel;
+@include sencha-layout;
+@include sencha-form;
+@include sencha-toolbar-forms;
+@include sencha-tabs;
+@include sencha-loading-spinner;
+
+@include pictos-iconmask(photo1);
+@include pictos-iconmask(photos2);
+
 img.large {
   display: block;
   margin: .75em auto;
