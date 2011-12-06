@@ -71,6 +71,7 @@ Ext.define('Grubm.controller.Main', {
     profile: Ext.os.deviceType.toLowerCase(),
     currentPosition: null,
     currentPlace: null,
+    currentImage: null,
     user: null
   },
   
@@ -254,6 +255,7 @@ Ext.define('Grubm.controller.Main', {
   onGetImageSuccess: function(imageURI) {
   	var img = '<img src="' + imageURI + '" width="100" height="100" />';
   	this.getUploadedImage().setHtml(img);
+    this.setCurrentImage(imageURI);
     this.getChoosePhoto().hide();
   },
   
@@ -279,33 +281,48 @@ Ext.define('Grubm.controller.Main', {
     this.getLocationText().setHtml('');
     this.getPhotoDescription().setValue('');
     this.setCurrentPlace(null);
+    this.setCurrentImage(null);
   },
   
   savePhoto: function() {
-  	console.log('save photo');
+		var img = this.getCurrentImage();
   	var description = this.getPhotoDescription().getValue();
-      	console.log(2);
     var place = this.getCurrentPlace();
-    console.log(3);
     var errors = [];
+    
+    if(img == null) {
+    	errors.push('Please select an image');
+    }
     
     if(Ext.String.trim(description) == '') {
     	errors.push('Description cannot be blank');
     }
     
-    console.log(4);
-    
     if(place == null) {
     	errors.push('Please check-in to a business by pressing the check-in button in the upper left');
     }
     
-    console.log(5);
-    
     if(errors.length == 0) {
       // save it
+      console.log("image => " + img);
       console.log("description => " + description);
       console.log("place => ");
       console.log(JSON.stringify(place.data));
+      
+      /*var ft = new FileTransfer();
+      ft.upload(this.getCurrentImage, 
+      	'http://la.grubm.com',
+        function(result) {
+        
+        },
+        function(error) {
+        
+        },
+        {
+        	description: description, 
+          place: place.data
+        }
+      );*/
     } else {
     	alert(errors.join("\n"));
     }
