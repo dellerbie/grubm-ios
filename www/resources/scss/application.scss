@@ -152,3 +152,7 @@ h3 {
 .x-dataview-places .categories {
 	font-size: .6em;
 }
+
+.fb-login {
+	-webkit-mask-image: theme_image("default", "pictos/facebook-mask.png");
+}

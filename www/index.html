@@ -4,15 +4,24 @@
   <title>Grubm - Visually Discover Great Food!</title>  
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no;" />
 	<meta charset="utf-8" />
-  <!--<link rel="stylesheet" href="touch/resources/css/sencha-touch.css" type="text/css">-->
   <link rel="stylesheet" href="resources/css/application.css" type="text/css">
   
   <script type="text/javascript" charset="utf-8" src="phonegap-1.2.0.js"></script>
+  <script type="text/javascript" charset="utf-8" src="pg-plugin-fb-connect.js"></script>
+  <script type="text/javascript" charset="utf-8" src="facebook_js_sdk.js"></script>
   <script type="text/javascript" charset="utf-8" src="touch/sencha-touch-all-debug.js"></script>
   <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true&key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc"></script>
   <script type="text/javascript" charset="utf-8" src="grubm.js"></script>
   <script type="text/javascript">
 		
+    document.addEventListener('deviceready', function() {
+    	try {
+        FB.init({ appId: "268045516576285", nativeInterface: PG.FB });
+      } catch (e) {
+        alert(e);
+      }
+    });
+    
 		window.onerror = function(errorMsg, url, lineNumber) {
 			alert('error: ' + errorMsg + ' - ' + url + ' - ' +  lineNumber);
 		}

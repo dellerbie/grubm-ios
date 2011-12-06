@@ -16,6 +16,7 @@
 	<false/>
 	<key>ExternalHosts</key>
 	<array>
+		<string>*.facebook.com</string>
 		<string>*.gstatic.com</string>
 		<string>*googleapis.com</string>
 		<string>api.foursquare.com</string>
@@ -29,6 +30,8 @@
 	<false/>
 	<key>Plugins</key>
 	<dict>
+		<key>com.phonegap.facebook.Connect</key>
+		<string>FacebookConnectPlugin</string>
 		<key>com.phonegap.accelerometer</key>
 		<string>PGAccelerometer</string>
 		<key>com.phonegap.camera</key>
