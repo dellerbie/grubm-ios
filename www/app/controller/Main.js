@@ -70,6 +70,7 @@ Ext.define('Grubm.controller.Main', {
     baseUrl: "http://la.grubm.com",
     profile: Ext.os.deviceType.toLowerCase(),
     currentPosition: null,
+    currentPlace: null,
     user: null
   },
   
@@ -114,6 +115,9 @@ Ext.define('Grubm.controller.Main', {
       },
       'uploadphoto #cancel': {
       	tap: this.cancelUploadPhoto
+      },
+      'uploadphoto #save-photo': {
+      	tap: this.savePhoto
       },
       'choosephoto button[ui="cancel"]': {
       	tap: this.cancelUploadPhoto
@@ -274,6 +278,37 @@ Ext.define('Grubm.controller.Main', {
   	this.getUploadedImage().setHtml('');
     this.getLocationText().setHtml('');
     this.getPhotoDescription().setValue('');
+    this.setCurrentPlace(null);
+  },
+  
+  savePhoto: function() {
+  	console.log('save photo');
+  	var description = this.getPhotoDescription().getValue();
+      	console.log(2);
+    var place = this.getCurrentPlace();
+    console.log(3);
+    var errors = [];
+    
+    if(Ext.String.trim(description) == '') {
+    	errors.push('Description cannot be blank');
+    }
+    
+    console.log(4);
+    
+    if(place == null) {
+    	errors.push('Please check-in to a business by pressing the check-in button in the upper left');
+    }
+    
+    console.log(5);
+    
+    if(errors.length == 0) {
+      // save it
+      console.log("description => " + description);
+      console.log("place => ");
+      console.log(JSON.stringify(place.data));
+    } else {
+    	alert(errors.join("\n"));
+    }
   },
   
   selectLocation: function() {
@@ -307,6 +342,7 @@ Ext.define('Grubm.controller.Main', {
   onLocationSelected: function(dataview, place) {
     this.getUploadPhoto().setActiveItem(0);
     this.getLocationText().setHtml('&#64; ' + place.get('name'));
+    this.setCurrentPlace(place);
   },
   
   loginToFacebook: function() {

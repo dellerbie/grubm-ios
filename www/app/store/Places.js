@@ -1,6 +1,6 @@
 Ext.define('Grubm.store.Places', {
   extend: 'Ext.data.Store',
-	fields: ['name', 'categories'],
+	fields: ['name', 'categories', 'location'],
   autoLoad : true,
   proxy: {
   	type: 'jsonp',

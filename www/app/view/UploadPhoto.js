@@ -22,6 +22,7 @@ Ext.define('Grubm.view.UploadPhoto', {
           id: 'cancel'
         },{
         	text: 'Save',
+          id: 'save-photo',
           ui: 'confirm'
         }]
       },{
