@@ -12,7 +12,7 @@ Ext.define('Grubm.controller.Main', {
     'UploadPhoto',
     'ChoosePhoto'
   ],
-  stores: ['Cities', 'Images', 'Businesses', 'MyImages', 'Places', 'User'],
+  stores: ['Cities', 'Images', 'MyImages', 'Businesses', 'Places', 'User'],
   refs: [{
     ref     : 'main',
     selector: 'mainview'
@@ -146,6 +146,7 @@ Ext.define('Grubm.controller.Main', {
         this.getMain().show();
       } else {
         this.getLogin().show();
+
         this.getMain().hide();
       }
     });
@@ -304,25 +305,62 @@ Ext.define('Grubm.controller.Main', {
     
     if(errors.length == 0) {
       // save it
-      console.log("image => " + img);
-      console.log("description => " + description);
-      console.log("place => ");
-      console.log(JSON.stringify(place.data));
       
-      /*var ft = new FileTransfer();
-      ft.upload(this.getCurrentImage, 
-      	'http://la.grubm.com',
-        function(result) {
-        
+      var options = new FileUploadOptions();
+      options.fileKey = "image[photo]";
+      options.fileName = img.substr(img.lastIndexOf('/') + 1);
+      options.mimeType = "image/jpeg";
+      
+      var placeCategories = [];
+      for(var i = 0; i < place.data.categories.length; i++) {
+      	placeCategories.push(place.data.categories[i].name);
+      }
+      
+      var user = this.getUserStore().first();
+      
+      options.params = {
+      	"access_token": user.get('accessToken'),
+        "oauth_provider": "facebook",
+      	"image[description]": description,
+        "image[business][name]": place.data.name,        
+        "image[business][street]": place.data.location.address,
+        "image[business][city]": place.data.location.city,
+        "image[business][state]": place.data.location.state,
+        "image[business][zip]": place.data.location.postalCode,
+        "image[business][lat]": place.data.location.lat,
+        "image[business][lng]": place.data.location.lng,
+        "image[business][categories]": placeCategories
+      };
+      
+      var ft = new FileTransfer();
+      var self = this;
+      
+			var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
+      mask.show();
+      
+      ft.upload(img, 
+      	'http://192.168.1.76:3000/v1/images.json',
+        function(r) {
+        	console.log("Code = " + r.responseCode);
+          console.log("Response = " + r.response);
+          console.log("Sent = " + r.bytesSent);
+          self.resetUploadPhoto();
+    			self.getMain().setActiveItem(1);
+          self.getMyImagesStore().load({
+            params: {
+              access_token: user.get('accessToken'), 
+              oauth_provider: 'facebook'
+            }
+          });
+          mask.hide();
         },
         function(error) {
-        
+        	mask.hide();
+        	console.log("An error has occurred: Code = " = error.code);
+          alert("There was an error uploading your image. Please try later");
         },
-        {
-        	description: description, 
-          place: place.data
-        }
-      );*/
+        options
+      );
     } else {
     	alert(errors.join("\n"));
     }
@@ -371,6 +409,9 @@ Ext.define('Grubm.controller.Main', {
           oauthType: 'facebook'
         });
         
+        console.log('access_token => ');
+        console.log(user.get('accessToken'));
+        
         FB.api('/me', Ext.bind(function(res) {
 					if(res.error) {
           	alert('There was a problem connecting to your Facebook account');
@@ -381,7 +422,12 @@ Ext.define('Grubm.controller.Main', {
             user.set('gender', res.gender);
             user.set('email', res.email);
             this.getUserStore().loadData(user, false);
-            this.getMyImagesStore().load({params: {access_token: user.get('access_token')}});
+            this.getMyImagesStore().load({
+            	params: {
+              	access_token: user.get('accessToken'), 
+                oauth_provider: 'facebook'
+              }
+            });
             this.getLogin().hide();
             this.getMain().show(); 
           }          

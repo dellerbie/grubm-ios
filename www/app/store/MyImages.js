@@ -1,10 +1,10 @@
 Ext.define('Grubm.store.MyImages', {
   extend  : 'Ext.data.Store',
-  model   : 'Grubm.model.Image',
-  requires: ['Grubm.model.Image'],
+  model   : 'Grubm.model.MyImage',
+  requires: ['Grubm.model.MyImage'],
   proxy: {
     type: 'jsonp',
-    url: 'http://la.grubm.com/.json'
+    url: 'http://192.168.1.76:3000/v1/images.json'
   },
-  autoLoad: true
+  autoLoad: false
 });

@@ -65,6 +65,7 @@
 		49B22958148441840061EBB1 /* grubm.js in Sources */ = {isa = PBXBuildFile; fileRef = 49B22957148441840061EBB1 /* grubm.js */; };
 		49B22964148566390061EBB1 /* MyPhotosTab.js in Sources */ = {isa = PBXBuildFile; fileRef = 49B22963148566390061EBB1 /* MyPhotosTab.js */; };
 		49B2296614856AEB0061EBB1 /* MyImages.js in Sources */ = {isa = PBXBuildFile; fileRef = 49B2296514856AEB0061EBB1 /* MyImages.js */; };
+		49FD848B149ACF5100ACFC1D /* MyImage.js in Sources */ = {isa = PBXBuildFile; fileRef = 49FD848A149ACF5100ACFC1D /* MyImage.js */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -162,6 +163,7 @@
 		49B22957148441840061EBB1 /* grubm.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = grubm.js; path = www/grubm.js; sourceTree = "<group>"; };
 		49B22963148566390061EBB1 /* MyPhotosTab.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = MyPhotosTab.js; path = www/app/view/MyPhotosTab.js; sourceTree = "<group>"; };
 		49B2296514856AEB0061EBB1 /* MyImages.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = MyImages.js; path = www/app/store/MyImages.js; sourceTree = "<group>"; };
+		49FD848A149ACF5100ACFC1D /* MyImage.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; name = MyImage.js; path = www/app/model/MyImage.js; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -256,6 +258,7 @@
 		49B228FA148428EE0061EBB1 = {
 			isa = PBXGroup;
 			children = (
+				49FD848A149ACF5100ACFC1D /* MyImage.js */,
 				4947D7C2148D979E0072169D /* User.js */,
 				4947D7C0148D945B0072169D /* User.js */,
 				4947D7BE148D93DB0072169D /* FacebookUser.js */,
@@ -542,6 +545,7 @@
 				4947D7BF148D93DB0072169D /* FacebookUser.js in Sources */,
 				4947D7C1148D945B0072169D /* User.js in Sources */,
 				4947D7C3148D979F0072169D /* User.js in Sources */,
+				49FD848B149ACF5100ACFC1D /* MyImage.js in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
