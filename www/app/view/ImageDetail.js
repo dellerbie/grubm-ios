@@ -54,8 +54,6 @@ Ext.define('Grubm.view.ImageDetail', {
           },
           geocoder: new google.maps.Geocoder()
         }]
-      },{
-      	xtype: 'morebusinessphotos'
       }]
     }]
   },

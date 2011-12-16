@@ -8,7 +8,6 @@ Ext.define('Grubm.controller.Main', {
     'Business',
     'MyPhotosTab',
     'ImageDetail',
-    'MoreBusinessPhotos',
     'UploadPhoto',
     'ChoosePhoto'
   ],
@@ -37,9 +36,6 @@ Ext.define('Grubm.controller.Main', {
   },{
     ref: 'imageDetail',
     selector: 'imagedetail'
-  },{
-  	ref: 'moreBusinessPhotos',
-    selector: 'morebusinessphotos'
   },{
   	ref: 'deleteImageBtn',
     selector: 'imagedetail button'
@@ -192,10 +188,6 @@ Ext.define('Grubm.controller.Main', {
       Ext.Viewport.add(this.getImageDetailView().create());
     }
     
-    var business = image.get('business');
-    this.getBusinessesStore().proxy.url = this.getBaseUrl() + "/business/" + business.normalized_name+ ".json";
-    this.getBusinessesStore().load({params: {limit: 12}});
-    
     var view = this.getImageDetail();
     view.setImage(image);
     
@@ -206,26 +198,48 @@ Ext.define('Grubm.controller.Main', {
       view.setLeft(0);
     }
     
+    var business = image.get('business');
+    var mbp = view.getAt(0).child('morebusinessphotos');
+    
     if(list.isXType('imagesview')) {
+      this.getBusinessesStore().proxy.url = this.getBaseUrl() + "/business/" + business.normalized_name+ ".json";
+ 	    this.getBusinessesStore().load({params: {limit: 12}});
+    	if(!mbp) {
+    		view.getAt(0).add({xtype: 'morebusinessphotos'});
+      }
     	this.getDeleteImageBtn().hide();
       this.getImages().deselectAll();
     } else {
+    	if(mbp) {
+      	view.getAt(0).remove(mbp);
+      }
     	this.getDeleteImageBtn().show();
     	this.getMyPhotosTab().deselectAll();
     }
     
     this.positionBusinessMap(business);
-    
     view.show();
   },    
   
   positionBusinessMap: function(business) {
     var address = [business.street, business.city, business.state].join(',');
-    this.getBusinessMap().geocoder.geocode( { 'address': address}, Ext.bind(this.onGeocodeSuccess, this));
+    
+    if(business.lat && business.lng) {
+    	var map = this.getBusinessMap().getMap();
+      var latLng = new google.maps.LatLng(business.lat, business.lng);
+      map.setCenter(latLng);
+      map.setZoom(16);
+      var marker = new google.maps.Marker({
+        map: map,
+        position: latLng
+      });
+    } else {
+    	this.getBusinessMap().geocoder.geocode( { 'address': address}, Ext.bind(this.onGeocodeSuccess, this));
+    }
   },
   
   onGeocodeSuccess: function(results, status) {
-  	if (status == google.maps.GeocoderStatus.OK) {
+  	if(status == google.maps.GeocoderStatus.OK) {
       var map = this.getBusinessMap().getMap();
       map.setCenter(results[0].geometry.location);
       map.setZoom(16);
@@ -233,8 +247,6 @@ Ext.define('Grubm.controller.Main', {
         map: map,
         position: results[0].geometry.location
       });
-    } else {
-      this.getBusinessMap().hide();
     }
   },
   
