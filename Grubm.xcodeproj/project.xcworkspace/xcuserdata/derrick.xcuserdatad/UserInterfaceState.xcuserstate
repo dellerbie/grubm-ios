@@ -5494,9 +5494,9 @@
 		<string>PrimaryDocumentVisibleCharacterRange</string>
 		<string>HideAllIssues</string>
 		<string>PrimaryDocumentSelectedCharacterRange</string>
-		<real>345699468.222615</real>
-		<string>{8462, 1932}</string>
-		<string>{9624, 0}</string>
+		<real>345762605.75435102</real>
+		<string>{3963, 1770}</string>
+		<string>{5607, 0}</string>
 		<string>Xcode.IDEKit.EditorDocument.SourceCode</string>
 		<dict>
 			<key>$class</key>
@@ -5600,7 +5600,7 @@
 			</array>
 		</dict>
 		<string>IDEEditor</string>
-		<real>321</real>
+		<real>609</real>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -5631,7 +5631,7 @@
 			</array>
 		</dict>
 		<string>IDEDebuggerArea</string>
-		<real>807</real>
+		<real>517</real>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -14035,9 +14035,9 @@
 				</dict>
 			</array>
 		</dict>
-		<real>345699468.22202998</real>
-		<string>{8462, 1932}</string>
-		<string>{9624, 0}</string>
+		<real>345762605.75379097</real>
+		<string>{3963, 1770}</string>
+		<string>{5607, 0}</string>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -14130,7 +14130,7 @@
 				</dict>
 			</array>
 		</dict>
-		<real>345698564.01805502</real>
+		<real>345760938.10574001</real>
 		<string>{0, 358}</string>
 		<string>{350, 0}</string>
 		<dict>
@@ -16027,7 +16027,7 @@
 				<integer>1128</integer>
 			</dict>
 			<key>NS.time</key>
-			<real>345699314.53280598</real>
+			<real>345762108.75137502</real>
 		</dict>
 		<dict>
 			<key>$classes</key>
@@ -16038,7 +16038,7 @@
 			<key>$classname</key>
 			<string>NSDate</string>
 		</dict>
-		<string>Today at 7:35 PM</string>
+		<string>Today at 1:01 PM</string>
 		<integer>106</integer>
 		<string>facebook-ios-sdk</string>
 		<dict>

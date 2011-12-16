@@ -311,12 +311,8 @@ Ext.define('Grubm.controller.Main', {
       options.fileName = img.substr(img.lastIndexOf('/') + 1);
       options.mimeType = "image/jpeg";
       
-      var placeCategories = [];
-      for(var i = 0; i < place.data.categories.length; i++) {
-      	placeCategories.push(place.data.categories[i].name);
-      }
-      
       var user = this.getUserStore().first();
+      console.log(JSON.stringify(place.data));
       
       options.params = {
       	"access_token": user.get('accessToken'),
@@ -328,9 +324,13 @@ Ext.define('Grubm.controller.Main', {
         "image[business][state]": place.data.location.state,
         "image[business][zip]": place.data.location.postalCode,
         "image[business][lat]": place.data.location.lat,
-        "image[business][lng]": place.data.location.lng,
-        "image[business][categories]": placeCategories
+        "image[business][lng]": place.data.location.lng
       };
+      
+    	var placeCategories = [];
+      for(var i = 0; i < place.data.categories.length; i++) {
+      	options.params["image[business][categories][]"] = place.data.categories[i].name;
+      }
       
       var ft = new FileTransfer();
       var self = this;
