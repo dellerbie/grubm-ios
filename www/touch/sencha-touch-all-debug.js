@@ -42860,7 +42860,7 @@ Ext.define('Ext.MessageBox', {
             if (typeof config.fn == 'function') {
                 config.fn.call(
                     config.scope || null,
-                    button.itemId || button.text,
+                    button.getItemId() || button.getText(),
                     config.input ? config.input.dom.value : null,
                     config
                 );

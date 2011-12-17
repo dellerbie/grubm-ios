@@ -117,10 +117,15 @@ Ext.define('Grubm.view.ImageDetail', {
   },
 
   updateImage: function(newImage) {
-    var image = this.down('imageinfo'),
+  	this.image = newImage;
+    var imageView = this.down('imageinfo'),
         business = this.down('businessinfo');
 
-    image.setData(newImage.data);
+    imageView.setData(newImage.data);
     business.setData(newImage.data.business);
+  },
+  
+  getImage: function() {
+  	return this.image;
   }
 });

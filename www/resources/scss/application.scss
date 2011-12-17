@@ -18,6 +18,7 @@ $tabs-bottom-active-gradient: 'bevel';
 @include sencha-toolbar-forms;
 @include sencha-tabs;
 @include sencha-loading-spinner;
+@include sencha-msgbox;
 
 @include pictos-iconmask(photo1);
 @include pictos-iconmask(photos2);

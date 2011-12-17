@@ -64,6 +64,7 @@ Ext.define('Grubm.controller.Main', {
   
   config: {
     baseUrl: "http://la.grubm.com",
+    apiServer: "http://192.168.1.76:3000",
     profile: Ext.os.deviceType.toLowerCase(),
     currentPosition: null,
     currentPlace: null,
@@ -98,7 +99,7 @@ Ext.define('Grubm.controller.Main', {
         hideanimationstart: this.onDetailHideAnimationStart
       },
       'imagedetail button[ui="decline"]': {
-      	tap: function() { alert('delete image'); }
+      	tap: this.deletePhoto
       },
       'uploadphoto #select-pic': {
       	tap: this.selectExistingImage
@@ -136,16 +137,31 @@ Ext.define('Grubm.controller.Main', {
       }
     });
     
-    FB.getLoginStatus(function(response) {
-    	if(response.session) {
-        this.getLogin().hide();
-        this.getMain().show();
-      } else {
-        this.getLogin().show();
-
-        this.getMain().hide();
-      }
+    this.getLogin().hide();
+    this.getMain().show();
+    var user = Ext.create('Grubm.model.User', {
+      accessToken: "BAADzyTXMlh0BAG9LgSQHO5t0xMcgNFMk5MWBUh0WmQfRswimZAtdFYklW6qQWvFMsFTVYqlVGnoFHOSTVI2LZBnPLqL5ZAElESGCBXw8BfPEDZCnZBCJwQUdCZAqlA5tuow47KUKedF1Bkz48w0tZBE",
+      oauthProvider: "facebook",
+      firstName: "Samad",
+      lastName: "Deans"
     });
+    this.getUserStore().loadData(user, false);
+    this.getMyImagesStore().load({
+      params: {
+        access_token: user.get('accessToken'), 
+        oauth_provider: 'facebook'
+      }
+    });        
+    
+//    FB.getLoginStatus(function(response) {
+//    	if(response.session) {
+//        this.getLogin().hide();
+//        this.getMain().show();
+//      } else {
+//        this.getLogin().show();
+//        this.getMain().hide();
+//      }
+//    });
   },
   
   onCitySelect: function(list, city) {
@@ -297,6 +313,46 @@ Ext.define('Grubm.controller.Main', {
     this.setCurrentImage(null);
   },
   
+  deletePhoto: function() {
+  	var view = this.getImageDetail();
+    view.hide();
+  	var box = Ext.Msg.confirm("Delete Photo", "Are you sure you want to delete this photo?", function(button) {
+    	if(button == 'no') {
+      	box.hide();
+      } else {
+        var image = view.getImage(),
+        		user = this.getUserStore().first(),
+            self = this;
+            
+        box.hide();
+        
+        var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
+        mask.show();
+        
+        Ext.Ajax.request({
+          url: this.getApiServer() + '/v1/images/' + image.get('id') + '.json',
+          method: 'DELETE',
+          params: {
+            access_token: user.get('accessToken'),
+            oauth_provider: 'facebook'
+          },
+          success: function() {
+            self.getMyImagesStore().load({
+              params: {
+                access_token: user.get('accessToken'), 
+                oauth_provider: 'facebook'
+              }
+            });
+            mask.hide();
+          },
+          failure: function() {
+            alert("There was a problem deleting your photo. Please try again later.");
+          }
+        });
+      }  
+    }, this);
+  },
+  
   savePhoto: function() {
 		var img = this.getCurrentImage();
   	var description = this.getPhotoDescription().getValue();
@@ -351,7 +407,7 @@ Ext.define('Grubm.controller.Main', {
       mask.show();
       
       ft.upload(img, 
-      	'http://192.168.1.76:3000/v1/images.json',
+      	this.getApiServer() + '/v1/images.json',
         function(r) {
         	console.log("Code = " + r.responseCode);
           console.log("Response = " + r.response);
@@ -448,7 +504,7 @@ Ext.define('Grubm.controller.Main', {
       	alert('Could not log in to Facebook.  Please try again.');
       }
     }, this), { 
-    	perms: "email,publish_stream" 
+    	perms: "email,publish_stream,offline_access" 
     });
   }
 });

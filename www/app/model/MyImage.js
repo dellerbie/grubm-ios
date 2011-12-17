@@ -1,6 +1,8 @@
 Ext.define('Grubm.model.MyImage', {
   extend: 'Ext.data.Model',
   fields: [{
+  	name: 'id'
+  },{
     name: 'url', 
     type: 'string'
   },{

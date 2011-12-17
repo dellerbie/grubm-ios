@@ -9,6 +9,14 @@ Ext.define('Grubm.view.Main', {
     fullscreen: true,
     tabBarPosition: 'bottom',
     items: [{
+    	title: 'My Photos',
+      iconCls: 'photos2',
+    	xtype: 'myphotostab'
+    },{
+    	title: 'Upload',
+      iconCls: 'photo1',
+      xtype: 'uploadphoto'
+    },{
       id: 'maincontainer',
       xtype: 'container',
       layout: 'card',
@@ -25,14 +33,6 @@ Ext.define('Grubm.view.Main', {
         xtype: 'foodview',
         flex: 1
       }]
-    },{
-    	title: 'My Photos',
-      iconCls: 'photos2',
-    	xtype: 'myphotostab'
-    },{
-    	title: 'Upload',
-      iconCls: 'photo1',
-      xtype: 'uploadphoto'
     }]
   }
 });
