@@ -43393,7 +43393,7 @@ Ext.define('Ext.dataview.DataView', {
             me.doItemDeselect(me, record);
         }
         else {
-            me.fireAction('deselect', [me, record, suppressEvent], 'doItemDeSelect');
+            me.fireAction('deselect', [me, record, suppressEvent], 'doItemDeselect');
         }
     },
 
