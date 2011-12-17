@@ -43390,14 +43390,14 @@ Ext.define('Ext.dataview.DataView', {
     onItemDeselect: function(record, suppressEvent) {
         var me = this;
         if (suppressEvent) {
-            me.doItemDeSelect(me, record);
+            me.doItemDeselect(me, record);
         }
         else {
             me.fireAction('deselect', [me, record, suppressEvent], 'doItemDeSelect');
         }
     },
 
-    doItemDeSelect: function(me, record) {
+    doItemDeselect: function(me, record) {
         var item = Ext.get(me.getViewItems()[me.getStore().indexOf(record)]);
         if (item) {
             item.removeCls([me.getPressedCls(), me.getSelectedCls()]);

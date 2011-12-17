@@ -168,23 +168,11 @@ Ext.define('Grubm.controller.Main', {
     this.setBaseUrl(city.get('url'));
     this.getImages().getStore().proxy.url = this.getBaseUrl() + '/.json';
     this.getImages().getStore().load();
-    this.getMain().getAt(0).setActiveItem(this.getFood(), {type: 'slide', direction: 'left'});
+    this.getMain().child('#maincontainer').setActiveItem(this.getFood(), {type: 'slide', direction: 'left'});
   },
   
   onBackToCityPicker: function() {
-    this.getMain().getAt(0).setActiveItem(this.getCitypicker(), {type: 'slide', direction: 'right'});
-  },
-  
-  onImageSelect: function(view, image) {
-    var business = image.get('business').normalized_name;
-    
-    this.getBusiness().getStore().proxy.url = this.getBaseUrl() + "/business/" + business + ".json";
-    this.getBusiness().getStore().load({params: {limit: 10}});
-    this.getMain().getAt(0).setActiveItem(this.getBusiness(), {type: 'slide', direction: 'left'});
-  },
-  
-  onBackToFoodView: function() {
-    this.getMain().getAt(0).setActiveItem(this.getFood(), {type: 'slide', direction: 'right'});
+    this.getMain().child('#maincontainer').setActiveItem(this.getCitypicker(), {type: 'slide', direction: 'right'});
   },
   
   onSearch: function(searchField) {
@@ -215,19 +203,19 @@ Ext.define('Grubm.controller.Main', {
     }
     
     var business = image.get('business');
-    var mbp = view.getAt(0).child('morebusinessphotos');
+    var mbp = view.child('carousel').child('morebusinessphotos');
     
     if(list.isXType('imagesview')) {
       this.getBusinessesStore().proxy.url = this.getBaseUrl() + "/business/" + business.normalized_name+ ".json";
  	    this.getBusinessesStore().load({params: {limit: 12}});
     	if(!mbp) {
-    		view.getAt(0).add({xtype: 'morebusinessphotos'});
+    		view.child('carousel').add({xtype: 'morebusinessphotos'});
       }
     	this.getDeleteImageBtn().hide();
       this.getImages().deselectAll();
     } else {
     	if(mbp) {
-      	view.getAt(0).remove(mbp);
+      	view.child('carousel').remove(mbp);
       }
     	this.getDeleteImageBtn().show();
     	this.getMyPhotosTab().deselectAll();
@@ -413,7 +401,7 @@ Ext.define('Grubm.controller.Main', {
           console.log("Response = " + r.response);
           console.log("Sent = " + r.bytesSent);
           self.resetUploadPhoto();
-    			self.getMain().setActiveItem(1);
+    			self.getMain().setActiveItem(0);
           self.getMyImagesStore().load({
             params: {
               access_token: user.get('accessToken'), 
