@@ -140,7 +140,7 @@ Ext.define('Grubm.controller.Main', {
     this.getLogin().hide();
     this.getMain().show();
     var user = Ext.create('Grubm.model.User', {
-      accessToken: "BAADzyTXMlh0BAG9LgSQHO5t0xMcgNFMk5MWBUh0WmQfRswimZAtdFYklW6qQWvFMsFTVYqlVGnoFHOSTVI2LZBnPLqL5ZAElESGCBXw8BfPEDZCnZBCJwQUdCZAqlA5tuow47KUKedF1Bkz48w0tZBE",
+      accessToken: "BAADzyTXMlh0BAK3yQYyxvE14k04kmyv0ABhtZC1bvabZA7E22gALkLPS8TKwNYeeQvaPGSFVlja0wwsboyTS9bwIaswBOZB0cpGtTsbL9tLxGKiANsCShrZCm2Tx2GFBr45H4vQUFUV3Cxf5E6wy",
       oauthProvider: "facebook",
       firstName: "Samad",
       lastName: "Deans"
@@ -274,6 +274,16 @@ Ext.define('Grubm.controller.Main', {
   	this.getUploadedImage().setHtml(img);
     this.setCurrentImage(imageURI);
     this.getChoosePhoto().hide();
+    
+    // show mask for 2 seconds, then show selectLocation
+    var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
+    mask.show();
+    var self = this;
+    var task = new Ext.util.DelayedTask(function(){
+			self.selectLocation();
+      mask.hide();	
+    });
+    task.delay(2000);
   },
   
   onGetImageError: function() {

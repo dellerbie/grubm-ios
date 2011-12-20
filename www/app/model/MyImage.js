@@ -13,10 +13,10 @@ Ext.define('Grubm.model.MyImage', {
   },{
   	name: 'width',
     type: 'int',
-    mapping: 'original_width'
+    mapping: 'small_width'
   },{
   	name: 'height',
     type: 'int',
-    mapping: 'original_height'
+    mapping: 'small_height'
   }]
 });
