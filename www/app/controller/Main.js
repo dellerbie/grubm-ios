@@ -419,6 +419,7 @@ Ext.define('Grubm.controller.Main', {
             }
           });
           mask.hide();
+          self.postToFacebook(Ext.JSON.decode(r.response));
         },
         function(error) {
         	mask.hide();
@@ -503,6 +504,40 @@ Ext.define('Grubm.controller.Main', {
       }
     }, this), { 
     	perms: "email,publish_stream,offline_access" 
+    });
+  },
+  
+  postToFacebook: function(image) {
+  	var user = this.getUserStore().first();
+    
+    var description = '';
+    if(image.business && image.business.name) {
+    	description += user.get('firstName') + " just ate something delicious at " + image.business.name;
+      if(image.business.city && image.business.state) {
+      	description += " in " + image.business.city + ", " + image.business.state;
+      }
+    }
+    
+  	Ext.Ajax.request({
+    	url: "https://graph.facebook.com/me/feed",
+      method: 'POST',
+      params: {
+      	access_token: user.get('accessToken'),
+        message: image.description,
+				link: 'http://www.google.com',
+  			"picture": image.url,  // it doesn't work if picture isn't quoted
+  			description: description,
+        name: 'mmm food',
+        caption: 'grubm.com'
+      },
+      success: function(res) {
+      	console.log('success posting to fb');
+      	console.log(JSON.stringify(res));
+      },
+      failure: function(res) {
+      	console.log('failure posting to fb');
+      	console.log(JSON.stringify(res));
+      }
     });
   }
 });
