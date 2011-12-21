@@ -64,7 +64,8 @@ Ext.define('Grubm.controller.Main', {
   
   config: {
     baseUrl: "http://la.grubm.com",
-    apiServer: "http://192.168.1.76:3000",
+//    apiServer: "http://192.168.1.76:3000",
+    apiServer: "http://grubm.com",
     profile: Ext.os.deviceType.toLowerCase(),
     currentPosition: null,
     currentPlace: null,
@@ -102,7 +103,7 @@ Ext.define('Grubm.controller.Main', {
       	tap: this.deletePhoto
       },
       'uploadphoto #select-pic': {
-      	tap: this.selectExistingImage
+      	tap: this.selectImage
       },
       'uploadphoto': {
       	show: this.onUploadPhotoShow,
@@ -121,10 +122,10 @@ Ext.define('Grubm.controller.Main', {
       	tap: this.cancelUploadPhoto
       },
       'choosephoto #take-photo': {
-      	tap: function() { alert('tap'); }
+      	tap: this.selectImage
       },
       'choosephoto #choose-photo': {
-      	tap: this.selectExistingImage
+      	tap: Ext.bind(this.selectImage, this, [true])
       },
       'whereareyou searchfield': {
       	keyup: this.filterPlaces
@@ -137,31 +138,31 @@ Ext.define('Grubm.controller.Main', {
       }
     });
     
-    this.getLogin().hide();
-    this.getMain().show();
-    var user = Ext.create('Grubm.model.User', {
-      accessToken: "BAADzyTXMlh0BAK3yQYyxvE14k04kmyv0ABhtZC1bvabZA7E22gALkLPS8TKwNYeeQvaPGSFVlja0wwsboyTS9bwIaswBOZB0cpGtTsbL9tLxGKiANsCShrZCm2Tx2GFBr45H4vQUFUV3Cxf5E6wy",
-      oauthProvider: "facebook",
-      firstName: "Samad",
-      lastName: "Deans"
-    });
-    this.getUserStore().loadData(user, false);
-    this.getMyImagesStore().load({
-      params: {
-        access_token: user.get('accessToken'), 
-        oauth_provider: 'facebook'
-      }
-    });        
-    
-//    FB.getLoginStatus(function(response) {
-//    	if(response.session) {
-//        this.getLogin().hide();
-//        this.getMain().show();
-//      } else {
-//        this.getLogin().show();
-//        this.getMain().hide();
-//      }
+//    this.getLogin().hide();
+//    this.getMain().show();
+//    var user = Ext.create('Grubm.model.User', {
+//      accessToken: "BAADzyTXMlh0BAK3yQYyxvE14k04kmyv0ABhtZC1bvabZA7E22gALkLPS8TKwNYeeQvaPGSFVlja0wwsboyTS9bwIaswBOZB0cpGtTsbL9tLxGKiANsCShrZCm2Tx2GFBr45H4vQUFUV3Cxf5E6wy",
+//      oauthProvider: "facebook",
+//      firstName: "Samad",
+//      lastName: "Deans"
 //    });
+//    this.getUserStore().loadData(user, false);
+//    this.getMyImagesStore().load({
+//      params: {
+//        access_token: user.get('accessToken'), 
+//        oauth_provider: 'facebook'
+//      }
+//    });        
+    
+    FB.getLoginStatus(function(response) {
+    	if(response.session) {
+        this.getLogin().hide();
+        this.getMain().show();
+      } else {
+        this.getLogin().show();
+        this.getMain().hide();
+      }
+    });
   },
   
   onCitySelect: function(list, city) {
@@ -258,13 +259,13 @@ Ext.define('Grubm.controller.Main', {
     this.getMyPhotosTab().deselectAll();
   },
   
-  selectExistingImage: function() {
+  selectImage: function(fromLibrary) {
     navigator.camera.getPicture(Ext.bind(this.onGetImageSuccess, this), this.onGetImageError, { 
     	quality: 45,
       encodingType: Camera.EncodingType.JPEG,
       targetWidth: 240,
       targetHeight: 240, 
-      sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+      sourceType: (fromLibrary == true) ? Camera.PictureSourceType.PHOTOLIBRARY : Camera.PictureSourceType.CAMERA,
       destinationType: Camera.DestinationType.FILE_URI
     });
   },
@@ -378,7 +379,7 @@ Ext.define('Grubm.controller.Main', {
       options.mimeType = "image/jpeg";
       
       var user = this.getUserStore().first();
-      console.log(JSON.stringify(place.data));
+//      console.log(JSON.stringify(place.data));
       
       options.params = {
       	"access_token": user.get('accessToken'),
@@ -407,9 +408,9 @@ Ext.define('Grubm.controller.Main', {
       ft.upload(img, 
       	this.getApiServer() + '/v1/images.json',
         function(r) {
-        	console.log("Code = " + r.responseCode);
-          console.log("Response = " + r.response);
-          console.log("Sent = " + r.bytesSent);
+//        	console.log("Code = " + r.responseCode);
+//          console.log("Response = " + r.response);
+//          console.log("Sent = " + r.bytesSent);
           self.resetUploadPhoto();
     			self.getMain().setActiveItem(0);
           self.getMyImagesStore().load({
@@ -423,8 +424,9 @@ Ext.define('Grubm.controller.Main', {
         },
         function(error) {
         	mask.hide();
-        	console.log("An error has occurred: Code = " = error.code);
-          alert("There was an error uploading your image. Please try later");
+//        	console.log("An error has occurred: Code = " + error.code);
+          //alert("There was an error uploading your image. Please try later");
+          alert("An error has occurred: Code = " + error.code);
         },
         options
       );
@@ -476,8 +478,8 @@ Ext.define('Grubm.controller.Main', {
           oauthType: 'facebook'
         });
         
-        console.log('access_token => ');
-        console.log(user.get('accessToken'));
+//        console.log('access_token => ');
+//        console.log(user.get('accessToken'));
         
         FB.api('/me', Ext.bind(function(res) {
 					if(res.error) {
@@ -531,12 +533,13 @@ Ext.define('Grubm.controller.Main', {
         caption: 'grubm.com'
       },
       success: function(res) {
-      	console.log('success posting to fb');
-      	console.log(JSON.stringify(res));
+//      	console.log('success posting to fb');
+//      	console.log(JSON.stringify(res));
       },
       failure: function(res) {
-      	console.log('failure posting to fb');
-      	console.log(JSON.stringify(res));
+//      	console.log('failure posting to fb');
+//      	console.log(JSON.stringify(res));
+        alert("failure posting to fb: " + JSON.stringify(res));
       }
     });
   }

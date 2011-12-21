@@ -629,6 +629,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Derrick Ellerbie (DN5AR4HK4U)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = /Users/Shared/PhoneGap/Frameworks;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -648,6 +649,7 @@
 					/usr/lib/libSystem.B.dylib,
 				);
 				PRODUCT_NAME = Grubm;
+				PROVISIONING_PROFILE = "8CD8AD53-FCE9-4DB5-A5BC-0C22BAF228F5";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
 			};
@@ -657,6 +659,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer: Derrick Ellerbie (DN5AR4HK4U)";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = /Users/Shared/PhoneGap/Frameworks;
@@ -676,6 +679,7 @@
 					/usr/lib/libSystem.B.dylib,
 				);
 				PRODUCT_NAME = Grubm;
+				PROVISIONING_PROFILE = "8CD8AD53-FCE9-4DB5-A5BC-0C22BAF228F5";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
