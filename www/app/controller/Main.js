@@ -290,7 +290,6 @@ Ext.define('Grubm.controller.Main', {
   },
   
   onGetImageError: function() {
-    Ext.Msg.alert('Upload Error', 'There was an error getting the image.  Please try again', Ext.emptyFn);
   },
   
   onUploadPhotoShow: function(uploadPhoto) {
@@ -512,7 +511,7 @@ Ext.define('Grubm.controller.Main', {
     
     var description = '';
     if(image.business && image.business.name) {
-    	description += user.get('firstName') + " just ate something delicious at " + image.business.name;
+    	description += user.get('firstName') + " just had something delicious at " + image.business.name;
       if(image.business.city && image.business.state) {
       	description += " in " + image.business.city + ", " + image.business.state;
       }
