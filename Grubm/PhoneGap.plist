@@ -16,6 +16,7 @@
 	<false/>
 	<key>ExternalHosts</key>
 	<array>
+		<string>graph.facebook.com</string>
 		<string>192.168.1.76</string>
 		<string>*.facebook.com</string>
 		<string>*.gstatic.com</string>
