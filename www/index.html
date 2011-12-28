@@ -7,35 +7,13 @@
   	<link rel="stylesheet" href="resources/css/application.css" type="text/css" />
   </head>
 	<body>
-	
 		<script src="phonegap-1.2.0.js"></script>
 		<script src="pg-plugin-fb-connect.js"></script>
 		<script src="facebook_js_sdk.js"></script>
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true&key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc"></script>
     <script src="touch/sencha-touch-all-debug.js"></script>
     <script src="grubm.js"></script>
-        
 		<script>
-      if (typeof PhoneGap == 'undefined') alert('PhoneGap variable does not exist. Check that you have included phonegap.js correctly');
-      if (typeof PG == 'undefined') alert('PG variable does not exist. Check that you have included pg-plugin-fb-connect.js correctly');
-      if (typeof FB == 'undefined') alert('FB variable does not exist. Check that you have included the Facebook JS SDK file.');
-
-      FB.Event.subscribe('auth.login', function(response) {
-          alert('auth.login event');
-      });
-      
-      FB.Event.subscribe('auth.logout', function(response) {
-          alert('auth.logout event');
-      });
-      
-      FB.Event.subscribe('auth.sessionChange', function(response) {
-          alert('auth.sessionChange event');
-      });
-      
-      FB.Event.subscribe('auth.statusChange', function(response) {
-          alert('auth.statusChange event');
-      });
-
       document.addEventListener('deviceready', function() {
         try {
             FB.init({ appId: "268045516576285", nativeInterface: PG.FB });
