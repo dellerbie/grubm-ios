@@ -74,7 +74,6 @@ Ext.define('Grubm.controller.Main', {
   },
   
   init: function() {
-  	console.log('init');
   	this.getLoginView().create();
     this.getMainView().create();
     this.getMyPhotosTabView().create();
@@ -291,7 +290,7 @@ Ext.define('Grubm.controller.Main', {
   },
   
   onGetImageError: function() {
-  	alert('There was an error getting the image.  Please try again');
+    Ext.Msg.alert('Upload Error', 'There was an error getting the image.  Please try again', Ext.emptyFn);
   },
   
   onUploadPhotoShow: function(uploadPhoto) {
@@ -348,7 +347,7 @@ Ext.define('Grubm.controller.Main', {
             mask.hide();
           },
           failure: function() {
-            alert("There was a problem deleting your photo. Please try again later.");
+            Ext.Msg.alert("Delete Error", "There was a problem deleting your photo. Please try again later.", Ext.emptyFn);
           }
         });
       }  
@@ -382,7 +381,6 @@ Ext.define('Grubm.controller.Main', {
       options.mimeType = "image/jpeg";
       
       var user = this.getUserStore().first();
-//      console.log(JSON.stringify(place.data));
       
       options.params = {
       	"access_token": user.get('accessToken'),
@@ -411,9 +409,6 @@ Ext.define('Grubm.controller.Main', {
       ft.upload(img, 
       	this.getApiServer() + '/v1/images.json',
         function(r) {
-        	console.log("Code = " + r.responseCode);
-          console.log("Response = " + r.response);
-          console.log("Sent = " + r.bytesSent);
           self.resetUploadPhoto();
     			self.getMain().setActiveItem(0);
           self.getMyImagesStore().load({
@@ -427,14 +422,12 @@ Ext.define('Grubm.controller.Main', {
         },
         function(error) {
         	mask.hide();
-        	console.log("An error has occurred: Code = " + error.code);
-          //alert("There was an error uploading your image. Please try later");
-          alert("An error has occurred: Code = " + error.code);
+          Ext.Msg.alert("Upload Error", "An error has occurred: Code = " + error.code, Ext.emptyFn);
         },
         options
       );
     } else {
-    	alert(errors.join("\n"));
+    	Ext.Msg.alert("Upload Errors", errors.join("\n"), Ext.emptyFn);
     }
   },
   
@@ -453,7 +446,7 @@ Ext.define('Grubm.controller.Main', {
   },
   
   onGetCurrentPositionError: function(error) {
-  	alert("Error getting your current position.\ncode: " + error.code + "\nmessage: " + error.message);
+    Ext.Msg.alert("Location Error", "Error getting your current location. You need to enable location for Grubm in your phone settings app", Ext.emptyFn);
   },
   
   filterPlaces: function(searchField) {
@@ -473,13 +466,9 @@ Ext.define('Grubm.controller.Main', {
   },
   
   loginToFacebook: function() {
-  	console.log('login');
   	var self = this;    
   	FB.login(function(response) {
-    	console.log('wtf');
-    	console.log(JSON.stringify(response));
     	if(response.session) {
-      	console.log(1);
         var user = Ext.create('Grubm.model.User', {
         	accessToken: response.session.access_token,
           secret: response.session.secret,
@@ -491,33 +480,26 @@ Ext.define('Grubm.controller.Main', {
         
         FB.api('/me', function(res) {
 					if(res.error) {
-          	alert('There was a problem connecting to your Facebook account');
+          	Ext.Msg.alert('Facebook Login Error', 'There was a problem connecting to your Facebook account', Ext.emptyFn);
           } else {
-          	console.log(2);
             user.set('uid', res.id);
             user.set('firstName', res.first_name);
             user.set('lastName', res.last_name);
             user.set('gender', res.gender);
             user.set('email', res.email);
-            console.log(3);
             self.getUserStore().loadData(user, false);
-            console.log(4);
             self.getMyImagesStore().load({
             	params: {
               	access_token: user.get('accessToken'), 
                 oauth_provider: 'facebook'
               }
             });
-            console.log(5);
             self.getLogin().hide();
-            console.log(6);
             self.getMain().show(); 
-            console.log(7);
           }          
         });
       } else {
-      	console.log('here');
-      	alert('Could not log in to Facebook.  Please try again.');
+       	Ext.Msg.alert('Facebook Login Error', 'Could not log in to Facebook.  Please try again.', Ext.emptyFn);
       }
     }, { 
     	perms: "email,publish_stream,offline_access" 
@@ -547,15 +529,7 @@ Ext.define('Grubm.controller.Main', {
         name: 'mmm food',
         caption: 'grubm.com'
       },
-      success: function(res) {
-      	console.log('success posting to fb');
-      	console.log(JSON.stringify(res));
-      },
-      failure: function(res) {
-      	console.log('failure posting to fb');
-      	console.log(JSON.stringify(res));
-        alert("failure posting to fb: " + JSON.stringify(res));
-      }
+      success: Ext.emptyFn
     });
   }
 });
