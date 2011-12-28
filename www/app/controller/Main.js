@@ -200,7 +200,7 @@ Ext.define('Grubm.controller.Main', {
     
     if (this.getProfile() == "phone") {
       view.setWidth(null);
-      view.setHeight('75%');
+      view.setHeight('85%');
       view.setTop(null);
       view.setLeft(0);
     }
@@ -320,6 +320,7 @@ Ext.define('Grubm.controller.Main', {
   	var box = Ext.Msg.confirm("Delete Photo", "Are you sure you want to delete this photo?", function(button) {
     	if(button == 'no') {
       	box.hide();
+        view.show();
       } else {
         var image = view.getImage(),
         		user = this.getUserStore().first(),
