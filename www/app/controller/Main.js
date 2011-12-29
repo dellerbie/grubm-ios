@@ -13,10 +13,10 @@ Ext.define('Grubm.controller.Main', {
   ],
   stores: ['Cities', 'Images', 'MyImages', 'Businesses', 'Places', 'User'],
   refs: [{
-    ref     : 'main',
+    ref: 'main',
     selector: 'mainview'
   },{
-    ref     : 'login',
+    ref: 'login',
     selector: 'loginview'
   },{
     ref: 'citypicker',
@@ -48,6 +48,9 @@ Ext.define('Grubm.controller.Main', {
   },{
   	ref: 'photoDescription',
     selector: 'uploadphoto textareafield'
+  },{
+  	ref: 'postToFacebook',
+    selector: 'uploadphoto checkboxfield'
   },{
   	ref: 'choosePhoto',
     selector: 'choosephoto'
@@ -309,6 +312,8 @@ Ext.define('Grubm.controller.Main', {
   	this.getUploadedImage().setHtml('');
     this.getLocationText().setHtml('');
     this.getPhotoDescription().setValue('');
+    this.getPostToFacebook().setValue(1);
+    this.getPostToFacebook().setChecked(true);
     this.setCurrentPlace(null);
     this.setCurrentImage(null);
   },
@@ -357,6 +362,7 @@ Ext.define('Grubm.controller.Main', {
   savePhoto: function() {
 		var img = this.getCurrentImage();
   	var description = this.getPhotoDescription().getValue();
+    var postToFB = this.getPostToFacebook().getValue();
     var place = this.getCurrentPlace();
     var errors = [];
     
@@ -418,7 +424,9 @@ Ext.define('Grubm.controller.Main', {
             }
           });
           mask.hide();
-          self.postToFacebook(Ext.JSON.decode(r.response));
+          if(postToFB == 1) {
+          	self.postToFacebook(Ext.JSON.decode(r.response));
+          }
         },
         function(error) {
         	mask.hide();

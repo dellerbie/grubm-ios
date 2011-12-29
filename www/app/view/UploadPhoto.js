@@ -40,6 +40,12 @@ Ext.define('Grubm.view.UploadPhoto', {
             name: 'description',
             placeHolder: 'Enter a description...',
             maxLength: 140
+          },{
+          	xtype: 'checkboxfield',
+            name: 'postToFB',
+            label: 'Post to Facebook',
+            labelWidth: '60%',
+            value: true
           }]
         },{
         	xtype: 'panel',
