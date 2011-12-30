@@ -6,8 +6,6 @@ Ext.define('Grubm.view.Images', {
     store: 'Images',
     itemTpl: new Ext.XTemplate(
     	'<div class="image"><img src="{url}" width="69" height="69" /></div>'
-    ),
-    emptyText: "No images to show.  Try a different search.",
-    deferEmptyText: true
+    )
   }
 });

@@ -158,3 +158,7 @@ h3 {
 .fb-login {
 	-webkit-mask-image: theme_image("default", "pictos/facebook-mask.png");
 }
+
+.empty {
+	background: theme_image("default", "pictos/empty1.png") no-repeat center;
+}

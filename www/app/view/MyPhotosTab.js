@@ -5,8 +5,6 @@ Ext.define('Grubm.view.MyPhotosTab', {
   config: {
     ui: 'myphotos-tab-view',
     store: 'MyImages',
-    itemTpl: '<div class="image"><img src="{url}" width="69" height="69" /></div>',
-    emptyText: "You haven't uploaded any photos.",
-    deferEmptyText: true
+    itemTpl: '<div class="image"><img src="{url}" width="69" height="69" /></div>'
   }
 });

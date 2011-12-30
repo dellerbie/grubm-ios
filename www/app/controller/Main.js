@@ -77,7 +77,6 @@ Ext.define('Grubm.controller.Main', {
   },
   
   init: function() {
-  	console.log('init');
   	this.getLoginView().create();
     this.getMainView().create();
     this.getMyPhotosTabView().create();
@@ -148,20 +147,35 @@ Ext.define('Grubm.controller.Main', {
 		var self = this;
     FB.getLoginStatus(function(response) {
     	if(response.session) {
-      	console.log('logged in');
-        console.log('access_token => ');
-        console.log(response.session.access_token);
         self.initUser(response.session);
         self.getLogin().hide();
         self.getMain().show();
         mask.hide();
       } else {
-      	console.log('not logged in');
         self.getLogin().show();
         self.getMain().hide();
        	mask.hide();
       }
     });
+    
+    this.getMyImagesStore().on('load', Ext.bind(this.onMyImagesStoreLoad, this));
+    this.getImagesStore().on('load', Ext.bind(this.onImagesStoreLoad, this));
+  },
+  
+  onMyImagesStoreLoad: function(store, records) {
+  	if(records.length == 0) {
+      this.getMyPhotosTab().el.addCls('empty');
+    } else {
+			this.getMyPhotosTab().el.removeCls('empty');
+    }
+  },
+  
+  onImagesStoreLoad: function(store, records) {
+  	if(records.length == 0) {
+      this.getImages().el.addCls('empty');
+    } else {
+			this.getImages().el.removeCls('empty');
+    }
   },
   
   onCitySelect: function(list, city) {
@@ -489,7 +503,6 @@ Ext.define('Grubm.controller.Main', {
   },
   
 	initUser: function(session) {
-  	console.log('initting user');
   	var user = Ext.create('Grubm.model.User', {
       accessToken: session.access_token,
       secret: session.secret,
