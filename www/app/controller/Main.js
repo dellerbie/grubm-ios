@@ -77,6 +77,7 @@ Ext.define('Grubm.controller.Main', {
   },
   
   init: function() {
+  	console.log('init');
   	this.getLoginView().create();
     this.getMainView().create();
     this.getMyPhotosTabView().create();
@@ -140,32 +141,25 @@ Ext.define('Grubm.controller.Main', {
       	tap: this.loginToFacebook
       }
     });
-//    
-//    this.getLogin().hide();
-//    this.getMain().show();
-//    var user = Ext.create('Grubm.model.User', {
-//      accessToken: "BAADzyTXMlh0BAK3yQYyxvE14k04kmyv0ABhtZC1bvabZA7E22gALkLPS8TKwNYeeQvaPGSFVlja0wwsboyTS9bwIaswBOZB0cpGtTsbL9tLxGKiANsCShrZCm2Tx2GFBr45H4vQUFUV3Cxf5E6wy",
-//      oauthProvider: "facebook",
-//      firstName: "Samad",
-//      lastName: "Deans"
-//    });
-//    this.getUserStore().loadData(user, false);
-//    this.getMyImagesStore().load({
-//      params: {
-//        access_token: user.get('accessToken'), 
-//        oauth_provider: 'facebook'
-//      }
-//    });        
-//    
 
+		var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
+    mask.show();
+    
 		var self = this;
     FB.getLoginStatus(function(response) {
     	if(response.session) {
+      	console.log('logged in');
+        console.log('access_token => ');
+        console.log(response.session.access_token);
+        self.initUser(response.session);
         self.getLogin().hide();
         self.getMain().show();
+        mask.hide();
       } else {
+      	console.log('not logged in');
         self.getLogin().show();
         self.getMain().hide();
+       	mask.hide();
       }
     });
   },
@@ -470,47 +464,59 @@ Ext.define('Grubm.controller.Main', {
   onLocationSelected: function(dataview, place) {
     this.getUploadPhoto().setActiveItem(0);
     this.getLocationText().setHtml('&#64; ' + place.get('name'));
-    this.setCurrentPlace(place);
+    this.setCurrentPlace(place);//
   },
   
   loginToFacebook: function() {
-  	var self = this;    
+  	var self = this;
+    self.getLogin().hide();
+    var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
+    mask.show();
+
   	FB.login(function(response) {
     	if(response.session) {
-        var user = Ext.create('Grubm.model.User', {
-        	accessToken: response.session.access_token,
-          secret: response.session.secret,
-          oauthType: 'facebook'
-        });
-        
-        console.log('access_token => ');
-        console.log(user.get('accessToken'));
-        
-        FB.api('/me', function(res) {
-					if(res.error) {
-          	Ext.Msg.alert('Facebook Login Error', 'There was a problem connecting to your Facebook account', Ext.emptyFn);
-          } else {
-            user.set('uid', res.id);
-            user.set('firstName', res.first_name);
-            user.set('lastName', res.last_name);
-            user.set('gender', res.gender);
-            user.set('email', res.email);
-            self.getUserStore().loadData(user, false);
-            self.getMyImagesStore().load({
-            	params: {
-              	access_token: user.get('accessToken'), 
-                oauth_provider: 'facebook'
-              }
-            });
-            self.getLogin().hide();
-            self.getMain().show(); 
-          }          
-        });
+        self.initUser(response.session);
+        self.getMain().show(); 
+        mask.hide();
       } else {
        	Ext.Msg.alert('Facebook Login Error', 'Could not log in to Facebook.  Please try again.', Ext.emptyFn);
+        self.getLogin().show();
+        mask.hide();
       }
     }, { 
     	perms: "email,publish_stream,offline_access" 
+    });
+  },
+  
+	initUser: function(session) {
+  	console.log('initting user');
+  	var user = Ext.create('Grubm.model.User', {
+      accessToken: session.access_token,
+      secret: session.secret,
+      oauthType: 'facebook'
+    });
+    
+    console.log('access_token => ');
+    console.log(user.get('accessToken'));
+    
+    var self = this;
+    FB.api('/me', function(res) {
+      if(res.error) {
+        Ext.Msg.alert('Facebook Login Error', 'There was a problem connecting to your Facebook account', Ext.emptyFn);
+      } else {
+        user.set('uid', res.id);
+        user.set('firstName', res.first_name);
+        user.set('lastName', res.last_name);
+        user.set('gender', res.gender);
+        user.set('email', res.email);
+        self.getUserStore().loadData(user, false);
+        self.getMyImagesStore().load({
+          params: {
+            access_token: user.get('accessToken'), 
+            oauth_provider: 'facebook'
+          }
+        });
+      }          
     });
   },
   

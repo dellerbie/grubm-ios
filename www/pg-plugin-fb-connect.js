@@ -31,12 +31,12 @@ PG.FB = {
         }
         PhoneGap.exec(function() {
         	var session = JSON.parse(localStorage.getItem('pg_fb_session') || '{"expires":0}');
-//					PG.normalize_session_date(session);
+					PG.normalize_session_date(session);
           console.log('session => ');
           console.log(session);
         	if (session && session.expires > new Date().valueOf()) {
         		FB.Auth.setSession(session, 'connected');
-            }
+          }
         }, null, 'com.phonegap.facebook.Connect', 'init', [apiKey]);
     },
     login: function(a, b) {
