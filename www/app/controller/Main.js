@@ -136,8 +136,8 @@ Ext.define('Grubm.controller.Main', {
       'whereareyou dataview': {
       	select: this.onLocationSelected
       },
-      'loginview button': {
-      	tap: this.loginToFacebook
+      'loginview': {
+      	fbtap: this.loginToFacebook
       }
     });
 

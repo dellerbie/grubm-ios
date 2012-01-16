@@ -33,6 +33,10 @@ Ext.define('Grubm.view.Main', {
         xtype: 'foodview',
         flex: 1
       }]
+    },{
+    	title: 'Logout',
+      iconCls: 'logout',
+      html: 'logout view'
     }]
   }
 });

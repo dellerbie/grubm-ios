@@ -3,20 +3,22 @@ Ext.define('Grubm.view.Login', {
   xtype: 'loginview',
   config: {
   	fullscreen: true,
-    layout: {
-    	type: 'vbox',
-      pack: 'center'
-    },
+    cls: 'login-panel',
     items: [{
-    	xtype: 'toolbar',
-      docked: 'top',
-      title: 'Grubm'
-    },{
-    	xtype: 'button',
-      ui: 'action',
-      text: 'Login with Facebook',
-      icon: 'resources/images/facebook4.png',
-      iconAlign: 'center'
+			html: '<div class="facebook-login"></div>',
+      bottom: 120,
+      left: 32
     }]
+  },
+  initialize: function() {
+  	var me = this;
+    var fbBtn = me.getEl().down('.facebook-login');
+    fbBtn.on({
+    	scope: me,
+      tap: function(e, t) {
+      	me.fireEvent('fbtap', me, me.getComponent('fb-login-btn'), e, t);
+      }
+    });
+    me.callParent(arguments);
   }
 });

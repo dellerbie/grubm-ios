@@ -162,3 +162,19 @@ h3 {
 .empty {
 	background: theme_image("default", "pictos/empty1.png") no-repeat center;
 }
+
+.logout {
+	-webkit-mask-image: theme_image("default", "pictos/user_remove2.png");
+}
+
+.login-panel {
+	background: url(../images/login-panel@2x.png) no-repeat top left;
+  -webkit-background-size: 320px 480px;
+}
+
+.facebook-login {
+	background: url(../images/facebook-login-btn@2x.png) no-repeat top left;
+  -webkit-background-size: 261px 41px;
+  width: 261px;
+  height: 41px;
+}
