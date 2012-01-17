@@ -138,6 +138,9 @@ Ext.define('Grubm.controller.Main', {
       },
       'loginview': {
       	fbtap: this.loginToFacebook
+      },
+      'mainview': {
+      	activeitemchange: this.onMainTabChange
       }
     });
 
@@ -160,6 +163,21 @@ Ext.define('Grubm.controller.Main', {
     
     this.getMyImagesStore().on('load', Ext.bind(this.onMyImagesStoreLoad, this));
     this.getImagesStore().on('load', Ext.bind(this.onImagesStoreLoad, this));
+  },
+  
+  onMainTabChange: function(mainTabPanel, newVal, oldVal) {
+  	var self = this;
+    var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
+    mask.show();
+    if(newVal.title == 'Logout') {
+    	FB.logout(function(response) {
+        self.getMyImagesStore().loadData({});
+      	self.getMain().setActiveItem(0);
+        self.getMain().hide();
+      	self.getLogin().show();
+        mask.hide();
+      });
+    }
   },
   
   onMyImagesStoreLoad: function(store, records) {

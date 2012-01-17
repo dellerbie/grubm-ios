@@ -34,9 +34,10 @@ Ext.define('Grubm.view.Main', {
         flex: 1
       }]
     },{
+    	id: 'logout',
     	title: 'Logout',
       iconCls: 'logout',
-      html: 'logout view'
+      html: ''
     }]
   }
 });
