@@ -167,9 +167,9 @@ Ext.define('Grubm.controller.Main', {
   
   onMainTabChange: function(mainTabPanel, newVal, oldVal) {
   	var self = this;
-    var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
-    mask.show();
     if(newVal.title == 'Logout') {
+      var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
+      mask.show();
     	FB.logout(function(response) {
         self.getMyImagesStore().loadData({});
       	self.getMain().setActiveItem(0);
