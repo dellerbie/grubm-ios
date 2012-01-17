@@ -501,19 +501,15 @@ Ext.define('Grubm.controller.Main', {
   
   loginToFacebook: function() {
   	var self = this;
-    self.getLogin().hide();
-    var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
-    mask.show();
 
   	FB.login(function(response) {
     	if(response.session) {
+        self.getLogin().hide();
         self.initUser(response.session);
         self.getMain().show(); 
-        mask.hide();
       } else {
-       	Ext.Msg.alert('Facebook Login Error', 'Could not log in to Facebook.  Please try again.', Ext.emptyFn);
         self.getLogin().show();
-        mask.hide();
+        Ext.Msg.alert('Facebook Login Error', 'Could not log in to Facebook.  Please try again.', Ext.emptyFn);
       }
     }, { 
     	perms: "email,publish_stream,offline_access" 

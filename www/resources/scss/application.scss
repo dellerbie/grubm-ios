@@ -160,7 +160,8 @@ h3 {
 }
 
 .empty {
-	background: theme_image("default", "pictos/empty1.png") no-repeat center;
+	background: url(../images/empty@2x.png) no-repeat top left;
+  -webkit-background-size: 320px 480px;
 }
 
 .logout {
