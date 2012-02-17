@@ -3,16 +3,18 @@ Ext.define('Grubm.view.WhereAreYou', {
   xtype: 'whereareyou',
   config: {
     layout: 'fit',
+    title: 'Where are you?',
   	items: [{
     	xtype: 'toolbar',
       docked: 'top',
-      layout: 'hbox',
       items:[{
-      	flex: 1,
         xtype: 'searchfield', 
-        placeHolder: 'Search for a place...',
+        placeHolder: 'Where are you?',
         useClearIcon: true,
         name: 'search'
+      },{
+        text: 'Cancel',
+        id: 'cancelSelectLocation'
       }]
     },{
       xtype: 'dataview',

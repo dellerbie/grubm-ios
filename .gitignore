@@ -1,3 +1,9 @@
 .DS_Store
-Grubm.xcodeproj/**xcuserdata
 .sass-cache
+xcuserdata
+build/
+*.swp
+*~.nib
+*.pbxuser
+*.perspective
+*.perspectivev3

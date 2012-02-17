@@ -7,6 +7,7 @@ Ext.define('Grubm.view.UploadPhoto', {
   	items: [{
     	xtype: 'panel',
 			layout: 'vbox',
+      autoScroll: true,
       items: [{
       	xtype: 'toolbar',
         docked: 'top',

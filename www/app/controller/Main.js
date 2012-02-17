@@ -67,8 +67,8 @@ Ext.define('Grubm.controller.Main', {
   
   config: {
     baseUrl: "http://la.grubm.com",
-//    apiServer: "http://192.168.1.76:3000",
-    apiServer: "http://grubm.com",
+    apiServer: "http://192.168.1.76:3000",
+   // apiServer: "http://grubm.com",
     profile: Ext.os.deviceType.toLowerCase(),
     currentPosition: null,
     currentPlace: null,
@@ -135,6 +135,9 @@ Ext.define('Grubm.controller.Main', {
       },
       'whereareyou dataview': {
       	select: this.onLocationSelected
+      },
+      'whereareyou #cancelSelectLocation': {
+      	tap: this.cancelSelectLocation
       },
       'loginview': {
       	fbtap: this.loginToFacebook
@@ -227,6 +230,8 @@ Ext.define('Grubm.controller.Main', {
     var view = this.getImageDetail();
     view.setImage(image);
     
+    console.log(image.get('url'));
+    
     if (this.getProfile() == "phone") {
       view.setWidth(null);
       view.setHeight('85%');
@@ -294,15 +299,15 @@ Ext.define('Grubm.controller.Main', {
     navigator.camera.getPicture(Ext.bind(this.onGetImageSuccess, this), this.onGetImageError, { 
     	quality: 45,
       encodingType: Camera.EncodingType.JPEG,
-      targetWidth: 240,
-      targetHeight: 240, 
+      targetWidth: 600,
+      targetHeight: 600, 
       sourceType: (fromLibrary == true) ? Camera.PictureSourceType.PHOTOLIBRARY : Camera.PictureSourceType.CAMERA,
       destinationType: Camera.DestinationType.FILE_URI
     });
   },
   
   onGetImageSuccess: function(imageURI) {
-  	var img = '<img src="' + imageURI + '" width="100" height="100" />';
+  	var img = '<img src="' + imageURI + '" width="120" height="120" />';
   	this.getUploadedImage().setHtml(img);
     this.setCurrentImage(imageURI);
     this.getChoosePhoto().hide();
@@ -472,6 +477,10 @@ Ext.define('Grubm.controller.Main', {
       { maximumAge: 60000, timeout: 5000, enableHighAccuracy: true }
     );
   	this.getUploadPhoto().setActiveItem(this.getWhereAreYou(), {type: 'slide', direction: 'left'});
+  },
+    
+  cancelSelectLocation: function() {
+    this.getUploadPhoto().setActiveItem(0, {type: 'slide', direction: 'right'});
   },
   
   onGetCurrentPositionSuccess: function(position) {

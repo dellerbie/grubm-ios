@@ -23,14 +23,6 @@ $tabs-bottom-active-gradient: 'bevel';
 @include pictos-iconmask(photo1);
 @include pictos-iconmask(photos2);
 
-img.large {
-  display: block;
-  margin: .75em auto;
-  padding: 0.5em;
-  border: 1px solid #CCC;
-  background: white;
-}
-
 .business-wrapper {
   width: 85%;
   font-family: 'Arial';
@@ -79,13 +71,12 @@ h3 {
   padding: .5em;
 }
 
-.image {
+.x-dataview-images-view .image {
 	float: left;
-	width: 69px;
-  height: 69px;
   background: #ccc;
   margin: .2em;
   border: 1px solid #ccc;
+  -webkit-background-size: 100% 100%;
 }
 
 .x-sheet-image-detail {
@@ -100,11 +91,6 @@ h3 {
 	margin-bottom: .2em;
 }
 
-.x-sheet-image-detail .image {
-	width: 67px;
-  height: 67px;
-}
-
 .x-sheet-image-detail .what {
   display: block;
   color: #595959;
@@ -113,12 +99,12 @@ h3 {
   text-align: center;
 }
 
-.x-sheet-image-detail img.large {
-  display: block;
+.x-sheet-image-detail .image {
   margin: .75em auto;
   padding: 0.5em;
   border: 1px solid #CCC;
-  background: white;
+  background: white; 
+  -webkit-background-size: 100% 100%;
 }
 
 #uploaded-image {
@@ -128,8 +114,6 @@ h3 {
 }
 
 #uploaded-image img {
-	width: 100;
-  height: 100;
   display: block;
   margin: 0 auto;
 }
