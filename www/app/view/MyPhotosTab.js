@@ -3,8 +3,10 @@ Ext.define('Grubm.view.MyPhotosTab', {
   requires: ['Grubm.store.MyImages'],
   xtype: 'myphotostab',
   config: {
-    ui: 'myphotos-tab-view',
+    ui: 'images-view',
     store: 'MyImages',
-    itemTpl: '<div class="image"><img src="{url}" width="69" height="69" /></div>'
+    itemTpl: new Ext.XTemplate(
+    	'<div class="image" style="background: url({url}) no-repeat; "></div>'
+    )
   }
 });

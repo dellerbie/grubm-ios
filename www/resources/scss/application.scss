@@ -66,13 +66,14 @@ h3 {
   -webkit-box-shadow: 5px 5px 8px #888;
 }
 
-.x-dataview-myphotos-tab-view,
 .x-dataview-images-view {
   padding: .5em;
 }
 
 .x-dataview-images-view .image {
 	float: left;
+  width: 69px;
+  height: 69px;
   background: #ccc;
   margin: .2em;
   border: 1px solid #ccc;

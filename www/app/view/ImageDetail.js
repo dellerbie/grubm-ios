@@ -50,7 +50,9 @@ Ext.define('Grubm.view.ImageDetail', {
           height: 200,
           mapOptions: {
             mapTypeId: google.maps.MapTypeId.ROADMAP,
-            navigationControl: false
+            navigationControl: false,
+            disableDefaultUI: true,
+            draggable: false
           },
           geocoder: new google.maps.Geocoder()
         }]
