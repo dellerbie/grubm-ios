@@ -230,8 +230,6 @@ Ext.define('Grubm.controller.Main', {
     var view = this.getImageDetail();
     view.setImage(image);
     
-    console.log(image.get('url'));
-    
     if (this.getProfile() == "phone") {
       view.setWidth(null);
       view.setHeight('85%');
@@ -538,6 +536,7 @@ Ext.define('Grubm.controller.Main', {
     var self = this;
     FB.api('/me', function(res) {
       if(res.error) {
+        self.getLogin().show();
         Ext.Msg.alert('Facebook Login Error', 'There was a problem connecting to your Facebook account', Ext.emptyFn);
       } else {
         user.set('uid', res.id);
@@ -557,6 +556,8 @@ Ext.define('Grubm.controller.Main', {
   },
   
   postToFacebook: function(image) {
+    console.log("image => ");
+    console.log(image);
   	var user = this.getUserStore().first();
     
     var description = '';
@@ -573,7 +574,7 @@ Ext.define('Grubm.controller.Main', {
       params: {
       	access_token: user.get('accessToken'),
         message: image.description,
-				link: 'http://www.google.com',
+				link: this.getApiServer() + '/show/' + image.id,
   			"picture": image.url,  // it doesn't work if picture isn't quoted
   			description: description,
         name: 'mmm food',
