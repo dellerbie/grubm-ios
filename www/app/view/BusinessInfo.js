@@ -7,6 +7,7 @@ Ext.define('Grubm.view.BusinessInfo', {
         '<h2>{name}</h2>',
         '<span class="street">{street}</span>',
         '<span class="city-state-zip">{city}, {state}<tpl if="zip != 0"> {zip}</tpl></span>',
+        '<span class="phone">{phone}</span>',
       '</div>'
     )
   }

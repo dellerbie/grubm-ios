@@ -294,14 +294,30 @@ Ext.define('Grubm.controller.Main', {
   },
   
   selectImage: function(fromLibrary) {
-    navigator.camera.getPicture(Ext.bind(this.onGetImageSuccess, this), this.onGetImageError, { 
+    var options = {
+      limit: 1,
     	quality: 45,
       encodingType: Camera.EncodingType.JPEG,
       targetWidth: 600,
       targetHeight: 600, 
-      sourceType: (fromLibrary == true) ? Camera.PictureSourceType.PHOTOLIBRARY : Camera.PictureSourceType.CAMERA,
+      sourceType: Camera.PictureSourceType.CAMERA,
       destinationType: Camera.DestinationType.FILE_URI
-    });
+    };
+  
+    if(fromLibrary == true) {
+      options['sourceType'] = Camera.PictureSourceType.PHOTOLIBRARY;
+      navigator.camera.getPicture(
+        Ext.bind(this.onGetImageSuccess, this), 
+        this.onGetImageError,
+        options
+      );
+    } else {
+      navigator.device.capture.captureImage(
+        Ext.bind(this.onGetImageSuccess, this), 
+        this.onGetImageError, 
+        options
+      );
+    }
   },
   
   onGetImageSuccess: function(imageURI) {
@@ -427,7 +443,8 @@ Ext.define('Grubm.controller.Main', {
         "image[business][state]": place.data.location.state,
         "image[business][zip]": place.data.location.postalCode,
         "image[business][lat]": place.data.location.lat,
-        "image[business][lng]": place.data.location.lng
+        "image[business][lng]": place.data.location.lng,
+        "image[business][phone]": place.data.contact.formattedPhone
       };
       
     	var placeCategories = [];
