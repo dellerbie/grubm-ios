@@ -432,24 +432,24 @@ Ext.define('Grubm.controller.Main', {
       options.mimeType = "image/jpeg";
       
       var user = this.getUserStore().first();
-      
+
       options.params = {
       	"access_token": user.get('accessToken'),
         "oauth_provider": "facebook",
       	"image[description]": description,
         "image[business][name]": place.data.name,        
-        "image[business][street]": place.data.location.address,
-        "image[business][city]": place.data.location.city,
-        "image[business][state]": place.data.location.state,
-        "image[business][zip]": place.data.location.postalCode,
-        "image[business][lat]": place.data.location.lat,
-        "image[business][lng]": place.data.location.lng,
-        "image[business][phone]": place.data.contact.formattedPhone
+        "image[business][street]": place.data.street,
+        "image[business][city]": place.data.city,
+        "image[business][state]": place.data.state,
+        "image[business][zip]": place.data.zip,
+        "image[business][lat]": place.data.geometry.lat,
+        "image[business][lng]": place.data.geometry.lng,
+        "image[business][phone]": place.data.phone
       };
       
     	var placeCategories = [];
-      for(var i = 0; i < place.data.categories.length; i++) {
-      	options.params["image[business][categories][]"] = place.data.categories[i].name;
+      for(var i = 0; i < place.data.types.length; i++) {
+      	options.params["image[business][categories][]"] = place.data.types[i];
       }
       
       var ft = new FileTransfer();
@@ -500,19 +500,36 @@ Ext.define('Grubm.controller.Main', {
   
   onGetCurrentPositionSuccess: function(position) {
   	this.setCurrentPosition(position.coords.latitude + ',' + position.coords.longitude);
-    this.getPlacesStore().load({params: {ll: this.getCurrentPosition()}});
+    var self = this;
+    Ext.Ajax.request({
+    	url: "https://maps.googleapis.com/maps/api/place/search/json?&radius=500&sensor=true&key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc",
+      method: 'GET',
+      params: {
+      	location: self.getCurrentPosition()
+      },
+      success: function(response) {
+        var json = Ext.decode(response.responseText);
+        self.getPlacesStore().loadData(json.results, false);
+      }
+    });
   },
   
   onGetCurrentPositionError: function(error) {
     Ext.Msg.alert("Location Error", "Error getting your current location. You need to enable location for Grubm in your phone settings app", Ext.emptyFn);
   },
-  
+
   filterPlaces: function(searchField) {
-    this.getPlacesStore().load({
-    	params: {
-      	limit: 50, 
-        query: searchField.getValue(),
-        ll: this.getCurrentPosition()
+    var self = this;
+    Ext.Ajax.request({
+    	url: "https://maps.googleapis.com/maps/api/place/search/json?&radius=500&sensor=true&key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc",
+      method: 'GET',
+      params: {
+      	name: searchField.getValue(),
+        location: this.getCurrentPosition()
+      },
+      success: function(response) {
+        var json = Ext.decode(response.responseText);
+        self.getPlacesStore().loadData(json.results, false);
       }
     });
   },
@@ -520,7 +537,43 @@ Ext.define('Grubm.controller.Main', {
   onLocationSelected: function(dataview, place) {
     this.getUploadPhoto().setActiveItem(0);
     this.getLocationText().setHtml('&#64; ' + place.get('name'));
-    this.setCurrentPlace(place);//
+    var self = this;
+    
+    // get the places detailed info
+    Ext.Ajax.request({
+    	url: "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc&sensor=true",
+      method: 'GET',
+      params: {
+      	reference: place.get('reference'),
+      },
+      success: function(response) {
+        var json = Ext.decode(response.responseText);
+        
+        var street_number = street = city = zip = state = '';
+        var address = json.result.address_components;
+        
+        for(var i = 0; i < address.length; i++) {
+          if(Ext.Array.contains(address[i].types, 'street_number')) {
+            street_number = address[i].long_name;
+          } else if(Ext.Array.contains(address[i].types, 'route')) {
+            street = address[i].long_name;
+          } else if(Ext.Array.contains(address[i].types, 'locality')) {
+            city = address[i].long_name;
+          } else if(Ext.Array.contains(address[i].types, 'administrative_area_level_1')) {
+            state = address[i].long_name;
+          } else if(Ext.Array.contains(address[i].types, 'postal_code')) {
+            zip = address[i].long_name;
+          }
+        }
+        
+        place.data['street'] = street_number + street;
+        place.data['city'] = city;
+        place.data['state'] = state;
+        place.data['zip'] = zip;
+        place.data['phone'] = json.result.formatted_phone_number;        
+        self.setCurrentPlace(place);
+      }
+    });
   },
   
   loginToFacebook: function() {
@@ -573,8 +626,6 @@ Ext.define('Grubm.controller.Main', {
   },
   
   postToFacebook: function(image) {
-    console.log("image => ");
-    console.log(image);
   	var user = this.getUserStore().first();
     
     var description = '';

@@ -23,9 +23,9 @@ Ext.define('Grubm.view.WhereAreYou', {
 			itemTpl: new Ext.XTemplate(
       	'<div class="place-wrapper">',
         	'<p class="place">{name}</p>',
-          '<tpl for="categories">',
-          	'{% if (xindex > 2) break; %}',
-          	'<p class="categories">{name} &#8226; </p>',
+          '<tpl for="types">',
+            '{% if (xindex > 2) break; %}',
+          	'<span class="category">{.} &#8226; </span>',
           '</tpl>',
         '</div>'
       ),
