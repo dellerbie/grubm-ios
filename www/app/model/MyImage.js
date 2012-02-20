@@ -3,19 +3,20 @@ Ext.define('Grubm.model.MyImage', {
   fields: [{
   	name: 'id'
   },{
-    name: 'url', 
-    type: 'string'
+    name: 'url',
+    type: 'string',
+    mapping: 'small_url'
   },{
     name: 'description',
     type: 'string'
   },{
     name: 'business'
   },{
-  	name: 'smallWidth',
+  	name: 'width',
     type: 'int',
     mapping: 'small_width'
   },{
-  	name: 'smallHeight',
+  	name: 'height',
     type: 'int',
     mapping: 'small_height'
   },{

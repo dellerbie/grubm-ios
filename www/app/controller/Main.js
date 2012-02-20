@@ -98,6 +98,7 @@ Ext.define('Grubm.controller.Main', {
       },
       'myphotostab': {
         select: this.showDetailsSheet,
+        activate: this.loadMyPhotos
       },
       'imagedetail': {
         hideanimationstart: this.onDetailHideAnimationStart
@@ -183,7 +184,24 @@ Ext.define('Grubm.controller.Main', {
     }
   },
   
-  onMyImagesStoreLoad: function(store, records) {
+  loadMyPhotos: function() {
+    var user = this.getUserStore().first(),
+        self = this,
+        mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
+    
+    mask.show();
+    this.getMyImagesStore().load({
+      params: {
+        access_token: user.get('accessToken'), 
+        oauth_provider: 'facebook'
+      },
+      callback: function() {
+        mask.hide();
+      }
+    });
+  },
+  
+  onMyImagesStoreLoad: function(store, records, successful) {
   	if(records.length == 0) {
       this.getMyPhotosTab().el.addCls('empty');
     } else {
@@ -237,10 +255,11 @@ Ext.define('Grubm.controller.Main', {
       view.setLeft(0);
     }
     
-    var business = image.get('business');
-    var mbp = view.child('carousel').child('morebusinessphotos');
+    var business = image.get('business'),
+        mbp = view.child('carousel').child('morebusinessphotos'),
+        isFindFoodView = list.isXType('imagesview');
     
-    if(list.isXType('imagesview')) {
+    if(isFindFoodView) {
       this.getBusinessesStore().proxy.url = this.getBaseUrl() + "/business/" + business.normalized_name+ ".json";
  	    this.getBusinessesStore().load({params: {limit: 12}});
     	if(!mbp) {
@@ -256,9 +275,30 @@ Ext.define('Grubm.controller.Main', {
     	this.getMyPhotosTab().deselectAll();
     }
     
-    this.positionBusinessMap(business);
     view.show();
-  },    
+    this.positionBusinessMap(business);
+    
+    var imageDiv = Ext.get(Ext.DomQuery.selectNode('.x-sheet-image-detail .image')),
+        width = image.data.width,
+        height = image.data.height;
+    
+    if(isFindFoodView) {
+      imageDiv.setStyle({
+        width: width + "px",
+        height: height + "px",
+        "-webkit-background-size": "100% 100%"
+      });
+    } else {
+      var halfW = Math.floor(width/2) + "px", 
+          halfH = Math.floor(height/2) + "px";
+        
+      imageDiv.setStyle({
+        width: halfW,
+        height: halfH,
+        "-webkit-background-size": halfW + ' ' + halfH
+      });
+    }
+  },
   
   positionBusinessMap: function(business) {
     var address = [business.street, business.city, business.state].join(',');
@@ -321,6 +361,9 @@ Ext.define('Grubm.controller.Main', {
   },
   
   onGetImageSuccess: function(imageURI) {
+    if(Ext.isArray(imageURI)) {
+      imageURI = imageURI[0].fullPath;
+    }
   	var img = '<img src="' + imageURI + '" width="120" height="120" />';
   	this.getUploadedImage().setHtml(img);
     this.setCurrentImage(imageURI);
@@ -463,12 +506,6 @@ Ext.define('Grubm.controller.Main', {
         function(r) {
           self.resetUploadPhoto();
     			self.getMain().setActiveItem(0);
-          self.getMyImagesStore().load({
-            params: {
-              access_token: user.get('accessToken'), 
-              oauth_provider: 'facebook'
-            }
-          });
           mask.hide();
           if(postToFB == 1) {
           	self.postToFacebook(Ext.JSON.decode(r.response));
@@ -566,7 +603,7 @@ Ext.define('Grubm.controller.Main', {
           }
         }
         
-        place.data['street'] = street_number + street;
+        place.data['street'] = street_number + ' ' + street;
         place.data['city'] = city;
         place.data['state'] = state;
         place.data['zip'] = zip;
@@ -600,8 +637,8 @@ Ext.define('Grubm.controller.Main', {
       oauthType: 'facebook'
     });
     
-    console.log('access_token => ');
-    console.log(user.get('accessToken'));
+//    console.log('access_token => ');
+//    console.log(user.get('accessToken'));
     
     var self = this;
     FB.api('/me', function(res) {
@@ -642,7 +679,7 @@ Ext.define('Grubm.controller.Main', {
       params: {
       	access_token: user.get('accessToken'),
         message: image.description,
-				link: this.getApiServer() + '/show/' + image.id,
+				link: this.getApiServer() + '/' + image.id,
   			"picture": image.url,  // it doesn't work if picture isn't quoted
   			description: description,
         name: 'mmm food',

@@ -122,7 +122,7 @@ Ext.define('Grubm.view.ImageDetail', {
   	this.image = newImage;
     var imageView = this.down('imageinfo'),
         business = this.down('businessinfo');
-
+    
     imageView.setData(newImage.data);
     business.setData(newImage.data.business);
   },

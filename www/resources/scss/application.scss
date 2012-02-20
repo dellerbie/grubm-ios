@@ -70,7 +70,8 @@ h3 {
   padding: .5em;
 }
 
-.x-dataview-images-view .image {
+.x-dataview-images-view .image,
+.x-sheet-image-detail .x-dataview-business-images .image {
 	float: left;
   width: 69px;
   height: 69px;
@@ -105,7 +106,12 @@ h3 {
   padding: 0.5em;
   border: 1px solid #CCC;
   background: white; 
-  -webkit-background-size: 100% 100%;
+}
+
+.x-sheet-image-detail .x-dataview-business-images .image {
+  padding: 0;
+  width: 67px;
+  height: 67px;
 }
 
 #uploaded-image {
