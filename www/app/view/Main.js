@@ -3,17 +3,19 @@ Ext.define('Grubm.view.Main', {
   xtype: 'mainview',
   requires: [
     'Grubm.view.CityPicker',
-    'Grubm.view.MyPhotosTab'
+    'Grubm.view.MyPhotosTab',
+    'Grubm.view.UploadPhoto',
+    'Grubm.view.Food'
   ],
   config: {
     fullscreen: true,
     tabBarPosition: 'bottom',
     items: [{
-    	title: 'My Photos',
+     title: 'My Photos',
       iconCls: 'photos2',
-    	xtype: 'myphotostab'
+     xtype: 'myphotostab'
     },{
-    	title: 'Upload',
+     title: 'Upload',
       iconCls: 'photo1',
       xtype: 'uploadphoto'
     },{
@@ -34,8 +36,8 @@ Ext.define('Grubm.view.Main', {
         flex: 1
       }]
     },{
-    	id: 'logout',
-    	title: 'Logout',
+     id: 'logout',
+     title: 'Logout',
       iconCls: 'logout',
       html: ''
     }]

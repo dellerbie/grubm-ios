@@ -1,24 +1,24 @@
 Ext.define('Grubm.view.Login', {
-	extend: 'Ext.Panel',
+  extend: 'Ext.Panel',
   xtype: 'loginview',
   config: {
-  	fullscreen: true,
+    fullscreen: true,
     cls: 'login-panel',
     items: [{
-			html: '<div class="facebook-login"></div>',
+      html: '<div class="facebook-login"></div>',
       bottom: 120,
       left: 32
     }]
   },
-  initialize: function() {
-  	var me = this;
+  afterRender: function() {
+    this.callParent(arguments);
+    var me = this;
     var fbBtn = me.getEl().down('.facebook-login');
     fbBtn.on({
-    	scope: me,
+      scope: me,
       tap: function(e, t) {
-      	me.fireEvent('fbtap', me, me.getComponent('fb-login-btn'), e, t);
+        me.fireEvent('fbtap', me, me.getComponent('fb-login-btn'), e, t);
       }
     });
-    me.callParent(arguments);
   }
 });
