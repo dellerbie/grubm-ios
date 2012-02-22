@@ -573,7 +573,7 @@ Ext.define('Grubm.controller.Main', {
   loginToFacebook: function() {
     console.log('login to facebook');
     var self = this;
-    console.log('after self');
+    console.log(FB.login);
 
     FB.login(function(response) {
       console.log('login');
@@ -588,7 +588,7 @@ Ext.define('Grubm.controller.Main', {
         self.getLogin().show();
         Ext.Msg.alert('Facebook Login Error', 'Could not log in to Facebook.  Please try again.', Ext.emptyFn);
       }
-    }, { 
+    },{ 
       perms: "email,publish_stream,offline_access" 
     });
   },
