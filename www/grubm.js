@@ -8,7 +8,7 @@ Ext.application({
   controllers: ['Main'],
   views: [
    'Main',
-    'Login',
+   'Login',
    'Food',
    'Business',
    'MyPhotosTab',
@@ -25,9 +25,6 @@ Ext.application({
    'User'
   ],
   launch: function() {
-    var login = Ext.create('Grubm.view.Login'),
-        main = Ext.create('Grubm.view.Main'),
-        myphotos = Ext.create('Grubm.view.MyPhotosTab'),
-        uploadPhoto = Ext.create('Grubm.view.UploadPhoto');
+	  console.log('app launch');
   }
 }); 

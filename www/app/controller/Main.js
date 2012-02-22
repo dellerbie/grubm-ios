@@ -1,6 +1,6 @@
 Ext.define('Grubm.controller.Main', {
   extend: 'Ext.app.Controller',
-  
+
   config: {
     baseUrl: "http://la.grubm.com",
     apiServer: "http://192.168.1.76:3000",
@@ -11,109 +11,118 @@ Ext.define('Grubm.controller.Main', {
     currentImage: null,
     user: null,
     refs: {
-      main: 'mainview',
+      // main: 'mainview',
       login: 'loginview',
-      citypicker: 'citypickerview',
-      food: 'foodview',
-      images: 'imagesview',
-      business: 'businessview',
-      myPhotosTab: 'myphotostab',
-      imageDetail: 'imagedetail',
-      deleteImageBtn: 'imagedetail button',
-      uploadedImage: 'uploadphoto #uploaded-image',
-      uploadPhoto: 'uploadphoto',
-      photoDescription: 'uploadphoto textareafield',
-      postToFacebook: 'uploadphoto checkboxfield',
-      choosePhoto: 'choosephoto',
-      whereAreYou: 'whereareyou',
-      locationText: 'uploadphoto #location-text',
-      businessMap: 'imagedetail map'
+      // citypicker: 'citypickerview',
+      // food: 'foodview',
+      // images: 'imagesview',
+      // business: 'businessview',
+      // myPhotosTab: 'myphotostab',
+      // imageDetail: 'imagedetail',
+      // deleteImageBtn: 'imagedetail button',
+      // uploadedImage: 'uploadphoto #uploaded-image',
+      // uploadPhoto: 'uploadphoto',
+      // photoDescription: 'uploadphoto textareafield',
+      // postToFacebook: 'uploadphoto checkboxfield',
+      // choosePhoto: 'choosephoto',
+      // whereAreYou: 'whereareyou',
+      // locationText: 'uploadphoto #location-text',
+      // businessMap: 'imagedetail map'
     },
     control: {
-      'citypickerview': {
-        select: 'onCitySelect'
-      },
-      'foodview button[ui="back"]': {
-        tap: 'onBackToCityPicker'
-      },
-      'imagesview': {
-        select: 'showDetailsSheet'
-      },
-      'searchbar searchfield': {
-        action: 'onSearch',
-        searchclear: 'onSearchClear'
-      },
-      'myphotostab': {
-        select: 'showDetailsSheet',
-        activate: 'loadMyPhotos'
-      },
-      'imagedetail': {
-        hideanimationstart: 'onDetailHideAnimationStart'
-      },
-      'imagedetail button[ui="decline"]': {
-        tap: 'deletePhoto'
-      },
-      'uploadphoto #select-pic': {
-        tap: 'selectImage'
-      },
-      'uploadphoto': {
-        show: 'onUploadPhotoShow',
-        hide: 'resetUploadPhoto'
-      },
-      'uploadphoto #select-location': {
-        tap: 'selectLocation'
-      },
-      'uploadphoto #cancel': {
-        tap: 'cancelUploadPhoto'
-      },
-      'uploadphoto #save-photo': {
-        tap: 'savePhoto'
-      },
-      'choosephoto button[ui="cancel"]': {
-        tap: 'cancelUploadPhoto'
-      },
-      'choosephoto #take-photo': {
-        tap: 'selectImage'
-      },
-      'choosephoto #choose-photo': {
-        tap: Ext.bind(this.selectImage, this, [true])
-      },
-      'whereareyou searchfield': {
-        keyup: 'filterPlaces'
-      },
-      'whereareyou dataview': {
-        select: 'onLocationSelected'
-      },
-      'whereareyou #cancelSelectLocation': {
-        tap: 'cancelSelectLocation'
-      },
+    //   'citypickerview': {
+    //     select: 'onCitySelect'
+    //   },
+    //   'foodview button[ui="back"]': {
+    //     tap: 'onBackToCityPicker'
+    //   },
+    //   'imagesview': {
+    //     select: 'showDetailsSheet'
+    //   },
+    //   'searchbar searchfield': {
+    //     action: 'onSearch',
+    //     searchclear: 'onSearchClear'
+    //   },
+    //   'myphotostab': {
+    //     select: 'showDetailsSheet',
+    //     activate: 'loadMyPhotos'
+    //   },
+    //   'imagedetail': {
+    //     hideanimationstart: 'onDetailHideAnimationStart'
+    //   },
+    //   'imagedetail button[ui="decline"]': {
+    //     tap: 'deletePhoto'
+    //   },
+    //   'uploadphoto #select-pic': {
+    //     tap: 'selectImage'
+    //   },
+    //   'uploadphoto': {
+    //     show: 'onUploadPhotoShow',
+    //     hide: 'resetUploadPhoto'
+    //   },
+    //   'uploadphoto #select-location': {
+    //     tap: 'selectLocation'
+    //   },
+    //   'uploadphoto #cancel': {
+    //     tap: 'cancelUploadPhoto'
+    //   },
+    //   'uploadphoto #save-photo': {
+    //     tap: 'savePhoto'
+    //   },
+    //   'choosephoto button[ui="cancel"]': {
+    //     tap: 'cancelUploadPhoto'
+    //   },
+    //   'choosephoto #take-photo': {
+    //     tap: 'selectImage'
+    //   },
+    //   'choosephoto #choose-photo': {
+    //     tap: Ext.bind(this.selectImage, this, [true])
+    //   },
+    //   'whereareyou searchfield': {
+    //     keyup: 'filterPlaces'
+    //   },
+    //   'whereareyou dataview': {
+    //     select: 'onLocationSelected'
+    //   },
+    //   'whereareyou #cancelSelectLocation': {
+    //     tap: 'cancelSelectLocation'
+    //   },
+    //   'loginview': {
+    //     fbtap: 'loginToFacebook'
+    //   },
       'loginview': {
         fbtap: 'loginToFacebook'
-      },
-      'mainview': {
-        activeitemchange: 'onMainTabChange'
       }
+    //   'mainview': {
+    //     activeitemchange: 'onMainTabChange'
+    //   }
     }
   },
 
-  init: function() {
-    var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
-    mask.show();
-    var self = this;
-    FB.getLoginStatus(function(response) {
-      if(response.session) {
-       // self.initUser(response.session);
-        self.getLogin().hide();
-        self.getMain().show();
-        mask.hide();
-      } else {
-        self.getLogin().show();
-        self.getMain().hide();
-        mask.hide();
-      }
-    });
-    Ext.getStore('MyImages').on('load', Ext.bind(this.onMyImagesStoreLoad, this));
-    Ext.getStore('Images').on('load', Ext.bind(this.onImagesStoreLoad, this));
+  launch: function() {
+    console.log('controller launch');
+    Ext.create('Grubm.view.Login');
+    Ext.create('Grubm.view.Main');
+    // Ext.create('Grubm.view.MyPhotosTab');
+    // Ext.create('Grubm.view.UploadPhoto');
+
+    // var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
+    // mask.show();
+    // var self = this;
+    // FB.getLoginStatus(function(response) {
+    //   if(response.session) {
+    //     self.initUser(response.session);
+    //     self.getLogin().hide();
+    //     self.getMain().show();
+    //     mask.hide();
+    //   } else {
+    //     self.getLogin().show();
+    //     self.getMain().hide();
+    //     mask.hide();
+    //   }
+    // });
+    // Ext.getStore('MyImages').on('load', Ext.bind(this.onMyImagesStoreLoad, this));
+    // Ext.getStore('Images').on('load', Ext.bind(this.onImagesStoreLoad, this));
   },
 
   onMainTabChange: function(mainTabPanel, newVal, oldVal) {
@@ -356,42 +365,43 @@ Ext.define('Grubm.controller.Main', {
   deletePhoto: function() {
     var view = this.getImageDetail();
     view.hide();
-    var box = Ext.Msg.confirm("Delete Photo", "Are you sure you want to delete this photo?", function(button) {
-      if(button == 'no') {
-        box.hide();
-        view.show();
-      } else {
-        var image = view.getImage(),
-        user = this.getUserStore().first(),
-        self = this;
+    var box = Ext.Msg.confirm("Delete Photo", "Are you sure you want to delete this photo?", 
+      function(button) {
+        if(button == 'no') {
+          box.hide();
+          view.show();
+        } else {
+          var image = view.getImage(),
+          user = this.getUserStore().first(),
+          self = this;
 
-        box.hide();
+          box.hide();
 
-        var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
-        mask.show();
+          var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
+          mask.show();
 
-        Ext.Ajax.request({
-          url: this.getApiServer() + '/v1/images/' + image.get('id') + '.json',
-          method: 'DELETE',
-          params: {
-            access_token: user.get('accessToken'),
-            oauth_provider: 'facebook'
-          },
-          success: function() {
-            self.getMyImagesStore().load({
-              params: {
-                access_token: user.get('accessToken'), 
-                oauth_provider: 'facebook'
-              }
-            });
-            mask.hide();
-          },
-          failure: function() {
-            Ext.Msg.alert("Delete Error", "There was a problem deleting your photo. Please try again later.", Ext.emptyFn);
-          }
-        });
-      }  
-    }, this);
+          Ext.Ajax.request({
+            url: this.getApiServer() + '/v1/images/' + image.get('id') + '.json',
+            method: 'DELETE',
+            params: {
+              access_token: user.get('accessToken'),
+              oauth_provider: 'facebook'
+            },
+            success: function() {
+              self.getMyImagesStore().load({
+                params: {
+                  access_token: user.get('accessToken'), 
+                  oauth_provider: 'facebook'
+                }
+              });
+              mask.hide();
+            },
+            failure: function() {
+              Ext.Msg.alert("Delete Error", "There was a problem deleting your photo. Please try again later.", Ext.emptyFn);
+            }
+          });
+        }  
+      }, this);
   },
 
   savePhoto: function() {
@@ -561,6 +571,7 @@ Ext.define('Grubm.controller.Main', {
   },
 
   loginToFacebook: function() {
+    console.log('login to facebook');
     var self = this;
 
     FB.login(function(response) {
