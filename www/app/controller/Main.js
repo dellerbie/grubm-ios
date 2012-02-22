@@ -1,6 +1,5 @@
 Ext.define('Grubm.controller.Main', {
   extend: 'Ext.app.Controller',
-
   config: {
     baseUrl: "http://la.grubm.com",
     apiServer: "http://192.168.1.76:3000",
@@ -11,8 +10,8 @@ Ext.define('Grubm.controller.Main', {
     currentImage: null,
     user: null,
     refs: {
-      // main: 'mainview',
-      login: 'loginview',
+      main: 'mainview',
+      login: 'loginview'
       // citypicker: 'citypickerview',
       // food: 'foodview',
       // images: 'imagesview',
@@ -43,10 +42,10 @@ Ext.define('Grubm.controller.Main', {
     //     action: 'onSearch',
     //     searchclear: 'onSearchClear'
     //   },
-    //   'myphotostab': {
-    //     select: 'showDetailsSheet',
-    //     activate: 'loadMyPhotos'
-    //   },
+      'myphotostab': {
+        select: 'showDetailsSheet',
+        activate: 'loadMyPhotos'
+      },
     //   'imagedetail': {
     //     hideanimationstart: 'onDetailHideAnimationStart'
     //   },
@@ -92,37 +91,38 @@ Ext.define('Grubm.controller.Main', {
     //   },
       'loginview': {
         fbtap: 'loginToFacebook'
+      },
+      'mainview': {
+        activeitemchange: 'onMainTabChange'
       }
-    //   'mainview': {
-    //     activeitemchange: 'onMainTabChange'
-    //   }
     }
   },
 
   launch: function() {
     console.log('controller launch');
-    Ext.create('Grubm.view.Login');
-    Ext.create('Grubm.view.Main');
-    // Ext.create('Grubm.view.MyPhotosTab');
-    // Ext.create('Grubm.view.UploadPhoto');
 
-    // var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
-    // mask.show();
-    // var self = this;
-    // FB.getLoginStatus(function(response) {
-    //   if(response.session) {
-    //     self.initUser(response.session);
-    //     self.getLogin().hide();
-    //     self.getMain().show();
-    //     mask.hide();
-    //   } else {
-    //     self.getLogin().show();
-    //     self.getMain().hide();
-    //     mask.hide();
-    //   }
-    // });
-    // Ext.getStore('MyImages').on('load', Ext.bind(this.onMyImagesStoreLoad, this));
-    // Ext.getStore('Images').on('load', Ext.bind(this.onImagesStoreLoad, this));
+    var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
+    mask.show();
+    var self = this;
+    FB.getLoginStatus(function(response) {
+      console.log('fb response => ');
+      console.log(JSON.stringify(response));
+      if(response.status == 'connected') {
+        console.log('logged in...response.session => ');
+        console.log(JSON.stringify(response.session));
+        self.initUser(response.session);
+        self.getLogin().hide();
+        self.getMain().show();
+        mask.hide();
+      } else {
+        console.log('not logged in');
+        self.getLogin().show();
+        self.getMain().hide();
+        mask.hide();
+      }
+    });
+    Ext.getStore('MyImages').on('load', Ext.bind(this.onMyImagesStoreLoad, this));
+    Ext.getStore('Images').on('load', Ext.bind(this.onImagesStoreLoad, this));
   },
 
   onMainTabChange: function(mainTabPanel, newVal, oldVal) {
@@ -573,13 +573,18 @@ Ext.define('Grubm.controller.Main', {
   loginToFacebook: function() {
     console.log('login to facebook');
     var self = this;
+    console.log('after self');
 
     FB.login(function(response) {
+      console.log('login');
+      console.log(JSON.stringify(response));
       if(response.session) {
+        console.log('success');
         self.getLogin().hide();
         self.initUser(response.session);
         self.getMain().show(); 
       } else {
+        console.log('fail');
         self.getLogin().show();
         Ext.Msg.alert('Facebook Login Error', 'Could not log in to Facebook.  Please try again.', Ext.emptyFn);
       }
@@ -594,9 +599,8 @@ Ext.define('Grubm.controller.Main', {
       secret: session.secret,
       oauthType: 'facebook'
     });
-
-    //    console.log('access_token => ');
-    //    console.log(user.get('accessToken'));
+    
+    console.log('access_token => ' + user.get('accessToken'));
 
     var self = this;
     FB.api('/me', function(res) {

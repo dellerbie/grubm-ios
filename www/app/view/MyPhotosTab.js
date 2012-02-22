@@ -1,5 +1,5 @@
 Ext.define('Grubm.view.MyPhotosTab', {
-  extend: 'Ext.DataView',
+  extend: 'Ext.dataview.DataView',
   requires: ['Grubm.store.MyImages'],
   xtype: 'myphotostab',
   config: {

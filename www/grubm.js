@@ -26,5 +26,9 @@ Ext.application({
   ],
   launch: function() {
 	  console.log('app launch');
+    Ext.create('Grubm.view.Login');
+    Ext.create('Grubm.view.Main');
+    //Ext.create('Grubm.view.MyPhotosTab');
+    // Ext.create('Grubm.view.UploadPhoto');
   }
 }); 
