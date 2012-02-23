@@ -99,44 +99,40 @@ Ext.define('Grubm.controller.Main', {
   },
 
   launch: function() {
-    this.maskViewport();
-    
     Ext.create('Grubm.view.Login').hide();
     Ext.create('Grubm.view.Main').hide();
     Ext.create('Grubm.view.MyPhotosTab');
     Ext.create('Grubm.view.UploadPhoto');
     var self = this;
     
-    Ext.getStore('User').setData([{
-      accessToken: "BAADzyTXMlh0BAAN7WpP0LmeaAk5ccIIQfHw9cHmVU6bRAowfhr5pt6h0GAyX3ug47OO6ZCRIv5foLp4hHA24x833ZBFRJfTAfFxzLJ5BCje5rxxs1rLyr00nE2Nr9OnEzWUxccIAZDZD",
-      secret: "630bc3266929913d0010b4a1bc79cd2a",
-      oauthType: 'facebook',
-      uid: '',
-      firstName: 'Derrick',
-      lastName: 'Ellerbie',
-      gender: 'Male',
-      email: 'derrick@grubm.com'
-    }]);
-    self.getLogin().hide();
-    self.loadMyPhotos();
-    self.getMain().show();
-    this.unmaskViewport();
+    // Ext.getStore('User').setData([{
+    //   accessToken: "BAADzyTXMlh0BAAN7WpP0LmeaAk5ccIIQfHw9cHmVU6bRAowfhr5pt6h0GAyX3ug47OO6ZCRIv5foLp4hHA24x833ZBFRJfTAfFxzLJ5BCje5rxxs1rLyr00nE2Nr9OnEzWUxccIAZDZD",
+    //   secret: "630bc3266929913d0010b4a1bc79cd2a",
+    //   oauthType: 'facebook',
+    //   uid: '',
+    //   firstName: 'Derrick',
+    //   lastName: 'Ellerbie',
+    //   gender: 'Male',
+    //   email: 'derrick@grubm.com'
+    // }]);
+    // self.getLogin().hide();
+    // self.loadMyPhotos();
+    // self.getMain().show();
+    // this.unmaskViewport();
 
-    // FB.getLoginStatus(function(response) {
-    //   console.log('fb response => ');
-    //   console.log(JSON.stringify(response));
-    //   if(response.status == 'connected') {
-    //     console.log('logged in...response.session => ');
-    //     console.log(JSON.stringify(response.session));
-    //     self.initUser(response.session);
-    //     self.unmaskViepwort();
-    //   } else {
-    //     console.log('not logged in');
-    //     self.getLogin().show();
-    //     self.getMain().hide();
-    //     self.unmaskViepwort();
-    //   }
-    // });
+    FB.getLoginStatus(function(response) {
+      console.log('fb response => ');
+      console.log(JSON.stringify(response));
+      if(response.status == 'connected') {
+        console.log('logged in...response.session => ');
+        console.log(JSON.stringify(response.session));
+        self.initUser(response.session);
+      } else {
+        console.log('not logged in');
+        self.getLogin().show();
+        self.getMain().hide();
+      }
+    });
     Ext.getStore('MyImages').on('load', Ext.bind(this.onMyImagesStoreLoad, this));
     Ext.getStore('Images').on('load', Ext.bind(this.onImagesStoreLoad, this));
   },
@@ -160,14 +156,10 @@ Ext.define('Grubm.controller.Main', {
         self = this;
       
     if(user) {
-      self.maskViewport();
       Ext.getStore('MyImages').load({
         params: {
           access_token: user.get('accessToken'), 
           oauth_provider: 'facebook'
-        },
-        callback: function() {
-          self.unmaskViewport();
         }
       });
     }
@@ -443,7 +435,7 @@ Ext.define('Grubm.controller.Main', {
     }
 
     if(errors.length == 0) {
-      this.maskViewport("Saving...");
+      this.maskViewport("Uploading Photo...");
       var options = new FileUploadOptions();
       options.fileKey = "image[photo]";
       options.fileName = img.substr(img.lastIndexOf('/') + 1);
