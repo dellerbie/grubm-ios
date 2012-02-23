@@ -6,7 +6,7 @@ Ext.define('Grubm.view.MyPhotosTab', {
     ui: 'images-view',
     store: 'MyImages',
     itemTpl: new Ext.XTemplate(
-    	'<div class="image" style="background: url({url}) no-repeat;"></div>'
+      '<div class="image" style="background: url({url}) no-repeat;"></div>'
     )
   }
 });

@@ -9,86 +9,86 @@ Ext.define('Grubm.controller.Main', {
     currentPlace: null,
     currentImage: null,
     user: null,
+    staticMapBaseUrl: "http://maps.googleapis.com/maps/api/staticmap?",
     refs: {
       main: 'mainview',
-      login: 'loginview'
-      // citypicker: 'citypickerview',
-      // food: 'foodview',
-      // images: 'imagesview',
-      // business: 'businessview',
-      // myPhotosTab: 'myphotostab',
-      // imageDetail: 'imagedetail',
-      // deleteImageBtn: 'imagedetail button',
-      // uploadedImage: 'uploadphoto #uploaded-image',
-      // uploadPhoto: 'uploadphoto',
-      // photoDescription: 'uploadphoto textareafield',
-      // postToFacebook: 'uploadphoto checkboxfield',
-      // choosePhoto: 'choosephoto',
-      // whereAreYou: 'whereareyou',
-      // locationText: 'uploadphoto #location-text',
-      // businessMap: 'imagedetail map'
+      login: 'loginview',
+      citypicker: 'citypickerview',
+      food: 'foodview',
+      images: 'imagesview',
+      business: 'businessview',
+      myPhotosTab: 'myphotostab',
+      imageDetail: 'imagedetail',
+      deleteImageBtn: 'imagedetail button',
+      uploadedImage: 'uploadphoto #uploaded-image',
+      uploadPhoto: 'uploadphoto',
+      photoDescription: 'uploadphoto textareafield',
+      postToFacebook: 'uploadphoto checkboxfield',
+      choosePhoto: 'choosephoto',
+      whereAreYou: 'whereareyou',
+      locationText: 'uploadphoto #location-text',
+      businessMap: 'imagedetail businessmap'
     },
     control: {
-    //   'citypickerview': {
-    //     select: 'onCitySelect'
-    //   },
-    //   'foodview button[ui="back"]': {
-    //     tap: 'onBackToCityPicker'
-    //   },
-    //   'imagesview': {
-    //     select: 'showDetailsSheet'
-    //   },
-    //   'searchbar searchfield': {
-    //     action: 'onSearch',
-    //     searchclear: 'onSearchClear'
-    //   },
-      'myphotostab': {
-        select: 'showDetailsSheet',
-        activate: 'loadMyPhotos'
+      'citypickerview': {
+        select: 'onCitySelect'
       },
-    //   'imagedetail': {
-    //     hideanimationstart: 'onDetailHideAnimationStart'
-    //   },
-    //   'imagedetail button[ui="decline"]': {
-    //     tap: 'deletePhoto'
-    //   },
-    //   'uploadphoto #select-pic': {
-    //     tap: 'selectImage'
-    //   },
-    //   'uploadphoto': {
-    //     show: 'onUploadPhotoShow',
-    //     hide: 'resetUploadPhoto'
-    //   },
-    //   'uploadphoto #select-location': {
-    //     tap: 'selectLocation'
-    //   },
-    //   'uploadphoto #cancel': {
-    //     tap: 'cancelUploadPhoto'
-    //   },
-    //   'uploadphoto #save-photo': {
-    //     tap: 'savePhoto'
-    //   },
-    //   'choosephoto button[ui="cancel"]': {
-    //     tap: 'cancelUploadPhoto'
-    //   },
-    //   'choosephoto #take-photo': {
-    //     tap: 'selectImage'
-    //   },
-    //   'choosephoto #choose-photo': {
-    //     tap: Ext.bind(this.selectImage, this, [true])
-    //   },
-    //   'whereareyou searchfield': {
-    //     keyup: 'filterPlaces'
-    //   },
-    //   'whereareyou dataview': {
-    //     select: 'onLocationSelected'
-    //   },
-    //   'whereareyou #cancelSelectLocation': {
-    //     tap: 'cancelSelectLocation'
-    //   },
-    //   'loginview': {
-    //     fbtap: 'loginToFacebook'
-    //   },
+      'foodview button[ui="back"]': {
+        tap: 'onBackToCityPicker'
+      },
+      'imagesview': {
+        select: 'showDetailsSheet'
+      },
+      'searchbar searchfield': {
+        action: 'onSearch',
+        searchclear: 'onSearchClear'
+      },
+      'myphotostab': {
+        select: 'showDetailsSheet'
+      },
+      'imagedetail': {
+        hideanimationstart: 'onDetailHideAnimationStart'
+      },
+      'imagedetail button[ui="decline"]': {
+        tap: 'deletePhoto'
+      },
+      'uploadphoto #select-pic': {
+        tap: 'selectImage'
+      },
+      'uploadphoto': {
+        show: 'onUploadPhotoShow',
+        hide: 'resetUploadPhoto'
+      },
+      'uploadphoto #select-location': {
+        tap: 'selectLocation'
+      },
+      'uploadphoto #cancel': {
+        tap: 'cancelUploadPhoto'
+      },
+      'uploadphoto #save-photo': {
+        tap: 'savePhoto'
+      },
+      'choosephoto button[ui="cancel"]': {
+        tap: 'cancelUploadPhoto'
+      },
+      'choosephoto #take-photo': {
+        tap: 'selectImage'
+      },
+      'choosephoto #choose-photo': {
+        tap: Ext.bind(this.selectImage, this, [true])
+      },
+      'whereareyou searchfield': {
+        keyup: 'filterPlaces'
+      },
+      'whereareyou dataview': {
+        select: 'onLocationSelected'
+      },
+      'whereareyou #cancelSelectLocation': {
+        tap: 'cancelSelectLocation'
+      },
+      'loginview': {
+        fbtap: 'loginToFacebook'
+      },
       'loginview': {
         fbtap: 'loginToFacebook'
       },
@@ -99,28 +99,44 @@ Ext.define('Grubm.controller.Main', {
   },
 
   launch: function() {
-    console.log('controller launch');
-
     var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
     mask.show();
+    
+    Ext.create('Grubm.view.Login').hide();
+    Ext.create('Grubm.view.Main').hide();
+    Ext.create('Grubm.view.MyPhotosTab');
+    Ext.create('Grubm.view.UploadPhoto');
     var self = this;
-    FB.getLoginStatus(function(response) {
-      console.log('fb response => ');
-      console.log(JSON.stringify(response));
-      if(response.status == 'connected') {
-        console.log('logged in...response.session => ');
-        console.log(JSON.stringify(response.session));
-        self.initUser(response.session);
-        self.getLogin().hide();
-        self.getMain().show();
-        mask.hide();
-      } else {
-        console.log('not logged in');
-        self.getLogin().show();
-        self.getMain().hide();
-        mask.hide();
-      }
-    });
+    
+    Ext.getStore('User').setData([{
+      accessToken: "BAADzyTXMlh0BAAN7WpP0LmeaAk5ccIIQfHw9cHmVU6bRAowfhr5pt6h0GAyX3ug47OO6ZCRIv5foLp4hHA24x833ZBFRJfTAfFxzLJ5BCje5rxxs1rLyr00nE2Nr9OnEzWUxccIAZDZD",
+      secret: "630bc3266929913d0010b4a1bc79cd2a",
+      oauthType: 'facebook',
+      uid: '',
+      firstName: 'Derrick',
+      lastName: 'Ellerbie',
+      gender: 'Male',
+      email: 'derrick@grubm.com'
+    }]);
+    self.getLogin().hide();
+    self.loadMyPhotos();
+    self.getMain().show();
+
+    // FB.getLoginStatus(function(response) {
+    //   console.log('fb response => ');
+    //   console.log(JSON.stringify(response));
+    //   if(response.status == 'connected') {
+    //     console.log('logged in...response.session => ');
+    //     console.log(JSON.stringify(response.session));
+    //     self.initUser(response.session);
+    //     mask.hide();
+    //   } else {
+    //     console.log('not logged in');
+    //     self.getLogin().show();
+    //     self.getMain().hide();
+    //     mask.hide();
+    //   }
+    // });
     Ext.getStore('MyImages').on('load', Ext.bind(this.onMyImagesStoreLoad, this));
     Ext.getStore('Images').on('load', Ext.bind(this.onImagesStoreLoad, this));
   },
@@ -131,7 +147,7 @@ Ext.define('Grubm.controller.Main', {
       var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
       mask.show();
       FB.logout(function(response) {
-        self.getMyImagesStore().loadData({});
+        self.getMyImagesStore().setData({});
         self.getMain().setActiveItem(0);
         self.getMain().hide();
         self.getLogin().show();
@@ -142,34 +158,36 @@ Ext.define('Grubm.controller.Main', {
 
   loadMyPhotos: function() {
     var user = Ext.getStore('User').first(),
-    self = this,
-    mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
-
-    mask.show();
-    Ext.getStore('MyImages').load({
-      params: {
-        access_token: user.get('accessToken'), 
-        oauth_provider: 'facebook'
-      },
-      callback: function() {
-        mask.hide();
-      }
-    });
+        self = this,
+        mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
+      
+    if(user) {
+      mask.show();
+      Ext.getStore('MyImages').load({
+        params: {
+          access_token: user.get('accessToken'), 
+          oauth_provider: 'facebook'
+        },
+        callback: function() {
+          mask.hide();
+        }
+      });
+    }
   },
 
   onMyImagesStoreLoad: function(store, records, successful) {
     if(records.length == 0) {
-      this.getMyPhotosTab().el.addCls('empty');
+      this.getMyPhotosTab().element.addCls('empty');
     } else {
-      this.getMyPhotosTab().el.removeCls('empty');
+      this.getMyPhotosTab().element.removeCls('empty');
     }
   },
 
   onImagesStoreLoad: function(store, records) {
     if(records.length == 0) {
-      this.getImages().el.addCls('empty');
+      this.getImages().element.addCls('empty');
     } else {
-      this.getImages().el.removeCls('empty');
+      this.getImages().element.removeCls('empty');
     }
   },
 
@@ -198,7 +216,7 @@ Ext.define('Grubm.controller.Main', {
 
   showDetailsSheet: function(list, image) {
     if (!this.getImageDetail()) {
-      Ext.Viewport.add(this.getImageDetailView().create());
+      Ext.Viewport.add(Ext.create('Grubm.view.ImageDetail'));
     }
 
     var view = this.getImageDetail();
@@ -212,20 +230,21 @@ Ext.define('Grubm.controller.Main', {
     }
 
     var business = image.get('business'),
-    mbp = view.child('carousel').child('morebusinessphotos'),
-    isFindFoodView = list.isXType('imagesview');
+        moreBusinessPhotosView = view.child('carousel').child('morebusinessphotos'),
+        isFindFoodView = list.isXType('imagesview');
 
     if(isFindFoodView) {
-      this.getBusinessesStore().proxy.url = this.getBaseUrl() + "/business/" + business.normalized_name+ ".json";
-      this.getBusinessesStore().load({params: {limit: 12}});
-      if(!mbp) {
+      var businessStore = Ext.getStore('Businesses');
+      businessStore.proxy.url = this.getBaseUrl() + "/business/" + business.normalized_name+ ".json";
+      businessStore.load({params: {limit: 12}});
+      if(!moreBusinessPhotosView) {
         view.child('carousel').add({xtype: 'morebusinessphotos'});
       }
       this.getDeleteImageBtn().hide();
       this.getImages().deselectAll();
     } else {
-      if(mbp) {
-        view.child('carousel').remove(mbp);
+      if(moreBusinessPhotosView) {
+        view.child('carousel').remove(moreBusinessPhotosView);
       }
       this.getDeleteImageBtn().show();
       this.getMyPhotosTab().deselectAll();
@@ -235,8 +254,8 @@ Ext.define('Grubm.controller.Main', {
     this.positionBusinessMap(business);
 
     var imageDiv = Ext.get(Ext.DomQuery.selectNode('.x-sheet-image-detail .image')),
-    width = image.data.width,
-    height = image.data.height;
+        width = image.data.width,
+        height = image.data.height;
 
     if(isFindFoodView) {
       imageDiv.setStyle({
@@ -247,7 +266,6 @@ Ext.define('Grubm.controller.Main', {
     } else {
       var halfW = Math.floor(width/2) + "px", 
       halfH = Math.floor(height/2) + "px";
-
       imageDiv.setStyle({
         width: halfW,
         height: halfH,
@@ -257,32 +275,23 @@ Ext.define('Grubm.controller.Main', {
   },
 
   positionBusinessMap: function(business) {
-    var address = [business.street, business.city, business.state].join(',');
-
-    if(business.lat && business.lng) {
-      var map = this.getBusinessMap().getMap();
-      var latLng = new google.maps.LatLng(business.lat, business.lng);
-      map.setCenter(latLng);
-      map.setZoom(16);
-      var marker = new google.maps.Marker({
-        map: map,
-        position: latLng
-      });
-    } else {
-      this.getBusinessMap().geocoder.geocode( { 'address': address}, Ext.bind(this.onGeocodeSuccess, this));
-    }
-  },
-
-  onGeocodeSuccess: function(results, status) {
-    if(status == google.maps.GeocoderStatus.OK) {
-      var map = this.getBusinessMap().getMap();
-      map.setCenter(results[0].geometry.location);
-      map.setZoom(16);
-      var marker = new google.maps.Marker({
-        map: map,
-        position: results[0].geometry.location
-      });
-    }
+    var address = [business.street, business.city, business.state, business.zip].join(',');
+    var map = Ext.get(this.getBusinessMap().element).select('.map');
+    var params = Ext.Object.toQueryString({
+      sensor: false,
+      center: address,
+      zoom: 15,
+      size: "375x225",
+      scale: 2,
+      maptype: "roadmap",
+      markers: "color:blue|" + address
+    });
+    map.setStyle({
+      "background": "url(" + this.getStaticMapBaseUrl() + params +  ")",
+      width: "375px",
+      height: "225px",
+      "-webkit-background-size": '100% 100%'
+    });
   },
 
   onDetailHideAnimationStart: function() {
@@ -503,7 +512,7 @@ Ext.define('Grubm.controller.Main', {
       },
       success: function(response) {
         var json = Ext.decode(response.responseText);
-        self.getPlacesStore().loadData(json.results, false);
+        self.getPlacesStore().setData(json.results, false);
       }
     });
   },
@@ -523,7 +532,7 @@ Ext.define('Grubm.controller.Main', {
       },
       success: function(response) {
         var json = Ext.decode(response.responseText);
-        self.getPlacesStore().loadData(json.results, false);
+        self.getPlacesStore().setData(json.results, false);
       }
     });
   },
@@ -571,20 +580,14 @@ Ext.define('Grubm.controller.Main', {
   },
 
   loginToFacebook: function() {
-    console.log('login to facebook');
     var self = this;
-    console.log(FB.login);
 
     FB.login(function(response) {
-      console.log('login');
-      console.log(JSON.stringify(response));
       if(response.session) {
-        console.log('success');
         self.getLogin().hide();
         self.initUser(response.session);
         self.getMain().show(); 
       } else {
-        console.log('fail');
         self.getLogin().show();
         Ext.Msg.alert('Facebook Login Error', 'Could not log in to Facebook.  Please try again.', Ext.emptyFn);
       }
@@ -594,32 +597,26 @@ Ext.define('Grubm.controller.Main', {
   },
 
   initUser: function(session) {
-    var user = Ext.create('Grubm.model.User', {
-      accessToken: session.access_token,
-      secret: session.secret,
-      oauthType: 'facebook'
-    });
-    
-    console.log('access_token => ' + user.get('accessToken'));
-
     var self = this;
     FB.api('/me', function(res) {
       if(res.error) {
         self.getLogin().show();
+        self.getMain().hide();
         Ext.Msg.alert('Facebook Login Error', 'There was a problem connecting to your Facebook account', Ext.emptyFn);
       } else {
-        user.set('uid', res.id);
-        user.set('firstName', res.first_name);
-        user.set('lastName', res.last_name);
-        user.set('gender', res.gender);
-        user.set('email', res.email);
-        Ext.getStore('User').loadData(user, false);
-        Ext.getStore('MyImages').load({
-          params: {
-            access_token: user.get('accessToken'), 
-            oauth_provider: 'facebook'
-          }
-        });
+        Ext.getStore('User').setData([{
+          accessToken: session.access_token,
+          secret: session.secret,
+          oauthType: 'facebook',
+          uid: res.id,
+          firstName: res.first_name,
+          lastName: res.last_name,
+          gender: res.gender,
+          email: res.email
+        }]);
+        self.getLogin().hide();
+        self.loadMyPhotos();
+        self.getMain().show();
       }          
     });
   },

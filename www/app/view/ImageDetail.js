@@ -4,7 +4,8 @@ Ext.define('Grubm.view.ImageDetail', {
   requires: [
   	'Grubm.view.ImageInfo', 
     'Grubm.view.BusinessInfo',
-    'Grubm.view.MoreBusinessPhotos'
+    'Grubm.view.MoreBusinessPhotos',
+    'Grubm.view.BusinessMap'
   ],
 
   config: {
@@ -46,15 +47,7 @@ Ext.define('Grubm.view.ImageDetail', {
         items: [{
         	xtype: 'businessinfo'
         },{
-        	xtype: 'map',
-          height: 200,
-          mapOptions: {
-            mapTypeId: google.maps.MapTypeId.ROADMAP,
-            navigationControl: false,
-            disableDefaultUI: true,
-            draggable: false
-          },
-          geocoder: new google.maps.Geocoder()
+        	xtype: 'businessmap',
         }]
       }]
     }]

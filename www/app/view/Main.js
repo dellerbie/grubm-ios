@@ -2,10 +2,10 @@ Ext.define('Grubm.view.Main', {
   extend: 'Ext.TabPanel',
   xtype: 'mainview',
   requires: [
-  'Grubm.view.CityPicker',
-  'Grubm.view.MyPhotosTab',
-  'Grubm.view.UploadPhoto',
-  'Grubm.view.Food'
+    'Grubm.view.CityPicker',
+    'Grubm.view.MyPhotosTab',
+    'Grubm.view.UploadPhoto',
+    'Grubm.view.Food'
   ],
   config: {
     fullscreen: true,
@@ -13,8 +13,7 @@ Ext.define('Grubm.view.Main', {
     items: [{
       title: 'My Photos',
       iconCls: 'photos2',
-      //xtype: 'myphotostab'
-      html: 'my photo'
+      xtype: 'myphotostab'
     },{
       title: 'Upload',
       iconCls: 'photo1',

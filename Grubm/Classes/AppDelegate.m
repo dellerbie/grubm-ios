@@ -30,7 +30,7 @@
  */
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-	
+  [NSClassFromString(@"WebView") performSelector:@selector(_enableRemoteInspector)];
 	NSArray *keyArray = [launchOptions allKeys];
 	if ([launchOptions objectForKey:[keyArray objectAtIndex:0]]!=nil) 
 	{
