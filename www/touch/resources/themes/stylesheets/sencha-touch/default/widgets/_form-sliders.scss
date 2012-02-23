@@ -7,15 +7,28 @@
  */
 @mixin sencha-form-sliders {
 
+  .x-slider-field, .x-toggle-field {
+    .x-component-outer {
+      padding: $form-spacing;
+    }
+  }
+
   .x-slider,
   .x-toggle {
-    .x-component-outer {
       position: relative;
       height: $form-thumb-size;
-      margin: $form-spacing;
       min-height: 0;
       min-width: 0;
+
+    > * {
+        position: absolute;
+        width: 100%;
+        height: 100%;
     }
+  }
+
+  .x-slider.x-item-disabled {
+    opacity: .6;
   }
 
   @if $basic-slider {
@@ -32,7 +45,7 @@
     }
 
     // Create the slider track
-    .x-slider .x-component-outer:after {
+    .x-slider:after {
       @include insertion(auto, $form-slider-size, $form-toggle-size / 2 - $form-slider-size/2 + $form-spacing/2 - $form-thumb-space / 2, 0);
       right: 0;
       margin: 0 $form-toggle-size/2;
@@ -49,11 +62,10 @@
       // The actual thumb
       &:before {
         @include insertion($form-toggle-size, $form-toggle-size, $form-thumb-space, $form-thumb-space);
-        border: .1em solid darken($form-light, 30%);
+        border: 1px solid darken($form-light, 30%);
         @if $include-border-radius { @include border-radius($form-toggle-size/2); }
         // overflow: visible;
         @include background-gradient($form-light);
-        -webkit-box-shadow: inset rgba(#fff, .5) 0 0 .1em, inset rgba(#fff, .3) 0 -.1em 0;
         @include background-clip(padding-box);
       }
 
@@ -66,7 +78,7 @@
     }
 
     // Create the slider track
-    .x-slider .x-component-outer:after {
+    .x-slider:after {
       @include insertion(auto, $form-slider-size, $form-toggle-size / 2 - $form-slider-size/2 + $form-spacing/2 - $form-thumb-space / 2, 0);
       right: 0;
       margin: 0 $form-toggle-size/2;
@@ -78,12 +90,11 @@
     }
   }
 
-  .x-toggle .x-component-outer {
-    margin: $form-spacing;
+  .x-toggle {
     width: $form-thumb-size * 2;
     @if $include-border-radius { @include border-radius($form-thumb-size/2); }
     overflow: hidden;
-    border: .1em solid darken($form-light, 15%);
+    border: 1px solid darken($form-light, 15%);
     @include background-gradient($form-light, 'recessed');
     -webkit-box-flex: 0;
 
@@ -132,11 +143,7 @@
     }
   }
 
-  .x-toggle-on.x-component-outer {
+  .x-toggle-on {
     @include background-gradient($confirm-color, 'recessed');
-  }
-
-  .x-android .x-field-toggle .x-slider {
-    //-webkit-transform: translate(0px, 0px);
   }
 }

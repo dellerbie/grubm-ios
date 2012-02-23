@@ -72,10 +72,10 @@ Ext.define('Grubm.controller.Main', {
         tap: 'cancelUploadPhoto'
       },
       'choosephoto #take-photo': {
-        tap: 'selectImage'
+        tap: 'takePhoto'
       },
       'choosephoto #choose-photo': {
-        tap: Ext.bind(this.selectImage, this, [true])
+        tap: 'selectImage'
       },
       'whereareyou searchfield': {
         keyup: 'filterPlaces'
@@ -99,8 +99,7 @@ Ext.define('Grubm.controller.Main', {
   },
 
   launch: function() {
-    var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
-    mask.show();
+    this.maskViewport();
     
     Ext.create('Grubm.view.Login').hide();
     Ext.create('Grubm.view.Main').hide();
@@ -121,6 +120,7 @@ Ext.define('Grubm.controller.Main', {
     self.getLogin().hide();
     self.loadMyPhotos();
     self.getMain().show();
+    this.unmaskViewport();
 
     // FB.getLoginStatus(function(response) {
     //   console.log('fb response => ');
@@ -129,12 +129,12 @@ Ext.define('Grubm.controller.Main', {
     //     console.log('logged in...response.session => ');
     //     console.log(JSON.stringify(response.session));
     //     self.initUser(response.session);
-    //     mask.hide();
+    //     self.unmaskViepwort();
     //   } else {
     //     console.log('not logged in');
     //     self.getLogin().show();
     //     self.getMain().hide();
-    //     mask.hide();
+    //     self.unmaskViepwort();
     //   }
     // });
     Ext.getStore('MyImages').on('load', Ext.bind(this.onMyImagesStoreLoad, this));
@@ -144,32 +144,30 @@ Ext.define('Grubm.controller.Main', {
   onMainTabChange: function(mainTabPanel, newVal, oldVal) {
     var self = this;
     if(newVal.title == 'Logout') {
-      var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
-      mask.show();
+      self.maskViewport();
       FB.logout(function(response) {
         self.getMyImagesStore().setData({});
         self.getMain().setActiveItem(0);
         self.getMain().hide();
         self.getLogin().show();
-        mask.hide();
+        self.unmaskViepwort();
       });
     }
   },
 
   loadMyPhotos: function() {
     var user = Ext.getStore('User').first(),
-        self = this,
-        mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
+        self = this;
       
     if(user) {
-      mask.show();
+      self.maskViewport();
       Ext.getStore('MyImages').load({
         params: {
           access_token: user.get('accessToken'), 
           oauth_provider: 'facebook'
         },
         callback: function() {
-          mask.hide();
+          self.unmaskViewport();
         }
       });
     }
@@ -290,7 +288,6 @@ Ext.define('Grubm.controller.Main', {
     });
     map.setStyle({
       "background": "url(" + this.getStaticMapBaseUrl() + params +  ")",
-      width: "375px",
       height: "225px",
       "-webkit-background-size": '100% 100%'
     });
@@ -299,35 +296,52 @@ Ext.define('Grubm.controller.Main', {
   onDetailHideAnimationStart: function() {
     this.getMyPhotosTab().deselectAll();
   },
+  
+  takePhoto: function() {
+    this.selectImage(true);
+  },
 
-  selectImage: function(fromLibrary) {
+  selectImage: function(takePhoto) {
     var options = {
       limit: 1,
       quality: 45,
       encodingType: Camera.EncodingType.JPEG,
-      targetWidth: 600,
-      targetHeight: 600, 
+      targetWidth: 612,
+      targetHeight: 612, 
       sourceType: Camera.PictureSourceType.CAMERA,
       destinationType: Camera.DestinationType.FILE_URI
     };
 
-    if(fromLibrary == true) {
+    if(takePhoto == true) {
+      navigator.device.capture.captureImage(
+        Ext.bind(this.onGetImageSuccess, this), 
+        this.onGetImageError, 
+        options
+      );
+    } else {
       options['sourceType'] = Camera.PictureSourceType.PHOTOLIBRARY;
       navigator.camera.getPicture(
         Ext.bind(this.onGetImageSuccess, this), 
         this.onGetImageError,
         options
       );
-    } else {
-      navigator.device.capture.captureImage(
-        Ext.bind(this.onGetImageSuccess, this), 
-        this.onGetImageError, 
-        options
-      );
     }
+  },
+  
+  maskViewport: function(msg) {
+    Ext.Viewport.setMasked({
+        xtype: 'loadmask',
+        message: msg || 'Loading...'
+    });
+  },
+  
+  unmaskViewport: function() {
+    Ext.Viewport.setMasked(false);
   },
 
   onGetImageSuccess: function(imageURI) {
+    this.maskViewport();
+    
     if(Ext.isArray(imageURI)) {
       imageURI = imageURI[0].fullPath;
     }
@@ -336,13 +350,10 @@ Ext.define('Grubm.controller.Main', {
     this.setCurrentImage(imageURI);
     this.getChoosePhoto().hide();
 
-    // show mask for 2 seconds, then show selectLocation
-    var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
-    mask.show();
     var self = this;
     var task = new Ext.util.DelayedTask(function(){
       self.selectLocation();
-      mask.hide();	
+      self.unmaskViewport();
     });
     task.delay(2000);
   },
@@ -352,7 +363,7 @@ Ext.define('Grubm.controller.Main', {
 
   onUploadPhotoShow: function(uploadPhoto) {
     if(!this.getChoosePhoto()) {
-      Ext.Viewport.add(this.getChoosePhotoView().create());
+      Ext.Viewport.add(Ext.create('Grubm.view.ChoosePhoto'));
     }
     this.getChoosePhoto().show();
   },
@@ -382,15 +393,12 @@ Ext.define('Grubm.controller.Main', {
           box.hide();
           view.show();
         } else {
+          this.maskViewport();
           var image = view.getImage(),
-          user = Ext.getStore('User').first(),
-          self = this;
-
+              user = Ext.getStore('User').first(),
+              self = this;
+              
           box.hide();
-
-          var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
-          mask.show();
-
           Ext.Ajax.request({
             url: this.getApiServer() + '/v1/images/' + image.get('id') + '.json',
             method: 'DELETE',
@@ -405,7 +413,7 @@ Ext.define('Grubm.controller.Main', {
                   oauth_provider: 'facebook'
                 }
               });
-              mask.hide();
+              self.unmaskViewport();
             },
             failure: function() {
               Ext.Msg.alert("Delete Error", "There was a problem deleting your photo. Please try again later.", Ext.emptyFn);
@@ -435,14 +443,13 @@ Ext.define('Grubm.controller.Main', {
     }
 
     if(errors.length == 0) {
-      // save it
-
+      this.maskViewport("Saving...");
       var options = new FileUploadOptions();
       options.fileKey = "image[photo]";
       options.fileName = img.substr(img.lastIndexOf('/') + 1);
       options.mimeType = "image/jpeg";
 
-      var user = this.getUserStore().first();
+      var user = Ext.getStore('User').first();
 
       options.params = {
         "access_token": user.get('accessToken'),
@@ -463,24 +470,21 @@ Ext.define('Grubm.controller.Main', {
         options.params["image[business][categories][]"] = place.data.types[i];
       }
 
-      var ft = new FileTransfer();
-      var self = this;
-
-      var mask = new Ext.LoadMask(Ext.getBody(), {msg:""});
-      mask.show();
-
+      var self = this,
+          ft = new FileTransfer();
+          
       ft.upload(img, 
         this.getApiServer() + '/v1/images.json',
         function(r) {
           self.resetUploadPhoto();
           self.getMain().setActiveItem(0);
-          mask.hide();
+          self.unmaskViewport();
           if(postToFB == 1) {
             self.postToFacebook(Ext.JSON.decode(r.response));
           }
         },
         function(error) {
-          mask.hide();
+          self.unmaskViewport();
           Ext.Msg.alert("Upload Error", "An error has occurred: Code = " + error.code, Ext.emptyFn);
         },
         options
@@ -514,13 +518,14 @@ Ext.define('Grubm.controller.Main', {
       },
       success: function(response) {
         var json = Ext.decode(response.responseText);
-        self.getPlacesStore().setData(json.results, false);
+        Ext.getStore('Places').setData(json.results);
       }
     });
   },
 
   onGetCurrentPositionError: function(error) {
-    Ext.Msg.alert("Location Error", "Error getting your current location. You need to enable location for Grubm in your phone settings app", Ext.emptyFn);
+    this.getUploadPhoto().setActiveItem(0, {type: 'slide', direction: 'right'});
+    Ext.Msg.alert("Location Error", "Error getting your current location. You need to enable location for Grubm in your phone settings", Ext.emptyFn);
   },
 
   filterPlaces: function(searchField) {
