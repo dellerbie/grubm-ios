@@ -478,9 +478,13 @@ Ext.define('Grubm.controller.Main', {
         function(r) {
           self.resetUploadPhoto();
           self.getMain().setActiveItem(0);
+          self.loadMyPhotos();
           self.unmaskViewport();
           if(postToFB == 1) {
-            self.postToFacebook(Ext.JSON.decode(r.response));
+            var task = new Ext.util.DelayedTask(function(){
+              self.postToFacebook(Ext.JSON.decode(r.response));
+            });
+            task.delay(5000);
           }
         },
         function(error) {
@@ -629,7 +633,7 @@ Ext.define('Grubm.controller.Main', {
   },
 
   postToFacebook: function(image) {
-    var user = this.getUserStore().first();
+    var user = Ext.getStore('User').first();
 
     var description = '';
     if(image.business && image.business.name) {
@@ -646,7 +650,7 @@ Ext.define('Grubm.controller.Main', {
         access_token: user.get('accessToken'),
         message: image.description,
         link: this.getApiServer() + '/' + image.id,
-        "picture": image.url,  // it doesn't work if picture isn't quoted
+        "picture": image.original_url,  // it doesn't work if picture isn't quoted
         description: description,
         name: 'mmm food',
         caption: 'grubm.com'
