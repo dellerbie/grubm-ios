@@ -209,7 +209,7 @@ Ext.define('Grubm.controller.Main', {
 
     if (this.getProfile() == "phone") {
       view.setWidth(null);
-      view.setHeight('90%');
+      view.setHeight('85%');
       view.setTop(null);
       view.setLeft(0);
     }
@@ -252,9 +252,9 @@ Ext.define('Grubm.controller.Main', {
       });
     } else {
       imageDiv.setStyle({
-        width: "280px",
-        height: "280px",
-        "-webkit-background-size": "280px 280px"
+        width: "260px",
+        height: "260px",
+        "-webkit-background-size": "260px 260px"
       });
     }
   },
@@ -445,8 +445,8 @@ Ext.define('Grubm.controller.Main', {
         "image[business][city]": place.data.city,
         "image[business][state]": place.data.state,
         "image[business][zip]": place.data.zip,
-        "image[business][lat]": place.data.geometry.lat,
-        "image[business][lng]": place.data.geometry.lng,
+        "image[business][lat]": place.data.geometry.location.lat,
+        "image[business][lng]": place.data.geometry.location.lng,
         "image[business][phone]": place.data.phone
       };
 
@@ -538,6 +538,9 @@ Ext.define('Grubm.controller.Main', {
     this.getLocationText().setHtml('&#64; ' + place.get('name'));
     var self = this;
 
+    console.log("place before request");
+    console.log(JSON.stringify(place.data));
+
     // get the places detailed info
     Ext.Ajax.request({
       url: "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc&sensor=true",
@@ -564,12 +567,14 @@ Ext.define('Grubm.controller.Main', {
             zip = address[i].long_name;
           }
         }
-
+        
         place.data['street'] = street_number + ' ' + street;
         place.data['city'] = city;
         place.data['state'] = state;
         place.data['zip'] = zip;
         place.data['phone'] = json.result.formatted_phone_number;        
+        console.log("place => ");
+        console.log(JSON.stringify(place.data));
         self.setCurrentPlace(place);
       }
     });
