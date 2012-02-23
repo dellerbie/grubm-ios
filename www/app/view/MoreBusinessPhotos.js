@@ -12,6 +12,7 @@ Ext.define('Grubm.view.MoreBusinessPhotos', {
     ),
     ui: 'business-images',
     emptyText: "This business doesn't have any more photos",
-    deferEmptyText: true
+    deferEmptyText: true,
+    height: 300
   }
 });

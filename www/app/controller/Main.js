@@ -193,8 +193,8 @@ Ext.define('Grubm.controller.Main', {
 
   onCitySelect: function(list, city) {
     this.setBaseUrl(city.get('url'));
-    this.getImages().getStore().proxy.url = this.getBaseUrl() + '/.json';
-    this.getImages().getStore().load();
+    Ext.getStore('Images').getProxy().setUrl(this.getBaseUrl() + '/.json');
+    Ext.getStore('Images').load();
     this.getMain().child('#maincontainer').setActiveItem(this.getFood(), {type: 'slide', direction: 'left'});
   },
 
@@ -203,7 +203,7 @@ Ext.define('Grubm.controller.Main', {
   },
 
   onSearch: function(searchField) {
-    this.getImages().getStore().load({
+    Ext.getStore('Images').load({
       params: {
         q: searchField.getValue()
       }
@@ -235,10 +235,10 @@ Ext.define('Grubm.controller.Main', {
 
     if(isFindFoodView) {
       var businessStore = Ext.getStore('Businesses');
-      businessStore.proxy.url = this.getBaseUrl() + "/business/" + business.normalized_name+ ".json";
+      businessStore.getProxy().setUrl(this.getBaseUrl() + "/business/" + business.normalized_name + ".json");
       businessStore.load({params: {limit: 12}});
       if(!moreBusinessPhotosView) {
-        view.child('carousel').add({xtype: 'morebusinessphotos'});
+        view.child('carousel').add(Ext.create('Grubm.view.MoreBusinessPhotos'));
       }
       this.getDeleteImageBtn().hide();
       this.getImages().deselectAll();
@@ -253,11 +253,13 @@ Ext.define('Grubm.controller.Main', {
     view.show();
     this.positionBusinessMap(business);
 
-    var imageDiv = Ext.get(Ext.DomQuery.selectNode('.x-sheet-image-detail .image')),
+    var imageDiv = Ext.select('.x-sheet-image-detail .image'),
         width = image.data.width,
         height = image.data.height;
 
     if(isFindFoodView) {
+      // the images aren't big enough to scale for the retina
+      // so just use their normal dimensions
       imageDiv.setStyle({
         width: width + "px",
         height: height + "px",
@@ -381,7 +383,7 @@ Ext.define('Grubm.controller.Main', {
           view.show();
         } else {
           var image = view.getImage(),
-          user = this.getUserStore().first(),
+          user = Ext.getStore('User').first(),
           self = this;
 
           box.hide();
@@ -397,7 +399,7 @@ Ext.define('Grubm.controller.Main', {
               oauth_provider: 'facebook'
             },
             success: function() {
-              self.getMyImagesStore().load({
+              Ext.getStore('MyImages').load({
                 params: {
                   access_token: user.get('accessToken'), 
                   oauth_provider: 'facebook'
