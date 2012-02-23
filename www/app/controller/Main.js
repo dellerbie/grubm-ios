@@ -121,14 +121,9 @@ Ext.define('Grubm.controller.Main', {
     // this.unmaskViewport();
 
     FB.getLoginStatus(function(response) {
-      console.log('fb response => ');
-      console.log(JSON.stringify(response));
       if(response.status == 'connected') {
-        console.log('logged in...response.session => ');
-        console.log(JSON.stringify(response.session));
         self.initUser(response.session);
       } else {
-        console.log('not logged in');
         self.getLogin().show();
         self.getMain().hide();
       }
@@ -139,14 +134,14 @@ Ext.define('Grubm.controller.Main', {
 
   onMainTabChange: function(mainTabPanel, newVal, oldVal) {
     var self = this;
-    if(newVal.title == 'Logout') {
+    if(newVal.getId() == 'logout') {
       self.maskViewport();
       FB.logout(function(response) {
-        self.getMyImagesStore().setData({});
+        Ext.getStore('MyImages').setData({});
         self.getMain().setActiveItem(0);
         self.getMain().hide();
         self.getLogin().show();
-        self.unmaskViepwort();
+        self.unmaskViewport();
       });
     }
   },
@@ -214,7 +209,7 @@ Ext.define('Grubm.controller.Main', {
 
     if (this.getProfile() == "phone") {
       view.setWidth(null);
-      view.setHeight('85%');
+      view.setHeight('90%');
       view.setTop(null);
       view.setLeft(0);
     }
@@ -256,12 +251,10 @@ Ext.define('Grubm.controller.Main', {
         "-webkit-background-size": "100% 100%"
       });
     } else {
-      var halfW = Math.floor(width/2) + "px", 
-      halfH = Math.floor(height/2) + "px";
       imageDiv.setStyle({
-        width: halfW,
-        height: halfH,
-        "-webkit-background-size": halfW + ' ' + halfH
+        width: "280px",
+        height: "280px",
+        "-webkit-background-size": "280px 280px"
       });
     }
   },
@@ -642,7 +635,7 @@ Ext.define('Grubm.controller.Main', {
         access_token: user.get('accessToken'),
         message: image.description,
         link: this.getApiServer() + '/' + image.id,
-        "picture": image.original_url,  // it doesn't work if picture isn't quoted
+        "picture": image.url,  // it doesn't work if picture isn't quoted
         description: description,
         name: 'mmm food',
         caption: 'grubm.com'
