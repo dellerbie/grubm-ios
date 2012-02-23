@@ -78,7 +78,8 @@ Ext.define('Grubm.controller.Main', {
         tap: 'selectImage'
       },
       'whereareyou searchfield': {
-        keyup: 'filterPlaces'
+        keyup: 'filterPlaces',
+        clearicontap: 'resetPlacesFilter'
       },
       'whereareyou dataview': {
         select: 'onLocationSelected'
@@ -517,19 +518,26 @@ Ext.define('Grubm.controller.Main', {
     this.getUploadPhoto().setActiveItem(0, {type: 'slide', direction: 'right'});
     Ext.Msg.alert("Location Error", "Error getting your current location. You need to enable location for Grubm in your phone settings", Ext.emptyFn);
   },
+  
+  resetPlacesFilter: function() {
+    this.filterPlaces();
+    return true;
+  },
 
   filterPlaces: function(searchField) {
-    var self = this;
+    var self = this,
+        query = searchField ? searchField.getValue() : '';
+        
     Ext.Ajax.request({
       url: "https://maps.googleapis.com/maps/api/place/search/json?&radius=500&sensor=true&key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc",
       method: 'GET',
       params: {
-        name: searchField.getValue(),
+        name: query,
         location: this.getCurrentPosition()
       },
       success: function(response) {
         var json = Ext.decode(response.responseText);
-        self.getPlacesStore().setData(json.results, false);
+        Ext.getStore('Places').setData(json.results, false);
       }
     });
   },
