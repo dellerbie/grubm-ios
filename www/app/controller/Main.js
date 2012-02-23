@@ -2,8 +2,8 @@ Ext.define('Grubm.controller.Main', {
   extend: 'Ext.app.Controller',
   config: {
     baseUrl: "http://la.grubm.com",
-    apiServer: "http://192.168.1.76:3000",
-    // apiServer: "http://grubm.com",
+    //apiServer: "http://192.168.1.76:3000",
+    apiServer: "http://grubm.com",
     profile: Ext.os.deviceType.toLowerCase(),
     currentPosition: null,
     currentPlace: null,
@@ -266,13 +266,14 @@ Ext.define('Grubm.controller.Main', {
       sensor: false,
       center: address,
       zoom: 15,
-      size: "375x225",
+      size: "350x225",
       scale: 2,
       maptype: "roadmap",
       markers: "color:blue|" + address
     });
     map.setStyle({
       "background": "url(" + this.getStaticMapBaseUrl() + params +  ")",
+      width: "350px",
       height: "225px",
       "-webkit-background-size": '100% 100%'
     });

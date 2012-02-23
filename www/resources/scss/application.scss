@@ -23,6 +23,10 @@ $tabs-bottom-active-gradient: 'bevel';
 @include pictos-iconmask(photo1);
 @include pictos-iconmask(photos2);
 
+.x-list-citypicker .x-list-item {
+	border-bottom: 1px solid #dfdfdf;
+}
+
 .business-wrapper {
   width: 85%;
   font-family: 'Arial';
