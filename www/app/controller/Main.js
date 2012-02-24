@@ -41,7 +41,7 @@ Ext.define('Grubm.controller.Main', {
       },
       'searchbar searchfield': {
         action: 'onSearch',
-        searchclear: 'onSearchClear'
+        clearicontap: 'onSearchClear'
       },
       'myphotostab': {
         select: 'showDetailsSheet'

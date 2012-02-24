@@ -12,12 +12,7 @@ Ext.define('Grubm.view.SearchBar', {
       xtype: 'searchfield', 
       placeHodler: 'Search',
       useClearIcon: true,
-      name: 'q' ,
-      onClearIconTap: function() {
-        this.setValue('');
-        this.hideClearIcon();
-        this.fireEvent('searchclear');
-      }
+      name: 'q'
     }]
   }
 });
