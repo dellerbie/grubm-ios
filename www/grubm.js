@@ -18,11 +18,6 @@ Ext.application({
    'BusinessMap'
   ],
   models: [
-    // 'Business', 
-    // 'City',
-    // 'Image',
-    // 'MyImage',
-    // 'Place',
     'User'
   ],
   stores: [
@@ -34,6 +29,5 @@ Ext.application({
    'User'
   ],
   launch: function() {
-	  console.log('app launch');
   }
-}); 
+});

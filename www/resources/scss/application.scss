@@ -29,41 +29,37 @@ $tabs-bottom-active-gradient: 'bevel';
 
 .business-wrapper {
   width: 85%;
-  font-family: 'Arial';
   text-align: left;
   color: #666;
   margin-bottom: 1em;
 }
 
 .business-wrapper h2 {
-	font-family: 'AmericanTypewriter';
+	color: #000;
   font-weight: bold;
-  font-size: .9em;
+  font-size: .5em;
 }
 
-.business-wrapper span,
-.business-wrapper a {
-  font-size: .75em;
+.business-wrapper span {
+  font-size: .5em;
   display: block;
 }
 
 .business-wrapper span.phone {
-	font-size: .8em;
+	margin-top: .2em;
 }
 
-.business-wrapper .place {
-  font-family: 'Copperplate';
-  font-size: 1.1em;
-  font-weight: bold;
-  color: #415D75;
+.map {
+	-webkit-border-radius: .5em;
+	background: red;
 }
 
 h3 {
-  font-family: 'AmericanTypewriter';
   font-weight: bold;
   font-size: .85em;
-  color: #666;
+  color: #000;
   text-align: center;
+	font-family: 'AmericanTypewriter', serif;
 }
 
 .x-dataview-business img + .what {
@@ -103,8 +99,7 @@ h3 {
 
 .x-sheet-image-detail .what {
   display: block;
-  color: #595959;
-  font-family: 'AmericanTypewriter';
+  color: #666;
   font-size: .75em;
   text-align: center;
 }
@@ -135,7 +130,6 @@ h3 {
 
 .x-dataview-places {
 	text-align: left;
-  font-family: 'Helvetica';
   color: #666;
 }
 

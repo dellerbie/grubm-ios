@@ -2,8 +2,8 @@ Ext.define('Grubm.controller.Main', {
   extend: 'Ext.app.Controller',
   config: {
     baseUrl: "http://la.grubm.com",
-    //apiServer: "http://192.168.1.76:3000",
-    apiServer: "http://grubm.com",
+    apiServer: "http://192.168.1.76:3000",
+    //apiServer: "http://grubm.com",
     profile: Ext.os.deviceType.toLowerCase(),
     currentPosition: null,
     currentPlace: null,
@@ -45,6 +45,9 @@ Ext.define('Grubm.controller.Main', {
       },
       'myphotostab': {
         select: 'showDetailsSheet'
+      },
+      '#refresh-myphotos': {
+        tap: 'loadMyPhotos'
       },
       'imagedetail': {
         hideanimationstart: 'onDetailHideAnimationStart'
@@ -120,7 +123,7 @@ Ext.define('Grubm.controller.Main', {
     // self.loadMyPhotos();
     // self.getMain().show();
     // this.unmaskViewport();
-
+    
     FB.getLoginStatus(function(response) {
       if(response.status == 'connected') {
         self.initUser(response.session);
@@ -267,14 +270,14 @@ Ext.define('Grubm.controller.Main', {
       sensor: false,
       center: address,
       zoom: 15,
-      size: "350x225",
+      size: "290x225",
       scale: 2,
       maptype: "roadmap",
       markers: "color:blue|" + address
     });
     map.setStyle({
       "background": "url(" + this.getStaticMapBaseUrl() + params +  ")",
-      width: "350px",
+      width: "290px",
       height: "225px",
       "-webkit-background-size": '100% 100%'
     });
@@ -476,7 +479,15 @@ Ext.define('Grubm.controller.Main', {
         },
         function(error) {
           self.unmaskViewport();
-          Ext.Msg.alert("Upload Error", "An error has occurred: Code = " + error.code, Ext.emptyFn);
+          Ext.Viewport.setMasked({
+            xtype: 'loadmask',
+            message: "Couldn't upload image. Try again later.",
+            indicator: false
+          });
+          var task = new Ext.util.DelayedTask(function(){
+            Ext.Viewport.setMasked(false);
+          });
+          task.delay(2000);
         },
         options
       );
