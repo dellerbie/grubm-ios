@@ -5600,11 +5600,11 @@ input[type="search"]::-webkit-search-cancel-button {
 .business-wrapper h2 {
   color: #000;
   font-weight: bold;
-  font-size: .5em; }
+  font-size: .7em; }
 
 /* line 43, ../scss/application.scss */
 .business-wrapper span {
-  font-size: .5em;
+  font-size: .6em;
   display: block; }
 
 /* line 48, ../scss/application.scss */

@@ -2,8 +2,8 @@ Ext.define('Grubm.controller.Main', {
   extend: 'Ext.app.Controller',
   config: {
     baseUrl: "http://la.grubm.com",
-    apiServer: "http://192.168.1.76:3000",
-    //apiServer: "http://grubm.com",
+    //apiServer: "http://192.168.1.76:3000",
+    apiServer: "http://grubm.com",
     profile: Ext.os.deviceType.toLowerCase(),
     currentPosition: null,
     currentPlace: null,
