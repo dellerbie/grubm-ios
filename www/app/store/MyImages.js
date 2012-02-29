@@ -6,7 +6,7 @@ Ext.define('Grubm.store.MyImages', {
     proxy: {
       type: 'jsonp',
       //url: 'http://192.168.1.76:3000/v1/images.json',
-      url: "http://grubm.com/v1/images.json",
+      url: "http://www.grubm.com/v1/images.json",
       listeners: {
         exception: function(proxy, response, operation) {
           Ext.Viewport.setMasked({
