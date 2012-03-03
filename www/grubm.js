@@ -11,6 +11,7 @@ Ext.application({
    'Login',
    'Food',
    'Business',
+   'MyPhotosNavigationView',
    'MyPhotosTab',
    'ImageDetail',
    'UploadPhoto',

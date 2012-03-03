@@ -29,21 +29,30 @@ $tabs-bottom-active-gradient: 'bevel';
 }
 
 .business-wrapper {
-  width: 85%;
+	width: 83%;
+	padding: .5em;
+	margin: 1em auto;
   text-align: left;
   color: #666;
-  margin-bottom: 1em;
+	background: #fff;
+	-webkit-border-radius: .5em;
 }
 
-.business-wrapper h2 {
-	color: #000;
-  font-weight: bold;
-  font-size: .7em;
+.business-wrapper .taken-at {
+	color: #8B8B8B;
+	font: bold .7em 'Didact Gothic', sans-serif;
 }
 
-.business-wrapper span {
-  font-size: .6em;
+.business-wrapper .name {
+	color: #2773A7;
+	font: bold .75em 'Didact Gothic', sans-serif;
+}
+
+.business-wrapper .city-state,
+.business-wrapper .phone {
+  font: .7em 'Didact Gothic', sans-serif;
   display: block;
+	color: #8B8B8B;
 }
 
 .business-wrapper span.phone {
@@ -52,7 +61,7 @@ $tabs-bottom-active-gradient: 'bevel';
 
 .map {
 	-webkit-border-radius: .5em;
-	background: red;
+	margin: 0 auto 1em auto;
 }
 
 h3.more {
@@ -76,7 +85,7 @@ h3.more {
 }
 
 .x-dataview-images-view .image,
-.x-sheet-image-detail .x-dataview-business-images .image {
+.x-dataview-business-images .image {
 	float: left;
   width: 69px;
   height: 69px;
@@ -86,7 +95,7 @@ h3.more {
   -webkit-background-size: 100% 100%;
 }
 
-.x-sheet-image-detail {
+.x-panel-image-detail {
 	background: #f2f2f2;
   border: none;
   -webkit-border-top-left-radius: .5em;
@@ -94,25 +103,30 @@ h3.more {
   -webkit-border-bottom-left-radius: 0;
 }
 
-.x-sheet-image-detail h3 {
+.x-panel-image-detail h3 {
 	margin-bottom: .2em;
 }
 
-.x-sheet-image-detail .what {
+.x-panel-image-detail .what {
   display: block;
+	width: 83%;
+	margin: 0 auto;
+	padding: .5em;
   color: #666;
   font-size: .75em;
   text-align: center;
+	background: #E0E0E0;
+	-webkit-border-radius: .5em;
 }
 
-.x-sheet-image-detail .image {
+.x-panel-image-detail .image {
   margin: .75em auto;
   padding: 0.5em;
   border: 1px solid #CCC;
   background: white; 
 }
 
-.x-sheet-image-detail .x-dataview-business-images .image {
+.x-panel-image-detail .x-dataview-business-images .image {
   padding: 0;
   width: 67px;
   height: 67px;

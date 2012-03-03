@@ -11,9 +11,8 @@ Ext.define('Grubm.view.Main', {
     fullscreen: true,
     tabBarPosition: 'bottom',
     items: [{
-      title: 'My Photos',
-      iconCls: 'photos2',
-      xtype: 'myphotostab'
+      xtype: 'myphotosnavview',
+      title: 'My Photos'
     },{
       title: 'Upload',
       iconCls: 'photo1',

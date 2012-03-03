@@ -1,5 +1,5 @@
 Ext.define('Grubm.view.ImageDetail', {
-  extend: 'Ext.Sheet',
+  extend: 'Ext.Panel',
   xtype: 'imagedetail',
   requires: [
   	'Grubm.view.ImageInfo', 
@@ -9,47 +9,19 @@ Ext.define('Grubm.view.ImageDetail', {
   ],
 
   config: {
-    modal: true,
-    centered : false,
-    hideOnMaskTap : true,
-
     ui: 'image-detail',
-    width: 400,
-    top: 0,
-    bottom: 0,
-    right: 0,
-
-    image: null,
-
-    layout: {
-        type: 'vbox',
-        align: 'stretch'
+    scrollable: {
+      direction: 'vertical',
+      directionLock: true
     },
-
+    image: null,
     items: [{
-      xtype: 'carousel',
-      flex: 1,
-      items: [{
-      	xtype: 'panel',
-        autoScroll: true,
-        items: [{ 
-          xtype: 'imageinfo'
-        },{
-        	xtype: 'spacer',
-          height: 15
-        },{
-          xtype: 'button',
-          ui: 'decline',
-          text: 'Delete'
-        }]
-      },{
-      	xtype: 'panel',
-        items: [{
-        	xtype: 'businessinfo'
-        },{
-        	xtype: 'businessmap',
-        }]
-      }]
+      id: 'imageInfoPanel',
+      xtype: 'imageinfo'
+    },{
+    	xtype: 'businessinfo'
+    },{
+    	xtype: 'businessmap'
     }]
   },
 
@@ -57,16 +29,8 @@ Ext.define('Grubm.view.ImageDetail', {
 
   initialize: function() {
     this.on({
-      scope: this,
-      hiddenchange: this.onHiddenChange
+      scope: this
     });
-  },
-
-  onHiddenChange: function(me, hidden) {
-    if (!hidden) {
-      var carousel = this.down('carousel');
-      carousel.setActiveItem(0);
-    }
   },
 
   updateImage: function(newImage) {

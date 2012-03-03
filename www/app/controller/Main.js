@@ -17,9 +17,10 @@ Ext.define('Grubm.controller.Main', {
       food: 'foodview',
       images: 'imagesview',
       business: 'businessview',
+      myPhotosNavigationView: 'myphotosnavview',
       myPhotosTab: 'myphotostab',
       imageDetail: 'imagedetail',
-      deleteImageBtn: 'imagedetail button',
+      deleteButton: '#deletePhoto',
       uploadedImage: 'uploadphoto #uploaded-image',
       uploadPhoto: 'uploadphoto',
       photoDescription: 'uploadphoto textareafield',
@@ -52,7 +53,7 @@ Ext.define('Grubm.controller.Main', {
       'imagedetail': {
         hideanimationstart: 'onDetailHideAnimationStart'
       },
-      'imagedetail button[ui="decline"]': {
+      '#deletePhoto': {
         tap: 'deletePhoto'
       },
       'uploadphoto #select-pic': {
@@ -98,6 +99,10 @@ Ext.define('Grubm.controller.Main', {
       },
       'mainview': {
         activeitemchange: 'onMainTabChange'
+      },
+      'navigationview': {
+        push: 'onNavigationPush',
+        pop: 'onNavigationPop'
       }
     }
   },
@@ -211,47 +216,65 @@ Ext.define('Grubm.controller.Main', {
   onSearchClear: function(searchField, newVal, oldVal) {
     this.getImages().getStore().load();
   },
+  
+  onNavigationPush: function(view, item) {
+    var deleteButton = this.getDeleteButton();
+    if (view.xtype == "myphotosnavview") {
+      this.showDeleteButton();
+    } else {
+      this.hideDeleteButton();
+    }
+  },
+  
+  onNavigationPop: function(view, item) {
+    this.hideDeleteButton();
+  },
+  
+  showDeleteButton: function() {
+    var deleteButton = this.getDeleteButton();
+    if (!deleteButton.isHidden()) {
+      return;
+    }
+    deleteButton.show();
+  },
+
+  hideDeleteButton: function() {
+    var deleteButton = this.getDeleteButton();
+    if (deleteButton.isHidden()) {
+      return;
+    }
+    deleteButton.hide();
+  },
 
   showDetailsSheet: function(list, image) {
-    if (!this.getImageDetail()) {
-      Ext.Viewport.add(Ext.create('Grubm.view.ImageDetail'));
-    }
+    this.getMyPhotosNavigationView().push({
+      xtype: 'imagedetail'
+    });
 
     var view = this.getImageDetail();
     view.setImage(image);
 
-    if (this.getProfile() == "phone") {
-      view.setWidth(null);
-      view.setHeight('85%');
-      view.setTop(null);
-      view.setLeft(0);
-    }
-
     var business = image.get('business'),
-        moreBusinessPhotosView = view.child('carousel').child('morebusinessphotos'),
+        moreBusinessPhotosView = view.child('morebusinessphotos'),
         isFindFoodView = list.isXType('imagesview');
-
     if(isFindFoodView) {
       var businessStore = Ext.getStore('Businesses');
       businessStore.getProxy().setUrl(this.getBaseUrl() + "/business/" + business.normalized_name + ".json");
       businessStore.load({params: {limit: 12}});
-      if(!moreBusinessPhotosView) {
-        view.child('carousel').add(Ext.create('Grubm.view.MoreBusinessPhotos'));
-      }
-      this.getDeleteImageBtn().hide();
+      // if(!moreBusinessPhotosView) {
+      //   view.add(Ext.create('Grubm.view.MoreBusinessPhotos'));
+      // }
       this.getImages().deselectAll();
     } else {
-      if(moreBusinessPhotosView) {
-        view.child('carousel').remove(moreBusinessPhotosView);
-      }
-      this.getDeleteImageBtn().show();
+      // if(moreBusinessPhotosView) {
+      //   view.remove(moreBusinessPhotosView);
+      // }
       this.getMyPhotosTab().deselectAll();
     }
 
-    view.show();
     this.positionBusinessMap(business);
 
-    var imageDiv = Ext.select('.x-sheet-image-detail .image'),
+    var imageDiv = Ext.select('#imageInfoPanel .image'),
         width = image.data.width,
         height = image.data.height;
 
@@ -279,15 +302,15 @@ Ext.define('Grubm.controller.Main', {
       sensor: false,
       center: address,
       zoom: 15,
-      size: "290x225",
+      size: "265x115",
       scale: 2,
       maptype: "roadmap",
       markers: "color:blue|" + address
     });
     map.setStyle({
       "background": "url(" + this.getStaticMapBaseUrl() + params +  ")",
-      width: "290px",
-      height: "225px",
+      width: "265px",
+      height: "110px",
       "-webkit-background-size": '100% 100%'
     });
   },
@@ -391,12 +414,10 @@ Ext.define('Grubm.controller.Main', {
 
   deletePhoto: function() {
     var view = this.getImageDetail();
-    view.hide();
     var box = Ext.Msg.confirm("Delete Photo", "Are you sure you want to delete this photo?", 
       function(button) {
         if(button == 'no') {
           box.hide();
-          view.show();
         } else {
           this.maskViewport();
           var image = view.getImage(),
