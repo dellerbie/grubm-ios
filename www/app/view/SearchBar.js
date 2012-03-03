@@ -4,6 +4,18 @@ Ext.define('Grubm.view.SearchBar', {
   config: {
     placeHodler: 'Search',
     useClearIcon: true,
-    name: 'q'
+    name: 'q',
+    listeners: {
+      action: function() {
+        Ext.getStore('Images').load({
+          params: {
+            q: this.getValue()
+          }
+        });
+      },
+      clearicontap: function() {
+        Ext.getStore('Images').load();
+      }
+    }
   }
 });

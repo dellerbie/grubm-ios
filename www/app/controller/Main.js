@@ -2,8 +2,8 @@ Ext.define('Grubm.controller.Main', {
   extend: 'Ext.app.Controller',
   config: {
     baseUrl: "http://la.grubm.com",
-    apiServer: "http://192.168.1.76:3000",
-    //apiServer: "http://www.grubm.com",
+    //apiServer: "http://192.168.1.76:3000",
+    apiServer: "http://www.grubm.com",
     profile: Ext.os.deviceType.toLowerCase(),
     currentPosition: null,
     currentPlace: null,
@@ -38,10 +38,6 @@ Ext.define('Grubm.controller.Main', {
       },
       'imagesview': {
         select: 'showDetailsSheet'
-      },
-      'searchbar searchfield': {
-        action: 'onSearch',
-        clearicontap: 'onSearchClear'
       },
       'myphotostab': {
         select: 'showDetailsSheet'
@@ -202,18 +198,6 @@ Ext.define('Grubm.controller.Main', {
     
     Ext.getStore('Images').getProxy().setUrl(this.getBaseUrl() + '/.json');
     Ext.getStore('Images').load();
-  },
-
-  onSearch: function(searchField) {
-    Ext.getStore('Images').load({
-      params: {
-        q: searchField.getValue()
-      }
-    });
-  },
-
-  onSearchClear: function(searchField, newVal, oldVal) {
-    this.getImages().getStore().load();
   },
   
   onMyPhotosNavigationPush: function(view, item) {
@@ -472,6 +456,7 @@ Ext.define('Grubm.controller.Main', {
               oauth_provider: 'facebook'
             },
             success: function() {
+              self.getMyPhotosNavigationView().pop();
               Ext.getStore('MyImages').load({
                 params: {
                   access_token: user.get('accessToken'), 
