@@ -5,6 +5,18 @@ Ext.define('Grubm.view.MyPhotosTab', {
   config: {
     ui: 'images-view',
     store: 'MyImages',
+    plugins: [{ 
+      xclass: 'Ext.plugin.PullRefresh',
+      refreshFn: function(plugin) {
+        console.log(plugin);
+        Ext.getStore('MyImages').load({
+          params: {
+            access_token: Ext.getStore('User').first().get('accessToken'), 
+            oauth_provider: 'facebook'
+          }
+        })
+      }
+    }],
     itemTpl: new Ext.XTemplate(
       '<div class="image" style="background: url({url}) no-repeat;"></div>'
     )

@@ -15,7 +15,7 @@ Ext.define('Grubm.view.Business', {
           	'<a class="map" href="{map}" target="_blank">map</a>',
           '</tpl>',
         '</div>',
-        '<h3>More Photos from {name}</h3>',
+        '<h3 class="more">More Photos from {name}</h3>',
       '</tpl>',
       '<tpl for="images">',
         '<img src="{url}" width="{width}" height="{height}" />',

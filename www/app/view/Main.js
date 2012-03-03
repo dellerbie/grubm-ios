@@ -13,21 +13,7 @@ Ext.define('Grubm.view.Main', {
     items: [{
       title: 'My Photos',
       iconCls: 'photos2',
-      layout: 'vbox',
-      items: [{
-        xtype: 'toolbar',
-        docked: 'top',
-        items: [{
-          xtype: 'spacer'
-        },{
-          id: 'refresh-myphotos',
-          iconCls: 'refresh',
-          iconMask: true
-        }]
-      },{
-        xtype: 'myphotostab',
-        flex: 1
-      }]
+      xtype: 'myphotostab'
     },{
       title: 'Upload',
       iconCls: 'photo1',

@@ -19,6 +19,7 @@ $tabs-bottom-active-gradient: 'bevel';
 @include sencha-tabs;
 @include sencha-loading-spinner;
 @include sencha-msgbox;
+@include sencha-list-pullrefresh;
 
 @include pictos-iconmask(photo1);
 @include pictos-iconmask(photos2);
@@ -54,7 +55,7 @@ $tabs-bottom-active-gradient: 'bevel';
 	background: red;
 }
 
-h3 {
+h3.more {
   font-weight: bold;
   font-size: .85em;
   color: #000;
@@ -167,4 +168,8 @@ h3 {
   -webkit-background-size: 261px 41px;
   width: 261px;
   height: 41px;
+}
+
+.x-list-pullrefresh-message {
+	font-size: 1.2em;
 }
