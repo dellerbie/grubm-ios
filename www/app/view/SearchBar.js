@@ -1,18 +1,9 @@
 Ext.define('Grubm.view.SearchBar', {
-  extend: 'Ext.Toolbar',
+  extend: 'Ext.field.Search',
   xtype: 'searchbar',
   config: {
-    defaults: {
-      iconMask: true
-    },
-    items: [{
-      ui: 'back',
-      text: 'Back'
-    },{ 
-      xtype: 'searchfield', 
-      placeHodler: 'Search',
-      useClearIcon: true,
-      name: 'q'
-    }]
+    placeHodler: 'Search',
+    useClearIcon: true,
+    name: 'q'
   }
 });

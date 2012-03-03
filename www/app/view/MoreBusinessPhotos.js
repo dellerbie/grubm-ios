@@ -5,7 +5,7 @@ Ext.define('Grubm.view.MoreBusinessPhotos', {
   config: {
   	store: 'Businesses',
     itemTpl: new Ext.XTemplate(
-    	'<tpl for="business"><h3>More Photos from {name}</h3></tpl>',
+    	'<tpl for="business"><h3 class="more">More Photos from {name}</h3></tpl>',
     	'<tpl for="images">',
       	'<div class="image" style="background: url({url}) no-repeat; "></div>',
       '</tpl>'
@@ -13,6 +13,6 @@ Ext.define('Grubm.view.MoreBusinessPhotos', {
     ui: 'business-images',
     emptyText: "This business doesn't have any more photos",
     deferEmptyText: true,
-    height: 300
+    scrollable: false
   }
 });

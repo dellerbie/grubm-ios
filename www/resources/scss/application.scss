@@ -45,7 +45,7 @@ $tabs-bottom-active-gradient: 'bevel';
 
 .business-wrapper .name {
 	color: #2773A7;
-	font: bold .75em 'Didact Gothic', sans-serif;
+	font: bold .7em 'Didact Gothic', sans-serif;
 }
 
 .business-wrapper .city-state,
@@ -65,23 +65,20 @@ $tabs-bottom-active-gradient: 'bevel';
 }
 
 h3.more {
-  font-weight: bold;
-  font-size: .85em;
-  color: #000;
-  text-align: center;
-	font-family: 'AmericanTypewriter', serif;
-}
-
-.x-dataview-business img + .what {
-  width: 90%;
-  margin: 0 auto 1em auto;
-  padding: .2em;
-  background: #f2f2f2;
-  -webkit-box-shadow: 5px 5px 8px #888;
+	margin: 0 0 .5em -0.5em;
+  color: #666;
+  text-align: left;
+	font: bold .7em 'Didact Gothic', sans-serif;
 }
 
 .x-dataview-images-view {
   padding: .5em;
+}
+
+.x-dataview-business-images {
+	width: 83%;
+	margin: 1em auto 0em auto;
+	padding-left: .6em;
 }
 
 .x-dataview-images-view .image,
@@ -101,10 +98,6 @@ h3.more {
   -webkit-border-top-left-radius: .5em;
   -webkit-border-top-right-radius: .5em;
   -webkit-border-bottom-left-radius: 0;
-}
-
-.x-panel-image-detail h3 {
-	margin-bottom: .2em;
 }
 
 .x-panel-image-detail .what {
@@ -127,7 +120,7 @@ h3.more {
 }
 
 .x-panel-image-detail .x-dataview-business-images .image {
-  padding: 0;
+	margin: 0 1em .5em 0;
   width: 67px;
   height: 67px;
 }

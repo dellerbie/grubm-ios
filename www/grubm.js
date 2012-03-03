@@ -9,7 +9,7 @@ Ext.application({
   views: [
    'Main',
    'Login',
-   'Food',
+   'FindFoodNavigationView',
    'Business',
    'MyPhotosNavigationView',
    'MyPhotosTab',

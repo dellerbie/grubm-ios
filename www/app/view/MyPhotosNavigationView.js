@@ -1,6 +1,9 @@
 Ext.define('Grubm.view.MyPhotosNavigationView', {
   extend: 'Ext.navigation.View',
   xtype: 'myphotosnavview',
+  requires: [
+    'Grubm.view.MyPhotosTab'
+  ],
   config: {
     navigationBar: {
       items: [{
@@ -12,7 +15,6 @@ Ext.define('Grubm.view.MyPhotosNavigationView', {
         hidden: true
       }]
     },
-    iconCls: 'photos2',
     items:[{
       xtype: 'myphotostab'
     }]

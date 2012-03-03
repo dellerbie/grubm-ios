@@ -25,14 +25,6 @@ Ext.define('Grubm.view.ImageDetail', {
     }]
   },
 
-  animationDuration: 300,
-
-  initialize: function() {
-    this.on({
-      scope: this
-    });
-  },
-
   updateImage: function(newImage) {
   	this.image = newImage;
     var imageView = this.down('imageinfo'),

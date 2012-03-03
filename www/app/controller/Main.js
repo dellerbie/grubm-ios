@@ -15,6 +15,8 @@ Ext.define('Grubm.controller.Main', {
       login: 'loginview',
       citypicker: 'citypickerview',
       food: 'foodview',
+      findFoodNavigationView: 'findfoodnavview',
+      searchBar: 'searchbar',
       images: 'imagesview',
       business: 'businessview',
       myPhotosNavigationView: 'myphotosnavview',
@@ -34,9 +36,6 @@ Ext.define('Grubm.controller.Main', {
       'citypickerview': {
         select: 'onCitySelect'
       },
-      'foodview button[ui="back"]': {
-        tap: 'onBackToCityPicker'
-      },
       'imagesview': {
         select: 'showDetailsSheet'
       },
@@ -49,9 +48,6 @@ Ext.define('Grubm.controller.Main', {
       },
       '#refresh-myphotos': {
         tap: 'loadMyPhotos'
-      },
-      'imagedetail': {
-        hideanimationstart: 'onDetailHideAnimationStart'
       },
       '#deletePhoto': {
         tap: 'deletePhoto'
@@ -100,9 +96,13 @@ Ext.define('Grubm.controller.Main', {
       'mainview': {
         activeitemchange: 'onMainTabChange'
       },
-      'navigationview': {
-        push: 'onNavigationPush',
-        pop: 'onNavigationPop'
+      'myphotosnavview': {
+        push: 'onMyPhotosNavigationPush',
+        pop: 'onMyPhotosNavigationPop'
+      },
+      'findfoodnavview': {
+        push: 'onFindFoodNavigationPush',
+        pop: 'onFindFoodNavigationPop'
       }
     }
   },
@@ -196,13 +196,12 @@ Ext.define('Grubm.controller.Main', {
 
   onCitySelect: function(list, city) {
     this.setBaseUrl(city.get('url'));
+    this.getFindFoodNavigationView().push({
+      xtype: 'imagesview'
+    });
+    
     Ext.getStore('Images').getProxy().setUrl(this.getBaseUrl() + '/.json');
     Ext.getStore('Images').load();
-    this.getMain().child('#maincontainer').setActiveItem(this.getFood(), {type: 'slide', direction: 'left'});
-  },
-
-  onBackToCityPicker: function() {
-    this.getMain().child('#maincontainer').setActiveItem(this.getCitypicker(), {type: 'slide', direction: 'right'});
   },
 
   onSearch: function(searchField) {
@@ -217,7 +216,7 @@ Ext.define('Grubm.controller.Main', {
     this.getImages().getStore().load();
   },
   
-  onNavigationPush: function(view, item) {
+  onMyPhotosNavigationPush: function(view, item) {
     var deleteButton = this.getDeleteButton();
     if (view.xtype == "myphotosnavview") {
       this.showDeleteButton();
@@ -226,7 +225,7 @@ Ext.define('Grubm.controller.Main', {
     }
   },
   
-  onNavigationPop: function(view, item) {
+  onMyPhotosNavigationPop: function(view, item) {
     this.hideDeleteButton();
   },
   
@@ -245,30 +244,70 @@ Ext.define('Grubm.controller.Main', {
     }
     deleteButton.hide();
   },
+  
+  onFindFoodNavigationPush: function(view, item) {
+    if(item.xtype == "imagesview") {
+      this.showSearchBar();
+    } else {
+      this.hideSearchBar();
+    }
+  },
+  
+  onFindFoodNavigationPop: function(view, item) {    
+    if(view.getActiveItem().xtype == "citypickerview") {
+      this.hideSearchBar();
+    } else {
+      this.showSearchBar();
+    }
+  },
+  
+  showSearchBar: function() {
+    var searchBar = this.getSearchBar();
+    if (!searchBar.isHidden()) {
+      return;
+    }
+    searchBar.show();
+  },
+  
+  hideSearchBar: function() {
+    var searchBar = this.getSearchBar();
+    if (searchBar.isHidden()) {
+      return;
+    }
+    searchBar.hide();
+  },
 
   showDetailsSheet: function(list, image) {
-    this.getMyPhotosNavigationView().push({
-      xtype: 'imagedetail'
-    });
+    var isFindFoodView = list.isXType('imagesview');
+    
+    if(isFindFoodView) {
+      this.getFindFoodNavigationView().push({
+        xtype: 'imagedetail'
+      });
+    } else {
+      this.getMyPhotosNavigationView().push({
+        xtype: 'imagedetail'
+      });
+    }
 
     var view = this.getImageDetail();
     view.setImage(image);
 
     var business = image.get('business'),
-        moreBusinessPhotosView = view.child('morebusinessphotos'),
-        isFindFoodView = list.isXType('imagesview');
+        moreBusinessPhotosView = view.child('morebusinessphotos');
+        
     if(isFindFoodView) {
       var businessStore = Ext.getStore('Businesses');
       businessStore.getProxy().setUrl(this.getBaseUrl() + "/business/" + business.normalized_name + ".json");
       businessStore.load({params: {limit: 12}});
-      // if(!moreBusinessPhotosView) {
-      //   view.add(Ext.create('Grubm.view.MoreBusinessPhotos'));
-      // }
+      if(!moreBusinessPhotosView) {
+        view.add(Ext.create('Grubm.view.MoreBusinessPhotos'));
+      }
       this.getImages().deselectAll();
     } else {
-      // if(moreBusinessPhotosView) {
-      //   view.remove(moreBusinessPhotosView);
-      // }
+      if(moreBusinessPhotosView) {
+        view.remove(moreBusinessPhotosView);
+      }
       this.getMyPhotosTab().deselectAll();
     }
 
