@@ -2,8 +2,8 @@ Ext.define('Grubm.controller.Main', {
   extend: 'Ext.app.Controller',
   config: {
     baseUrl: "http://la.grubm.com",
-    //apiServer: "http://192.168.1.76:3000",
-    apiServer: "http://www.grubm.com",
+    apiServer: "http://192.168.1.76:3000",
+    //apiServer: "http://www.grubm.com",
     profile: Ext.os.deviceType.toLowerCase(),
     currentPosition: null,
     currentPlace: null,
@@ -103,35 +103,37 @@ Ext.define('Grubm.controller.Main', {
   },
 
   launch: function() {
+    Ext.Ajax.timeout = 30000;
+    this.unmaskViewport();
+    
     Ext.create('Grubm.view.Login').hide();
     Ext.create('Grubm.view.Main').hide();
     Ext.create('Grubm.view.MyPhotosTab');
     Ext.create('Grubm.view.UploadPhoto');
     var self = this;
     
-    // Ext.getStore('User').setData([{
-    //   accessToken: "BAADzyTXMlh0BAAN7WpP0LmeaAk5ccIIQfHw9cHmVU6bRAowfhr5pt6h0GAyX3ug47OO6ZCRIv5foLp4hHA24x833ZBFRJfTAfFxzLJ5BCje5rxxs1rLyr00nE2Nr9OnEzWUxccIAZDZD",
-    //   secret: "630bc3266929913d0010b4a1bc79cd2a",
-    //   oauthType: 'facebook',
-    //   uid: '',
-    //   firstName: 'Derrick',
-    //   lastName: 'Ellerbie',
-    //   gender: 'Male',
-    //   email: 'derrick@grubm.com'
-    // }]);
-    // self.getLogin().hide();
-    // self.loadMyPhotos();
-    // self.getMain().show();
-    // this.unmaskViewport();
+    Ext.getStore('User').setData([{
+      accessToken: "BAADzyTXMlh0BADI1HKyQ4cEGVmViAwLTMth3nuaRZCENFZBZCYsgEo2SDTzRFBD72HoB3bGEtehNeQ5OaKmZCqyqmjq2PjApKP2ezzVyhWDPFEJhBFlzqYZA8n9VoDaqCNuZBuEePtNQZDZD",
+      secret: "630bc3266929913d0010b4a1bc79cd2a",
+      oauthType: 'facebook',
+      uid: '',
+      firstName: 'Derrick',
+      lastName: 'Ellerbie',
+      gender: 'Male',
+      email: 'derrick@grubm.com'
+    }]);
+    self.getLogin().hide();
+    self.loadMyPhotos();
+    self.getMain().show();
     
-    FB.getLoginStatus(function(response) {
-      if(response.status == 'connected') {
-        self.initUser(response.session);
-      } else {
-        self.getLogin().show();
-        self.getMain().hide();
-      }
-    });
+    // FB.getLoginStatus(function(response) {
+    //   if(response.status == 'connected') {
+    //     self.initUser(response.session);
+    //   } else {
+    //     self.getLogin().show();
+    //     self.getMain().hide();
+    //   }
+    // });
     Ext.getStore('MyImages').on('load', Ext.bind(this.onMyImagesStoreLoad, this));
     Ext.getStore('Images').on('load', Ext.bind(this.onImagesStoreLoad, this));
   },
@@ -141,13 +143,20 @@ Ext.define('Grubm.controller.Main', {
     if(newVal.getId() == 'logout') {
       self.maskViewport();
       FB.logout(function(response) {
-        Ext.getStore('MyImages').setData({});
-        self.getMain().setActiveItem(0);
-        self.getMain().hide();
-        self.getLogin().show();
+        self.logout();
+        self.unmaskViewport();
+      }, function() {
+        self.logout();
         self.unmaskViewport();
       });
     }
+  },
+  
+  logout: function() {
+    Ext.getStore('MyImages').setData({});
+    this.getMain().setActiveItem(0);
+    this.getMain().hide();
+    this.getLogin().show();
   },
 
   loadMyPhotos: function() {
@@ -349,6 +358,12 @@ Ext.define('Grubm.controller.Main', {
   },
 
   onGetImageError: function() {
+    this.maskViewport("Error getting photo.");
+    var self = this;
+    var task = new Ext.util.DelayedTask(function(){
+      self.unmaskViewport();
+    });
+    task.delay(2000);
   },
 
   onUploadPhotoShow: function(uploadPhoto) {
@@ -407,6 +422,7 @@ Ext.define('Grubm.controller.Main', {
             },
             failure: function() {
               Ext.Msg.alert("Delete Error", "There was a problem deleting your photo. Please try again later.", Ext.emptyFn);
+              self.unmaskViewport();
             }
           });
         }  
@@ -485,7 +501,7 @@ Ext.define('Grubm.controller.Main', {
             indicator: false
           });
           var task = new Ext.util.DelayedTask(function(){
-            Ext.Viewport.setMasked(false);
+            self.unmaskViewport();
           });
           task.delay(2000);
         },
@@ -558,9 +574,6 @@ Ext.define('Grubm.controller.Main', {
     this.getLocationText().setHtml('&#64; ' + place.get('name'));
     var self = this;
 
-    console.log("place before request");
-    console.log(JSON.stringify(place.data));
-
     // get the places detailed info
     Ext.Ajax.request({
       url: "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc&sensor=true",
@@ -592,9 +605,7 @@ Ext.define('Grubm.controller.Main', {
         place.data['city'] = city;
         place.data['state'] = state;
         place.data['zip'] = zip;
-        place.data['phone'] = json.result.formatted_phone_number;        
-        console.log("place => ");
-        console.log(JSON.stringify(place.data));
+        place.data['phone'] = json.result.formatted_phone_number;
         self.setCurrentPlace(place);
       }
     });
@@ -635,6 +646,10 @@ Ext.define('Grubm.controller.Main', {
           gender: res.gender,
           email: res.email
         }]);
+        
+        console.log('token => ');
+        console.log(session.access_token);
+        
         self.getLogin().hide();
         self.loadMyPhotos();
         self.getMain().show();

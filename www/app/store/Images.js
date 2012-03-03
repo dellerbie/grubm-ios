@@ -8,6 +8,8 @@ Ext.define('Grubm.store.Images', {
       url: 'http://la.grubm.com/.json',
       listeners: {
         exception: function(proxy, response, operation) {
+          console.log("response => ");
+          console.log(JSON.stringify(response));
           Ext.Viewport.setMasked({
             xtype: 'loadmask',
             message: "Couldn't get images",
