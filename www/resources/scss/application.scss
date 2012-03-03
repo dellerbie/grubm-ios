@@ -149,8 +149,13 @@ h3.more {
 	font-size: .6em;
 }
 
-.empty {
+.x-dataview-images-view.x-dataview-my-images.empty {
 	background: url(../images/empty@2x.png) no-repeat top left;
+  -webkit-background-size: 320px 480px;
+}
+
+.x-dataview-images-view.empty {
+	background: url(../images/no-results@2x.png) no-repeat top left;
   -webkit-background-size: 320px 480px;
 }
 
@@ -172,4 +177,8 @@ h3.more {
 
 .x-list-pullrefresh-message {
 	font-size: 1.2em;
+}
+
+.x-dataview-emptytext {
+	font-size: .8em;
 }

@@ -3,7 +3,7 @@ Ext.define('Grubm.view.MyPhotosTab', {
   requires: ['Grubm.store.MyImages'],
   xtype: 'myphotostab',
   config: {
-    ui: 'images-view',
+    ui: 'images-view my-images',
     store: 'MyImages',
     plugins: [{ 
       xclass: 'Ext.plugin.PullRefresh',
