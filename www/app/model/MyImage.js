@@ -15,6 +15,10 @@ Ext.define('Grubm.model.MyImage', {
     },{
     	name: 'height',
       type: 'int'
+    },{
+      name: 'created_at',
+      type: 'date',
+      dateFormat: 'c'
     }]
   }
 });

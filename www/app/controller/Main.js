@@ -37,10 +37,10 @@ Ext.define('Grubm.controller.Main', {
         select: 'onCitySelect'
       },
       'imagesview': {
-        select: 'showDetailsSheet'
+        select: 'showImageDetailsFromFindFoodView'
       },
       'myphotostab': {
-        select: 'showDetailsSheet'
+        select: 'showDetailsForMyPhotos'
       },
       '#refresh-myphotos': {
         tap: 'loadMyPhotos'
@@ -260,79 +260,63 @@ Ext.define('Grubm.controller.Main', {
     }
     searchBar.hide();
   },
-
-  showDetailsSheet: function(list, image) {
-    var isFindFoodView = list.isXType('imagesview');
-    
-    if(isFindFoodView) {
-      this.getFindFoodNavigationView().push({
-        xtype: 'imagedetail'
-      });
-    } else {
-      this.getMyPhotosNavigationView().push({
-        xtype: 'imagedetail'
-      });
-    }
-
-    var view = this.getImageDetail();
+  
+  showImageDetailsFromFindFoodView: function(list, image) {
+    var view = this.getFindFoodNavigationView().push({
+      xtype: 'imagedetail'
+    });
     view.setImage(image);
-
+    
     var business = image.get('business'),
         moreBusinessPhotosView = view.child('morebusinessphotos');
         
-    if(isFindFoodView) {
-      var businessStore = Ext.getStore('Businesses');
-      businessStore.getProxy().setUrl(this.getBaseUrl() + "/business/" + business.normalized_name + ".json");
-      businessStore.load({params: {limit: 12}});
-      if(!moreBusinessPhotosView) {
-        view.add(Ext.create('Grubm.view.MoreBusinessPhotos'));
-      }
-      this.getImages().deselectAll();
-    } else {
-      if(moreBusinessPhotosView) {
-        view.remove(moreBusinessPhotosView);
-      }
-      this.getMyPhotosTab().deselectAll();
-    }
-
+    var businessStore = Ext.getStore('Businesses');
+    businessStore.getProxy().setUrl(this.getBaseUrl() + "/business/" + business.normalized_name + ".json");
+    businessStore.load({params: {limit: 12}});
+    
+    view.add(Ext.create('Grubm.view.MoreBusinessPhotos'));
+    this.getImages().deselectAll();
     this.positionBusinessMap(business);
+    
+    var imageDiv = Ext.select('#imageInfoPanel .image');
+    imageDiv.setStyle({
+      width: image.data.width + "px",
+      height: image.data.height + "px",
+      "-webkit-background-size": "100% 100%"
+    });
+  },
 
-    var imageDiv = Ext.select('#imageInfoPanel .image'),
-        width = image.data.width,
-        height = image.data.height;
-
-    if(isFindFoodView) {
-      // the images aren't big enough to scale for the retina
-      // so just use their normal dimensions
-      imageDiv.setStyle({
-        width: width + "px",
-        height: height + "px",
-        "-webkit-background-size": "100% 100%"
-      });
-    } else {
-      imageDiv.setStyle({
-        width: "260px",
-        height: "260px",
-        "-webkit-background-size": "260px 260px"
-      });
-    }
+  showDetailsForMyPhotos: function(list, image) {
+    var view = this.getMyPhotosNavigationView().push({
+      xtype: 'imagedetail'
+    });
+    view.setImage(image);
+    this.getMyPhotosTab().deselectAll();
+    this.positionBusinessMap(image.get('business'));
+    Ext.select('#imageInfoPanel .image').setStyle({
+      width: "306px",
+      height: "306px",
+      "-webkit-background-size": "306px 306px"
+    });
   },
 
   positionBusinessMap: function(business) {
+    if(!business.street || Ext.String.trim(business.street) == '') return;
+    
     var address = [business.street, business.city, business.state, business.zip].join(',');
     var map = Ext.get(this.getBusinessMap().element).select('.map');
     var params = Ext.Object.toQueryString({
       sensor: false,
       center: address,
       zoom: 15,
-      size: "265x115",
+      size: "306x115",
       scale: 2,
       maptype: "roadmap",
       markers: "color:blue|" + address
     });
     map.setStyle({
       "background": "url(" + this.getStaticMapBaseUrl() + params +  ")",
-      width: "265px",
+      width: "306px",
       height: "110px",
       "-webkit-background-size": '100% 100%'
     });

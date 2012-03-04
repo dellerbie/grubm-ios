@@ -28,10 +28,13 @@ $tabs-bottom-active-gradient: 'bevel';
 	border-bottom: 1px solid #dfdfdf;
 }
 
+.business-wrapper, .what, .time {
+  width: 306px;
+  margin: .5em auto;
+}
+
 .business-wrapper {
-	width: 83%;
 	padding: .5em;
-	margin: 1em auto;
   text-align: left;
   color: #666;
 	background: #fff;
@@ -45,7 +48,7 @@ $tabs-bottom-active-gradient: 'bevel';
 
 .business-wrapper .name {
 	color: #2773A7;
-	font: bold .7em 'Didact Gothic', sans-serif;
+	font: bold 'Didact Gothic', sans-serif;
 }
 
 .business-wrapper .city-state,
@@ -61,22 +64,21 @@ $tabs-bottom-active-gradient: 'bevel';
 
 .map {
 	-webkit-border-radius: .5em;
-	margin: 0 auto 1em auto;
+	margin: 0 auto 0 auto;
 }
 
 h3.more {
-	margin: 0 0 .5em -0.5em;
+	margin: 0 0 .5em 0;
   color: #666;
   text-align: left;
 	font: bold .7em 'Didact Gothic', sans-serif;
 }
 
 .x-dataview-images-view {
-  padding: .5em;
+  padding: .2em;
 }
 
 .x-dataview-business-images {
-	width: 83%;
 	margin: 1em auto 0em auto;
 	padding-left: .6em;
 }
@@ -87,7 +89,7 @@ h3.more {
   width: 69px;
   height: 69px;
   background: #ccc;
-  margin: .2em;
+  margin: .25em;
   border: 1px solid #ccc;
   -webkit-background-size: 100% 100%;
 }
@@ -102,25 +104,28 @@ h3.more {
 
 .x-panel-image-detail .what {
   display: block;
-	width: 83%;
-	margin: 0 auto;
 	padding: .5em;
   color: #666;
-  font-size: .75em;
+  font: .7em 'Didact Gothic', sans-serif;
   text-align: center;
 	background: #E0E0E0;
 	-webkit-border-radius: .5em;
 }
 
+.x-panel-image-detail .time {
+  text-align: right;
+  color: #8B8B8B;
+  font: bold .7em 'Didact Gothic', sans-serif;
+}
+
 .x-panel-image-detail .image {
-  margin: .75em auto;
-  padding: 0.5em;
+  margin: .5em auto;
   border: 1px solid #CCC;
   background: white; 
 }
 
 .x-panel-image-detail .x-dataview-business-images .image {
-	margin: 0 1em .5em 0;
+	margin: 0 .5em .5em 0;
   width: 67px;
   height: 67px;
 }

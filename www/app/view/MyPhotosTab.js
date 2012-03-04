@@ -8,7 +8,6 @@ Ext.define('Grubm.view.MyPhotosTab', {
     plugins: [{ 
       xclass: 'Ext.plugin.PullRefresh',
       refreshFn: function(plugin) {
-        console.log(plugin);
         Ext.getStore('MyImages').load({
           params: {
             access_token: Ext.getStore('User').first().get('accessToken'), 

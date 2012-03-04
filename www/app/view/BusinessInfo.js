@@ -4,9 +4,8 @@ Ext.define('Grubm.view.BusinessInfo', {
   config: {
   	tpl: new Ext.XTemplate(
     	'<div class="business-wrapper">',
-    	  '<p class="taken-at">Taken at</p>',
-    	  '<span class="name">{name}</span>',
-        '<span class="city-state">in {city}, {state}</span>',
+    	  '<p class="taken-at">Taken at <span class="name">{name}</span></p>',
+        '<tpl if="city && state"><span class="city-state">in {city}, {state}</span></tpl>',
         '<span class="phone">{phone}</span>',
       '</div>'
     )
