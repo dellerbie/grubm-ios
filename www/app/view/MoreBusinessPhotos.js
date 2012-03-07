@@ -4,6 +4,7 @@ Ext.define('Grubm.view.MoreBusinessPhotos', {
   xtype: 'morebusinessphotos',
   config: {
   	store: 'Businesses',
+  	loadingText: '',
     itemTpl: new Ext.XTemplate(
     	'<tpl for="business"><h3 class="more">More Photos from {name}</h3></tpl>',
     	'<tpl for="images">',

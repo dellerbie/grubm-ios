@@ -1,5 +1,8 @@
 Ext.define('Grubm.controller.Main', {
   extend: 'Ext.app.Controller',
+  requires: [
+    'Grubm.view.Overlay'
+  ],
   config: {
     baseUrl: "http://la.grubm.com",
     //apiServer: "http://192.168.1.76:3000",
@@ -105,13 +108,15 @@ Ext.define('Grubm.controller.Main', {
 
   launch: function() {
     Ext.Ajax.timeout = 30000;
-    this.unmaskViewport();
     
     Ext.create('Grubm.view.Login').hide();
     Ext.create('Grubm.view.Main').hide();
     Ext.create('Grubm.view.MyPhotosTab');
     Ext.create('Grubm.view.UploadPhoto');
     var self = this;
+    
+    Ext.getStore('MyImages').on('beforeload', function() { self.maskViewport(); });
+    Ext.getStore('Images').on('beforeload', function() { self.maskViewport(); });
     
     Ext.getStore('User').setData([{
       accessToken: "BAADzyTXMlh0BADI1HKyQ4cEGVmViAwLTMth3nuaRZCENFZBZCYsgEo2SDTzRFBD72HoB3bGEtehNeQ5OaKmZCqyqmjq2PjApKP2ezzVyhWDPFEJhBFlzqYZA8n9VoDaqCNuZBuEePtNQZDZD",
@@ -135,6 +140,8 @@ Ext.define('Grubm.controller.Main', {
     //     self.getMain().hide();
     //   }
     // });
+    
+    
     Ext.getStore('MyImages').on('load', Ext.bind(this.onMyImagesStoreLoad, this));
     Ext.getStore('Images').on('load', Ext.bind(this.onImagesStoreLoad, this));
   },
@@ -180,6 +187,7 @@ Ext.define('Grubm.controller.Main', {
     } else {
       this.getMyPhotosTab().element.removeCls('empty');
     }
+    this.unmaskViewport();
   },
 
   onImagesStoreLoad: function(store, records) {
@@ -188,6 +196,7 @@ Ext.define('Grubm.controller.Main', {
     } else {
       this.getImages().element.removeCls('empty');
     }
+    this.unmaskViewport();
   },
 
   onCitySelect: function(list, city) {
@@ -357,15 +366,15 @@ Ext.define('Grubm.controller.Main', {
     }
   },
   
-  maskViewport: function(msg) {
-    Ext.Viewport.setMasked({
-        xtype: 'loadmask',
-        message: msg || 'Loading...'
-    });
+  maskViewport: function(msg, panel) {    
+    if(!msg || Ext.String.trim(msg) == '') {
+      msg = 'Loading...';
+    }
+    Grubm.view.Overlay.show(msg, Ext.Viewport);
   },
   
   unmaskViewport: function() {
-    Ext.Viewport.setMasked(false);
+   // Grubm.view.Overlay.hide();
   },
 
   onGetImageSuccess: function(imageURI) {
@@ -426,7 +435,7 @@ Ext.define('Grubm.controller.Main', {
         if(button == 'no') {
           box.hide();
         } else {
-          this.maskViewport();
+          this.maskViewport("Deleting photo...");
           var image = view.getImage(),
               user = Ext.getStore('User').first(),
               self = this;
@@ -478,7 +487,7 @@ Ext.define('Grubm.controller.Main', {
     }
 
     if(errors.length == 0) {
-      this.maskViewport("Uploading Photo...");
+      this.maskViewport("Uploading...");
       var options = new FileUploadOptions();
       options.fileKey = "image[photo]";
       options.fileName = img.substr(img.lastIndexOf('/') + 1);

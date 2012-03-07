@@ -4,6 +4,7 @@ Ext.define('Grubm.view.Images', {
   config: {
     ui: 'images-view',
     store: 'Images',
+    loadingText: '',
     itemTpl: new Ext.XTemplate(
     	'<div class="image" style="background: url({url}) no-repeat;"></div>'
     )

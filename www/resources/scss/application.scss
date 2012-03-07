@@ -3,6 +3,7 @@ $base-gradient: 'glossy';
 $active-color: #214E9C;
 $tabs-dark-active-color: #336fd4;
 $tabs-bottom-active-gradient: 'bevel';
+$loading-spinner-color: #ffffff;
 
 @import 'sencha-touch/default/all';
 
@@ -193,4 +194,24 @@ h3.more {
 
 .x-dataview-emptytext {
 	font-size: .8em;
+}
+
+#grubm-overlay {
+	width: 161px;
+	height: 94px;
+	margin-left: auto;
+	margin-right: auto;
+	background: none;
+	top: 0;
+	left: 0;
+	right: auto;
+	bottom: auto;
+}
+
+#grubm-overlay.x-mask .x-mask-inner {
+	background: rgba(0, 0, 0, 0.5);	
+}
+
+#grubm-overlay.x-mask .x-loading-spinner-outer {
+	height: 3.5em;
 }

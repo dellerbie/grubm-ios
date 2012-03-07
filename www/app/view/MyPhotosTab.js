@@ -5,6 +5,7 @@ Ext.define('Grubm.view.MyPhotosTab', {
   config: {
     ui: 'images-view my-images',
     store: 'MyImages',
+    loadingText: '',
     plugins: [{ 
       xclass: 'Ext.plugin.PullRefresh',
       refreshFn: function(plugin) {
