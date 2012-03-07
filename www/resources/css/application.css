@@ -5856,8 +5856,8 @@ h3.more {
 .x-dataview-emptytext {
   font-size: .8em; }
 
-/* line 220, ../scss/application.scss */
-#grubm-overlay {
+/* line 221, ../scss/application.scss */
+#grubm-overlay, #grubm-loading-overlay {
   width: 161px;
   height: 94px;
   margin-left: auto;
@@ -5868,10 +5868,14 @@ h3.more {
   right: auto;
   bottom: auto; }
 
-/* line 232, ../scss/application.scss */
-#grubm-overlay.x-mask .x-mask-inner {
+/* line 234, ../scss/application.scss */
+#grubm-overlay .x-mask-message, #grubm-loading-overlay .x-mask-message {
+  font-size: .75em; }
+
+/* line 239, ../scss/application.scss */
+#grubm-overlay.x-mask .x-mask-inner, #grubm-loading-overlay.x-mask .x-mask-inner {
   background: rgba(0, 0, 0, 0.5); }
 
-/* line 236, ../scss/application.scss */
-#grubm-overlay.x-mask .x-loading-spinner-outer {
+/* line 244, ../scss/application.scss */
+#grubm-overlay.x-mask .x-loading-spinner-outer, #grubm-loading-overlay.x-mask .x-loading-spinner-outer {
   height: 3.5em; }

@@ -6,17 +6,14 @@ Ext.define('Grubm.view.MyPhotosTab', {
     ui: 'images-view my-images',
     store: 'MyImages',
     loadingText: '',
-    limit: 2,
+    limit: 30,
     plugins: [{ 
-      xclass: 'Ext.plugin.PullRefresh',
-      refreshFn: function(plugin) {
-        Ext.getStore('MyImages').load({
-          params: {
-            access_token: Ext.getStore('User').first().get('accessToken'), 
-            oauth_provider: 'facebook'
-          }
-        })
-      }
+      xclass: 'Ext.plugin.PullRefresh'
+    },{
+      xclass: 'Ext.plugin.ListPaging',
+      loadTpl: [
+        '<div class="{cssPrefix}list-paging-msg">{message}</div>'
+      ].join('')
     }],
     itemTpl: new Ext.XTemplate(
       '<div class="image" style="background: url({url}) no-repeat;"></div>'

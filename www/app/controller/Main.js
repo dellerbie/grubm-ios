@@ -5,8 +5,7 @@ Ext.define('Grubm.controller.Main', {
   ],
   config: {
     baseUrl: "http://la.grubm.com",
-    apiServer: "http://192.168.1.71:3000",
-    //apiServer: "http://www.grubm.com",
+    apiServer: "http://www.grubm.com",
     profile: Ext.os.deviceType.toLowerCase(),
     currentPosition: null,
     currentPlace: null,
@@ -107,55 +106,55 @@ Ext.define('Grubm.controller.Main', {
   },
 
   launch: function() {
+    var self = this;
+    
     Ext.Ajax.timeout = 30000;
     
     Ext.create('Grubm.view.Login').hide();
     Ext.create('Grubm.view.Main').hide();
     Ext.create('Grubm.view.MyPhotosTab');
     Ext.create('Grubm.view.UploadPhoto');
-    var self = this;
     
-    Ext.getStore('MyImages').on('beforeload', function() { self.maskViewport(); });
-    Ext.getStore('Images').on('beforeload', function() { self.maskViewport(); });
-    
-    Ext.getStore('User').setData([{
-      accessToken: "BAADzyTXMlh0BADI1HKyQ4cEGVmViAwLTMth3nuaRZCENFZBZCYsgEo2SDTzRFBD72HoB3bGEtehNeQ5OaKmZCqyqmjq2PjApKP2ezzVyhWDPFEJhBFlzqYZA8n9VoDaqCNuZBuEePtNQZDZD",
-      secret: "630bc3266929913d0010b4a1bc79cd2a",
-      oauthType: 'facebook',
-      uid: '',
-      firstName: 'Derrick',
-      lastName: 'Ellerbie',
-      gender: 'Male',
-      email: 'derrick@grubm.com'
-    }]);
-    self.getLogin().hide();
-    self.loadMyPhotos();
-    self.getMain().show();
-    
-    // FB.getLoginStatus(function(response) {
-    //   if(response.status == 'connected') {
-    //     self.initUser(response.session);
-    //   } else {
-    //     self.getLogin().show();
-    //     self.getMain().hide();
-    //   }
-    // });
-    
-    
+    Ext.getStore('MyImages').on('beforeload', Ext.bind(this.showLoadingOverlay, this));
+    Ext.getStore('Images').on('beforeload', Ext.bind(this.showLoadingOverlay, this));
     Ext.getStore('MyImages').on('load', Ext.bind(this.onMyImagesStoreLoad, this));
     Ext.getStore('Images').on('load', Ext.bind(this.onImagesStoreLoad, this));
+    
+    // Ext.getStore('User').setData([{
+    //   accessToken: "BAADzyTXMlh0BADI1HKyQ4cEGVmViAwLTMth3nuaRZCENFZBZCYsgEo2SDTzRFBD72HoB3bGEtehNeQ5OaKmZCqyqmjq2PjApKP2ezzVyhWDPFEJhBFlzqYZA8n9VoDaqCNuZBuEePtNQZDZD",
+    //   secret: "630bc3266929913d0010b4a1bc79cd2a",
+    //   oauthType: 'facebook',
+    //   uid: '',
+    //   firstName: 'Derrick',
+    //   lastName: 'Ellerbie',
+    //   gender: 'Male',
+    //   email: 'derrick@grubm.com'
+    // }]);
+    // self.getLogin().hide();
+    // self.loadMyPhotos();
+    // self.getMain().show();
+    
+    FB.getLoginStatus(function(response) {
+      if(response.status == 'connected') {
+        self.initUser(response.session);
+      } else {
+        self.getLogin().show();
+        self.getMain().hide();
+      }
+    });
+
   },
 
   onMainTabChange: function(mainTabPanel, newVal, oldVal) {
     var self = this;
     if(newVal.getId() == 'logout') {
-      self.maskViewport();
+      self.showLoadingOverlay();
       FB.logout(function(response) {
         self.logout();
-        self.unmaskViewport();
+        self.hideLoadingOverlay();
       }, function() {
         self.logout();
-        self.unmaskViewport();
+        self.hideLoadingOverlay();
       });
     }
   },
@@ -172,34 +171,45 @@ Ext.define('Grubm.controller.Main', {
         self = this;
       
     if(user) {
-      Ext.getStore('MyImages').load({
-        params: {
-          access_token: user.get('accessToken'), 
-          oauth_provider: 'facebook'
-        },
-        callback: function() {
-          console.log('callback');
-        }
-      });
+      self.showLoadingOverlay();
+      var store = Ext.getStore('MyImages');
+      store.getProxy().setExtraParams({
+        access_token: user.get('accessToken'),
+        oauth_provider: 'facebook'
+      })
+      Ext.getStore('MyImages').load();
     }
+  },
+  
+  onMyImagesError: function() {
+    self.hideLoadingOverlay();
+    this.showOverlay("Couldn't get images");
+    var task = new Ext.util.DelayedTask(function() {
+      this.hideOverlay();
+    }, this);
+    task.delay(2000);
   },
 
   onMyImagesStoreLoad: function(store, records, successful) {
-    if(records.length == 0) {
+    if(store.getCount() == 0) {
       this.getMyPhotosTab().element.addCls('empty');
+      Ext.select('.x-list-paging').hide();
     } else {
       this.getMyPhotosTab().element.removeCls('empty');
+      Ext.select('.x-list-paging').show();
     }
-    this.unmaskViewport();
+    this.hideLoadingOverlay();
   },
 
   onImagesStoreLoad: function(store, records) {
-    if(records.length == 0) {
+    if(store.getCount() == 0) {
       this.getImages().element.addCls('empty');
+      Ext.select('.x-list-paging').hide();
     } else {
       this.getImages().element.removeCls('empty');
+      Ext.select('.x-list-paging').show();
     }
-    this.unmaskViewport();
+    this.hideLoadingOverlay();
   },
 
   onCitySelect: function(list, city) {
@@ -369,19 +379,35 @@ Ext.define('Grubm.controller.Main', {
     }
   },
   
-  maskViewport: function(msg, panel) {    
+  showOverlay: function(msg, panel, loading) {
     if(!msg || Ext.String.trim(msg) == '') {
       msg = 'Loading...';
     }
-    Grubm.view.Overlay.show(msg, Ext.Viewport);
+    if(loading) {
+      Grubm.view.Overlay.showLoading(msg, Ext.Viewport);
+    } else {
+      Grubm.view.Overlay.show(msg, Ext.Viewport);
+    }
   },
   
-  unmaskViewport: function() {
-    Grubm.view.Overlay.hide();
+  hideOverlay: function(loading) {
+    if(loading) {
+      Grubm.view.Overlay.hideLoading();
+    } else {
+      Grubm.view.Overlay.hide();
+    }
+  },
+  
+  showLoadingOverlay: function(msg, panel) {    
+    this.showOverlay(msg, panel, true);
+  },
+  
+  hideLoadingOverlay: function() {
+    this.hideOverlay(true);
   },
 
   onGetImageSuccess: function(imageURI) {
-    this.maskViewport();
+    this.showLoadingOverlay();
     
     if(Ext.isArray(imageURI)) {
       imageURI = imageURI[0].fullPath;
@@ -394,16 +420,16 @@ Ext.define('Grubm.controller.Main', {
     var self = this;
     var task = new Ext.util.DelayedTask(function(){
       self.selectLocation();
-      self.unmaskViewport();
+      self.hideLoadingOverlay();
     });
     task.delay(2000);
   },
 
   onGetImageError: function() {
-    this.maskViewport("Error getting photo.");
+    this.showLoadingOverlay("Error getting photo.");
     var self = this;
     var task = new Ext.util.DelayedTask(function(){
-      self.unmaskViewport();
+      self.hideLoadingOverlay();
     });
     task.delay(2000);
   },
@@ -438,7 +464,7 @@ Ext.define('Grubm.controller.Main', {
         if(button == 'no') {
           box.hide();
         } else {
-          this.maskViewport("Deleting photo...");
+          this.showLoadingOverlay("Deleting photo...");
           var image = view.getImage(),
               user = Ext.getStore('User').first(),
               self = this;
@@ -459,11 +485,15 @@ Ext.define('Grubm.controller.Main', {
                   oauth_provider: 'facebook'
                 }
               });
-              self.unmaskViewport();
+              self.hideLoadingOverlay();
             },
             failure: function() {
-              Ext.Msg.alert("Delete Error", "There was a problem deleting your photo. Please try again later.", Ext.emptyFn);
-              self.unmaskViewport();
+              self.hideLoadingOverlay();
+              self.showOverlay("There was a problem deleting your photo. Please try again later.");
+              var task = new Ext.util.DelayedTask(function(){
+                self.hideOverlay();
+              });
+              task.delay(2500);
             }
           });
         }  
@@ -490,7 +520,7 @@ Ext.define('Grubm.controller.Main', {
     }
 
     if(errors.length == 0) {
-      this.maskViewport("Uploading...");
+      this.showLoadingOverlay("Uploading...");
       var options = new FileUploadOptions();
       options.fileKey = "image[photo]";
       options.fileName = img.substr(img.lastIndexOf('/') + 1);
@@ -526,7 +556,7 @@ Ext.define('Grubm.controller.Main', {
           self.resetUploadPhoto();
           self.getMain().setActiveItem(0);
           self.loadMyPhotos();
-          self.unmaskViewport();
+          self.hideLoadingOverlay();
           if(postToFB == 1) {
             var task = new Ext.util.DelayedTask(function(){
               self.postToFacebook(Ext.JSON.decode(r.response));
@@ -535,14 +565,14 @@ Ext.define('Grubm.controller.Main', {
           }
         },
         function(error) {
-          self.unmaskViewport();
+          self.hideLoadingOverlay();
           Ext.Viewport.setMasked({
             xtype: 'loadmask',
             message: "Couldn't upload image. Try again later.",
             indicator: false
           });
           var task = new Ext.util.DelayedTask(function(){
-            self.unmaskViewport();
+            self.hideLoadingOverlay();
           });
           task.delay(2000);
         },
@@ -687,9 +717,6 @@ Ext.define('Grubm.controller.Main', {
           gender: res.gender,
           email: res.email
         }]);
-        
-        console.log('token => ');
-        console.log(session.access_token);
         
         self.getLogin().hide();
         self.loadMyPhotos();
