@@ -10,6 +10,7 @@ Ext.define('Grubm.view.FindFoodNavigationView', {
     navigationBar: {
       items: [{ 
         xtype: 'searchbar', 
+        width: '80%',
         align: 'right',
         hidden: true
       }]
