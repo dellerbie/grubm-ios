@@ -1,4 +1,5 @@
 Ext.define('Grubm.view.Overlay', {
+  extend: 'Ext.Component',
   singleton: true,
   container: null,
   createOverlay: function(msg) {
@@ -35,8 +36,9 @@ Ext.define('Grubm.view.Overlay', {
       resize: function() { this.refreshPosition(panel) }
     });
     
-    this.refreshPosition(panel);
     this.container.show();
+    this.refreshPosition(panel);
+    
     var task = new Ext.util.DelayedTask(function() {
       this.hide();
     }, this);

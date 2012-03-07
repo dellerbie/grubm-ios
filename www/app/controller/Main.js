@@ -374,7 +374,7 @@ Ext.define('Grubm.controller.Main', {
   },
   
   unmaskViewport: function() {
-   // Grubm.view.Overlay.hide();
+    Grubm.view.Overlay.hide();
   },
 
   onGetImageSuccess: function(imageURI) {
