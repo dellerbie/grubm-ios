@@ -5,8 +5,8 @@ Ext.define('Grubm.controller.Main', {
   ],
   config: {
     baseUrl: "http://la.grubm.com",
-    //apiServer: "http://192.168.1.76:3000",
-    apiServer: "http://www.grubm.com",
+    apiServer: "http://192.168.1.71:3000",
+    //apiServer: "http://www.grubm.com",
     profile: Ext.os.deviceType.toLowerCase(),
     currentPosition: null,
     currentPlace: null,
@@ -176,6 +176,9 @@ Ext.define('Grubm.controller.Main', {
         params: {
           access_token: user.get('accessToken'), 
           oauth_provider: 'facebook'
+        },
+        callback: function() {
+          console.log('callback');
         }
       });
     }

@@ -7,13 +7,15 @@ Ext.define('Grubm.view.SearchBar', {
     name: 'q',
     listeners: {
       action: function() {
-        Ext.getStore('Images').load({
-          params: {
-            q: this.getValue()
-          }
+        Ext.getStore('Images').getProxy().setExtraParams({
+          q: this.getValue()
         });
+        Ext.getStore('Images').load();
       },
       clearicontap: function() {
+        Ext.getStore('Images').getProxy().setExtraParams({
+          q: ''
+        })
         Ext.getStore('Images').load();
       }
     }

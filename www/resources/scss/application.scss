@@ -21,6 +21,7 @@ $loading-spinner-color: #ffffff;
 @include sencha-loading-spinner;
 @include sencha-msgbox;
 @include sencha-list-pullrefresh;
+@include sencha-list-paging;
 
 @include pictos-iconmask(photo1);
 @include pictos-iconmask(photos2);
@@ -190,6 +191,26 @@ h3.more {
 
 .x-list-pullrefresh-message {
 	font-size: 1.2em;
+}
+
+.x-list-paging { 
+	clear: both;
+	padding-top: .5em;
+}
+
+.x-list-paging .x-list-paging-msg  {
+	width: 10em;
+	margin: 1em auto;
+	padding: 0.45em 2em;
+	-webkit-border-radius: 2px;
+	text-align: center;
+	vertical-align: baseline;
+  background: #dadada -webkit-gradient(linear, center bottom, center top, from(#dadada), to(#c7c7c7));
+	color: #575757;
+	border-color: #ccc;
+	font-size: .6em;
+	font-weight: bold;
+	box-shadow: 0 0 1px 1px #888;
 }
 
 .x-dataview-emptytext {
