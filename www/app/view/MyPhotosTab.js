@@ -8,7 +8,10 @@ Ext.define('Grubm.view.MyPhotosTab', {
     loadingText: '',
     limit: 30,
     plugins: [{ 
-      xclass: 'Ext.plugin.PullRefresh'
+      xclass: 'Ext.plugin.PullRefresh',
+      refreshFn: function() {
+        Ext.getStore('MyImages').load();
+      }
     },{
       xclass: 'Ext.plugin.ListPaging',
       loadTpl: '<div class="{cssPrefix}list-paging-msg">{message}</div>'

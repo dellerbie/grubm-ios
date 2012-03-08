@@ -29,6 +29,8 @@ Ext.define('Grubm.view.Overlay', {
   
   show: function(msg, panel, loading) {
     var container = loading ? this.loadingContainer : this.container;
+    panel = panel || Ext.Viewport;
+    
     if(!container) {
       var id = loading ? 'grubm-loading-overlay' : 'grubm-overlay';
       var overlay = loading ? this.createLoadingOverlay : this.createOverlay;
@@ -57,6 +59,7 @@ Ext.define('Grubm.view.Overlay', {
     container.show();
     this.refreshPosition(panel, container);
     
+    var autoHideTime = loading ? 30000 : 2500;
     var task = new Ext.util.DelayedTask(function() {
       if(loading) {
         this.hideLoading();
@@ -64,7 +67,7 @@ Ext.define('Grubm.view.Overlay', {
         this.hide();
       }
     }, this);
-    task.delay(30000); // auto-hide the overlay in 30 seconds, no matter what.
+    task.delay(autoHideTime); // auto-hide the overlay in 30 seconds, no matter what.
   },
   
   hide: function(loading) {

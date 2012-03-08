@@ -6,17 +6,23 @@ Ext.define('Grubm.store.Images', {
     pageSize: 30,
     proxy: {
       type: 'jsonp',
-      url: 'http://la.grubm.com/.json',
       listeners: {
         exception: function(proxy, response, operation) {
           Grubm.view.Overlay.show("Couldn't get images.", Ext.Viewport);
-          var task = new Ext.util.DelayedTask(function(){
-            Grubm.view.Overlay.hide();
-          });
-          task.delay(2000);
         }
       }
     },
-    autoLoad: false
+    autoLoad: false,
+    listeners: {
+      beforeload: function() {
+        if(navigator && navigator.network && navigator.network.connection) {
+          var networkState = navigator.network.connection.type;
+          if(networkState == Connection.NONE || networkState == Connection.UNKNOWN) {
+            Grubm.view.Overlay.show("Network error. You aren't connected to the internet.");
+            return false;
+          }
+        }
+      }
+    }
   }
 });

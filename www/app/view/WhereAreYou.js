@@ -10,6 +10,7 @@ Ext.define('Grubm.view.WhereAreYou', {
       items:[{
         xtype: 'searchfield', 
         placeHolder: 'Where are you?',
+        width: '70%',
         useClearIcon: true,
         name: 'search'
       },{

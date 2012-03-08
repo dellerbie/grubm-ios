@@ -5,7 +5,7 @@ Ext.define('Grubm.controller.Main', {
   ],
   config: {
     baseUrl: "http://la.grubm.com",
-    apiServer: "http://www.grubm.com",
+    apiServer: "http://192.168.1.71:3000",
     profile: Ext.os.deviceType.toLowerCase(),
     currentPosition: null,
     currentPlace: null,
@@ -107,15 +107,12 @@ Ext.define('Grubm.controller.Main', {
 
   launch: function() {
     var self = this;
-    
     Ext.Ajax.timeout = 30000;
     
-    Ext.create('Grubm.view.Login').hide();
-    Ext.create('Grubm.view.Main').hide();
-    Ext.create('Grubm.view.MyPhotosTab');
-    Ext.create('Grubm.view.UploadPhoto');
+    Ext.create('Grubm.view.Login');
+    Ext.create('Grubm.view.Main');
     
-    
+    Ext.getStore('MyImages').getProxy().setUrl(this.getApiServer() + '/v1/images.json');
     Ext.getStore('MyImages').on('beforeload', function() { self.showLoadingOverlay(); });
     Ext.getStore('Images').on('beforeload', function() { self.showLoadingOverlay(); });
     
@@ -133,17 +130,64 @@ Ext.define('Grubm.controller.Main', {
     // self.loadMyPhotos();
     // self.getMain().show();
     
-    FB.getLoginStatus(function(response) {
-      if(response.status == 'connected') {
-        self.initUser(response.session);
-      } else {
-        self.getLogin().show();
-        self.getMain().hide();
-      }
-    });
+    if(this.networkAvailable()) {
+      FB.getLoginStatus(function(response) {
+        if(response.status == 'connected') {
+          self.initUser(response.session);
+        } else {
+          self.getLogin().show();
+          self.getMain().hide();
+        }
+      });
+    }
     
     Ext.getStore('MyImages').on('load', Ext.bind(this.onMyImagesStoreLoad, this));
     Ext.getStore('Images').on('load', Ext.bind(this.onImagesStoreLoad, this));
+  },
+  
+  initUser: function(session) {
+    var self = this;
+    if(this.networkAvailable()) {
+      FB.api('/me', function(res) {
+        if(res.error) {
+          self.getLogin().show();
+          self.getMain().hide();
+          self.showOverlay("Facebook authentication error.");
+        } else {
+          Ext.getStore('User').setData([{
+            accessToken: session.access_token,
+            secret: session.secret,
+            oauthType: 'facebook',
+            uid: res.id,
+            firstName: res.first_name,
+            lastName: res.last_name,
+            gender: res.gender,
+            email: res.email
+          }]);
+
+          self.getLogin().hide();
+          self.loadMyPhotos();
+          self.getMain().show();
+        }          
+      });
+    }
+  },
+  
+  loginToFacebook: function() {
+    var self = this;
+
+    FB.login(function(response) {
+      if(response.session) {
+        self.getLogin().hide();
+        self.initUser(response.session);
+        self.getMain().show(); 
+      } else {
+        self.getLogin().show();
+        Ext.Msg.alert('Facebook Login Error', 'Could not log in to Facebook.  Please try again.', Ext.emptyFn);
+      }
+    },{ 
+      perms: "email,publish_stream,offline_access" 
+    });
   },
 
   onMainTabChange: function(mainTabPanel, newVal, oldVal) {
@@ -172,7 +216,6 @@ Ext.define('Grubm.controller.Main', {
         self = this;
       
     if(user) {
-      self.showLoadingOverlay();
       var store = Ext.getStore('MyImages');
       store.getProxy().setExtraParams({
         access_token: user.get('accessToken'),
@@ -194,14 +237,8 @@ Ext.define('Grubm.controller.Main', {
   onMyImagesStoreLoad: function(store, records, successful) {
     if(store.getCount() == 0) {
       this.getMyPhotosTab().element.addCls('empty');
-      Ext.select('.x-list-paging').hide();
     } else {
       this.getMyPhotosTab().element.removeCls('empty');
-      if(store.getCount() >= 30) {
-        Ext.select('.x-list-paging').show();
-      } else {
-        Ext.select('.x-list-paging').hide();
-      }
     }
     this.hideLoadingOverlay();
   },
@@ -209,10 +246,8 @@ Ext.define('Grubm.controller.Main', {
   onImagesStoreLoad: function(store, records) {
     if(store.getCount() == 0) {
       this.getImages().element.addCls('empty');
-      Ext.select('.x-list-paging').hide();
     } else {
       this.getImages().element.removeCls('empty');
-      Ext.select('.x-list-paging').show();
     }
     this.hideLoadingOverlay();
   },
@@ -353,6 +388,33 @@ Ext.define('Grubm.controller.Main', {
     this.getMyPhotosTab().deselectAll();
   },
   
+  showOverlay: function(msg, loading) {
+    if(!msg || Ext.String.trim(msg) == '') {
+      msg = 'Loading...';
+    }
+    if(loading) {
+      Grubm.view.Overlay.showLoading(msg, Ext.Viewport);
+    } else {
+      Grubm.view.Overlay.show(msg, Ext.Viewport);
+    }
+  },
+  
+  hideOverlay: function(loading) {
+    if(loading) {
+      Grubm.view.Overlay.hideLoading();
+    } else {
+      Grubm.view.Overlay.hide();
+    }
+  },
+  
+  showLoadingOverlay: function(msg) {    
+    this.showOverlay(msg, true);
+  },
+  
+  hideLoadingOverlay: function() {
+    this.hideOverlay(true);
+  },
+  
   takePhoto: function() {
     this.selectImage(true);
   },
@@ -380,33 +442,6 @@ Ext.define('Grubm.controller.Main', {
         options
       );
     }
-  },
-  
-  showOverlay: function(msg, panel, loading) {
-    if(!msg || Ext.String.trim(msg) == '') {
-      msg = 'Loading...';
-    }
-    if(loading) {
-      Grubm.view.Overlay.showLoading(msg, Ext.Viewport);
-    } else {
-      Grubm.view.Overlay.show(msg, Ext.Viewport);
-    }
-  },
-  
-  hideOverlay: function(loading) {
-    if(loading) {
-      Grubm.view.Overlay.hideLoading();
-    } else {
-      Grubm.view.Overlay.hide();
-    }
-  },
-  
-  showLoadingOverlay: function(msg, panel) {    
-    this.showOverlay(msg, panel, true);
-  },
-  
-  hideLoadingOverlay: function() {
-    this.hideOverlay(true);
   },
 
   onGetImageSuccess: function(imageURI) {
@@ -466,7 +501,7 @@ Ext.define('Grubm.controller.Main', {
       function(button) {
         if(button == 'no') {
           box.hide();
-        } else {
+        } else if(this.networkAvailable()) {
           this.showLoadingOverlay("Deleting photo...");
           var image = view.getImage(),
               user = Ext.getStore('User').first(),
@@ -515,7 +550,7 @@ Ext.define('Grubm.controller.Main', {
     }
 
     if(Ext.String.trim(description) == '') {
-      errors.push('Description cannot be blank');
+      errors.push("Description can't be blank");
     }
 
     if(place == null) {
@@ -553,36 +588,30 @@ Ext.define('Grubm.controller.Main', {
       var self = this,
           ft = new FileTransfer();
           
-      ft.upload(img, 
-        this.getApiServer() + '/v1/images.json',
-        function(r) {
-          self.resetUploadPhoto();
-          self.getMain().setActiveItem(0);
-          self.loadMyPhotos();
-          self.hideLoadingOverlay();
-          if(postToFB == 1) {
-            var task = new Ext.util.DelayedTask(function(){
-              self.postToFacebook(Ext.JSON.decode(r.response));
-            });
-            task.delay(5000);
-          }
-        },
-        function(error) {
-          self.hideLoadingOverlay();
-          Ext.Viewport.setMasked({
-            xtype: 'loadmask',
-            message: "Couldn't upload image. Try again later.",
-            indicator: false
-          });
-          var task = new Ext.util.DelayedTask(function(){
+      if(this.networkAvailable()) {
+        ft.upload(img, 
+          this.getApiServer() + '/v1/images.json',
+          function(r) {
+            self.resetUploadPhoto();
+            self.getMain().setActiveItem(0);
+            self.loadMyPhotos();
             self.hideLoadingOverlay();
-          });
-          task.delay(2000);
-        },
-        options
-      );
+            if(postToFB == 1) {
+              var task = new Ext.util.DelayedTask(function(){
+                self.postToFacebook(Ext.JSON.decode(r.response));
+              });
+              task.delay(5000);
+            }
+          },
+          function(error) {
+            self.hideLoadingOverlay();
+            self.showOverlay("Couldn't upload photo. Try again later.");
+          },
+          options
+        );
+      }
     } else {
-      Ext.Msg.alert("Upload Errors", errors.join("\n"), Ext.emptyFn);
+      Ext.Msg.alert("Upload Errors", errors.join(". "), Ext.emptyFn);
     }
   },
 
@@ -602,17 +631,25 @@ Ext.define('Grubm.controller.Main', {
   onGetCurrentPositionSuccess: function(position) {
     this.setCurrentPosition(position.coords.latitude + ',' + position.coords.longitude);
     var self = this;
-    Ext.Ajax.request({
-      url: "https://maps.googleapis.com/maps/api/place/search/json?&radius=500&sensor=true&key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc",
-      method: 'GET',
-      params: {
-        location: self.getCurrentPosition()
-      },
-      success: function(response) {
-        var json = Ext.decode(response.responseText);
-        Ext.getStore('Places').setData(json.results);
-      }
-    });
+    
+    if(this.networkAvailable()) {
+      Ext.Ajax.request({
+        url: "https://maps.googleapis.com/maps/api/place/search/json?&radius=500&sensor=true&key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc",
+        method: 'GET',
+        params: {
+          location: self.getCurrentPosition()
+        },
+        success: function(response) {
+          var json = Ext.decode(response.responseText);
+          Ext.getStore('Places').setData(json.results);
+        },
+        failure: function() {
+          self.showOverlay("Couldn't find any places near you.");
+        }
+      });
+    } else {
+      this.getUploadPhoto().setActiveItem(0, {type: 'slide', direction: 'right'});
+    }
   },
 
   onGetCurrentPositionError: function(error) {
@@ -629,18 +666,23 @@ Ext.define('Grubm.controller.Main', {
     var self = this,
         query = searchField ? searchField.getValue() : '';
         
-    Ext.Ajax.request({
-      url: "https://maps.googleapis.com/maps/api/place/search/json?&radius=500&sensor=true&key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc",
-      method: 'GET',
-      params: {
-        name: query,
-        location: this.getCurrentPosition()
-      },
-      success: function(response) {
-        var json = Ext.decode(response.responseText);
-        Ext.getStore('Places').setData(json.results, false);
-      }
-    });
+    if(this.networkAvailable()) {
+      Ext.Ajax.request({
+        url: "https://maps.googleapis.com/maps/api/place/search/json?&radius=500&sensor=true&key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc",
+        method: 'GET',
+        params: {
+          name: query,
+          location: this.getCurrentPosition()
+        },
+        success: function(response) {
+          var json = Ext.decode(response.responseText);
+          Ext.getStore('Places').setData(json.results, false);
+        } ,
+        failure: function() {
+          self.showOverlay("Couldn't find any places near you.");
+        }
+      });
+    }
   },
 
   onLocationSelected: function(dataview, place) {
@@ -648,84 +690,46 @@ Ext.define('Grubm.controller.Main', {
     this.getLocationText().setHtml('&#64; ' + place.get('name'));
     var self = this;
 
-    // get the places detailed info
-    Ext.Ajax.request({
-      url: "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc&sensor=true",
-      method: 'GET',
-      params: {
-        reference: place.get('reference'),
-      },
-      success: function(response) {
-        var json = Ext.decode(response.responseText);
+    if(this.networkAvailable()) {
+      // get the places detailed info
+      Ext.Ajax.request({
+        url: "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc&sensor=true",
+        method: 'GET',
+        params: {
+          reference: place.get('reference'),
+        },
+        success: function(response) {
+          var json = Ext.decode(response.responseText);
 
-        var street_number = street = city = zip = state = '';
-        var address = json.result.address_components;
+          var street_number = street = city = zip = state = '';
+          var address = json.result.address_components;
 
-        for(var i = 0; i < address.length; i++) {
-          if(Ext.Array.contains(address[i].types, 'street_number')) {
-            street_number = address[i].long_name;
-          } else if(Ext.Array.contains(address[i].types, 'route')) {
-            street = address[i].long_name;
-          } else if(Ext.Array.contains(address[i].types, 'locality')) {
-            city = address[i].long_name;
-          } else if(Ext.Array.contains(address[i].types, 'administrative_area_level_1')) {
-            state = address[i].long_name;
-          } else if(Ext.Array.contains(address[i].types, 'postal_code')) {
-            zip = address[i].long_name;
+          for(var i = 0; i < address.length; i++) {
+            if(Ext.Array.contains(address[i].types, 'street_number')) {
+              street_number = address[i].long_name;
+            } else if(Ext.Array.contains(address[i].types, 'route')) {
+              street = address[i].long_name;
+            } else if(Ext.Array.contains(address[i].types, 'locality')) {
+              city = address[i].long_name;
+            } else if(Ext.Array.contains(address[i].types, 'administrative_area_level_1')) {
+              state = address[i].long_name;
+            } else if(Ext.Array.contains(address[i].types, 'postal_code')) {
+              zip = address[i].long_name;
+            }
           }
+
+          place.data['street'] = street_number + ' ' + street;
+          place.data['city'] = city;
+          place.data['state'] = state;
+          place.data['zip'] = zip;
+          place.data['phone'] = json.result.formatted_phone_number;
+          self.setCurrentPlace(place);
+        },
+        failure: function() {
+          self.showOverlay("Error checking in.");
         }
-        
-        place.data['street'] = street_number + ' ' + street;
-        place.data['city'] = city;
-        place.data['state'] = state;
-        place.data['zip'] = zip;
-        place.data['phone'] = json.result.formatted_phone_number;
-        self.setCurrentPlace(place);
-      }
-    });
-  },
-
-  loginToFacebook: function() {
-    var self = this;
-
-    FB.login(function(response) {
-      if(response.session) {
-        self.getLogin().hide();
-        self.initUser(response.session);
-        self.getMain().show(); 
-      } else {
-        self.getLogin().show();
-        Ext.Msg.alert('Facebook Login Error', 'Could not log in to Facebook.  Please try again.', Ext.emptyFn);
-      }
-    },{ 
-      perms: "email,publish_stream,offline_access" 
-    });
-  },
-
-  initUser: function(session) {
-    var self = this;
-    FB.api('/me', function(res) {
-      if(res.error) {
-        self.getLogin().show();
-        self.getMain().hide();
-        Ext.Msg.alert('Facebook Login Error', 'There was a problem connecting to your Facebook account', Ext.emptyFn);
-      } else {
-        Ext.getStore('User').setData([{
-          accessToken: session.access_token,
-          secret: session.secret,
-          oauthType: 'facebook',
-          uid: res.id,
-          firstName: res.first_name,
-          lastName: res.last_name,
-          gender: res.gender,
-          email: res.email
-        }]);
-        
-        self.getLogin().hide();
-        self.loadMyPhotos();
-        self.getMain().show();
-      }          
-    });
+      });
+    }
   },
 
   postToFacebook: function(image) {
@@ -753,5 +757,16 @@ Ext.define('Grubm.controller.Main', {
       },
       success: Ext.emptyFn
     });
+  },
+  
+  networkAvailable: function() {
+    if(navigator && navigator.network && navigator.network.connection) {
+      var networkState = navigator.network.connection.type;
+      if(networkState == Connection.NONE || networkState == Connection.UNKNOWN) {
+        Grubm.view.Overlay.show("Network error. You aren't connected to the internet.");
+        return false;
+      }
+    }
+    return true;
   }
 });
