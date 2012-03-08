@@ -115,10 +115,9 @@ Ext.define('Grubm.controller.Main', {
     Ext.create('Grubm.view.MyPhotosTab');
     Ext.create('Grubm.view.UploadPhoto');
     
-    Ext.getStore('MyImages').on('beforeload', Ext.bind(this.showLoadingOverlay, this));
-    Ext.getStore('Images').on('beforeload', Ext.bind(this.showLoadingOverlay, this));
-    Ext.getStore('MyImages').on('load', Ext.bind(this.onMyImagesStoreLoad, this));
-    Ext.getStore('Images').on('load', Ext.bind(this.onImagesStoreLoad, this));
+    
+    Ext.getStore('MyImages').on('beforeload', function() { self.showLoadingOverlay(); });
+    Ext.getStore('Images').on('beforeload', function() { self.showLoadingOverlay(); });
     
     // Ext.getStore('User').setData([{
     //   accessToken: "BAADzyTXMlh0BADI1HKyQ4cEGVmViAwLTMth3nuaRZCENFZBZCYsgEo2SDTzRFBD72HoB3bGEtehNeQ5OaKmZCqyqmjq2PjApKP2ezzVyhWDPFEJhBFlzqYZA8n9VoDaqCNuZBuEePtNQZDZD",
@@ -142,7 +141,9 @@ Ext.define('Grubm.controller.Main', {
         self.getMain().hide();
       }
     });
-
+    
+    Ext.getStore('MyImages').on('load', Ext.bind(this.onMyImagesStoreLoad, this));
+    Ext.getStore('Images').on('load', Ext.bind(this.onImagesStoreLoad, this));
   },
 
   onMainTabChange: function(mainTabPanel, newVal, oldVal) {
@@ -196,7 +197,11 @@ Ext.define('Grubm.controller.Main', {
       Ext.select('.x-list-paging').hide();
     } else {
       this.getMyPhotosTab().element.removeCls('empty');
-      Ext.select('.x-list-paging').show();
+      if(store.getCount() >= 30) {
+        Ext.select('.x-list-paging').show();
+      } else {
+        Ext.select('.x-list-paging').hide();
+      }
     }
     this.hideLoadingOverlay();
   },
@@ -355,10 +360,8 @@ Ext.define('Grubm.controller.Main', {
   selectImage: function(takePhoto) {
     var options = {
       limit: 1,
-      quality: 45,
-      encodingType: Camera.EncodingType.JPEG,
-      targetWidth: 612,
-      targetHeight: 612, 
+      quality: 49,
+      encodingType: Camera.EncodingType.JPEG, 
       sourceType: Camera.PictureSourceType.CAMERA,
       destinationType: Camera.DestinationType.FILE_URI
     };
