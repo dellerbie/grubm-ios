@@ -6,6 +6,10 @@ Ext.define('Grubm.store.Images', {
     pageSize: 30,
     proxy: {
       type: 'jsonp',
+      reader: {
+        type: 'json',
+        rootProperty: 'images'
+      },
       listeners: {
         exception: function() {
           Grubm.view.Overlay.show("Couldn't get images.", Ext.Viewport);
@@ -18,7 +22,7 @@ Ext.define('Grubm.store.Images', {
         if(navigator && navigator.network && navigator.network.connection) {
           var networkState = navigator.network.connection.type;
           if(networkState == Connection.NONE || networkState == Connection.UNKNOWN) {
-            Grubm.view.Overlay.show("Network error. You aren't connected to the internet.");
+            Grubm.view.Overlay.show("Network error. Grubm requires an internet connection.");
             return false;
           }
         }

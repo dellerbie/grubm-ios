@@ -11,8 +11,7 @@ Ext.define('Grubm.view.Images', {
     loadingText: '',
     limit: 30,
     plugins: [{
-      xclass: 'Ext.plugin.ListPaging',
-      loadTpl: '<div class="{cssPrefix}list-paging-msg">{message}</div>'
+      xclass: 'Ext.plugin.ListPaging'
     }],
     itemTpl: new Ext.XTemplate(
     	'<div class="image" style="background: url({url}) no-repeat;"></div>'

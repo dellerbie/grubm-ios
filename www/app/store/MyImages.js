@@ -22,7 +22,7 @@ Ext.define('Grubm.store.MyImages', {
         if(navigator && navigator.network && navigator.network.connection) {
           var networkState = navigator.network.connection.type;
           if(networkState == Connection.NONE || networkState == Connection.UNKNOWN) {
-            Grubm.view.Overlay.show("Network error. You aren't connected to the internet.");
+            Grubm.view.Overlay.show("Network error. Grubm requires an internet connection.");
             return false;
           }
         }

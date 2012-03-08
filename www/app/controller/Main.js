@@ -5,8 +5,7 @@ Ext.define('Grubm.controller.Main', {
   ],
   config: {
     baseUrl: "http://la.grubm.com",
-   apiServer: "http://192.168.1.76:3000",
-    // apiServer: 'http://www.grubm.com',
+    apiServer: 'http://www.grubm.com',
     profile: Ext.os.deviceType.toLowerCase(),
     currentPosition: null,
     currentPlace: null,
@@ -40,13 +39,10 @@ Ext.define('Grubm.controller.Main', {
         select: 'onCitySelect'
       },
       'imagesview': {
-        select: 'showImageDetailsFromFindFoodView'
+        itemtap: 'showImageDetailsFromFindFoodView'
       },
       'myphotostab': {
-        select: 'showDetailsForMyPhotos'
-      },
-      '#refresh-myphotos': {
-        tap: 'loadMyPhotos'
+        itemtap: 'showDetailsForMyPhotos'
       },
       '#deletePhoto': {
         tap: 'deletePhoto'
@@ -81,27 +77,28 @@ Ext.define('Grubm.controller.Main', {
         clearicontap: 'resetPlacesFilter'
       },
       'whereareyou dataview': {
-        select: 'onLocationSelected'
+        select: 'onLocationSelected',
+        show: 'networkAvailable'
       },
       'whereareyou #cancelSelectLocation': {
         tap: 'cancelSelectLocation'
       },
       'loginview': {
-        fbtap: 'loginToFacebook'
-      },
-      'loginview': {
-        fbtap: 'loginToFacebook'
+        fbtap: 'loginToFacebook',
+        show: 'networkAvailable'
       },
       'mainview': {
         activeitemchange: 'onMainTabChange'
       },
       'myphotosnavview': {
         push: 'onMyPhotosNavigationPush',
-        pop: 'onMyPhotosNavigationPop'
+        pop: 'onMyPhotosNavigationPop',
+        show: 'networkAvailable'
       },
       'findfoodnavview': {
         push: 'onFindFoodNavigationPush',
-        pop: 'onFindFoodNavigationPop'
+        pop: 'onFindFoodNavigationPop',
+        show: 'networkAvailable'
       }
     }
   },
@@ -117,30 +114,32 @@ Ext.define('Grubm.controller.Main', {
     Ext.getStore('MyImages').on('beforeload', function() { self.showLoadingOverlay(); });
     Ext.getStore('Images').on('beforeload', function() { self.showLoadingOverlay(); });
     
-    Ext.getStore('User').setData([{
-      accessToken: "BAADzyTXMlh0BADI1HKyQ4cEGVmViAwLTMth3nuaRZCENFZBZCYsgEo2SDTzRFBD72HoB3bGEtehNeQ5OaKmZCqyqmjq2PjApKP2ezzVyhWDPFEJhBFlzqYZA8n9VoDaqCNuZBuEePtNQZDZD",
-      secret: "630bc3266929913d0010b4a1bc79cd2a",
-      oauthType: 'facebook',
-      uid: '',
-      firstName: 'Derrick',
-      lastName: 'Ellerbie',
-      gender: 'Male',
-      email: 'derrick@grubm.com'
-    }]);
-    self.getLogin().hide();
-    self.loadMyPhotos();
-    self.getMain().show();
+    // Ext.getStore('User').setData([{
+    //   accessToken: "BAADzyTXMlh0BADI1HKyQ4cEGVmViAwLTMth3nuaRZCENFZBZCYsgEo2SDTzRFBD72HoB3bGEtehNeQ5OaKmZCqyqmjq2PjApKP2ezzVyhWDPFEJhBFlzqYZA8n9VoDaqCNuZBuEePtNQZDZD",
+    //   secret: "630bc3266929913d0010b4a1bc79cd2a",
+    //   oauthType: 'facebook',
+    //   uid: '',
+    //   firstName: 'Derrick',
+    //   lastName: 'Ellerbie',
+    //   gender: 'Male',
+    //   email: 'derrick@grubm.com'
+    // }]);
+    // self.getLogin().hide();
+    // self.loadMyPhotos();
+    // self.getMain().show();
     
-    // if(this.networkAvailable()) {
-    //   FB.getLoginStatus(function(response) {
-    //     if(response.status == 'connected') {
-    //       self.initUser(response.session);
-    //     } else {
-    //       self.getLogin().show();
-    //       self.getMain().hide();
-    //     }
-    //   });
-    // }
+    if(this.networkAvailable()) {
+      FB.getLoginStatus(function(response) {
+        if(response.status == 'connected') {
+          self.initUser(response.session);
+        } else {
+          self.getLogin().show();
+          self.getMain().hide();
+        }
+      });
+    } else {
+      self.getLogin().show();
+    }
     
     Ext.getStore('MyImages').on('load', Ext.bind(this.onMyImagesStoreLoad, this));
     Ext.getStore('Images').on('load', Ext.bind(this.onImagesStoreLoad, this));
@@ -324,7 +323,7 @@ Ext.define('Grubm.controller.Main', {
     searchBar.hide();
   },
   
-  showImageDetailsFromFindFoodView: function(list, image) {
+  showImageDetailsFromFindFoodView: function(list, index, target, image) {
     var view = this.getFindFoodNavigationView().push({
       xtype: 'imagedetail'
     });
@@ -349,11 +348,12 @@ Ext.define('Grubm.controller.Main', {
     });
   },
 
-  showDetailsForMyPhotos: function(list, image) {
+  showDetailsForMyPhotos: function(list, index, target, image) {
     var view = this.getMyPhotosNavigationView().push({
       xtype: 'imagedetail'
     });
     view.setImage(image);
+    
     this.getMyPhotosTab().deselectAll();
     this.positionBusinessMap(image.get('business'));
     Ext.select('#imageInfoPanel .image').setStyle({
@@ -764,7 +764,7 @@ Ext.define('Grubm.controller.Main', {
     if(navigator && navigator.network && navigator.network.connection) {
       var networkState = navigator.network.connection.type;
       if(networkState == Connection.NONE || networkState == Connection.UNKNOWN) {
-        Grubm.view.Overlay.show("Network error. You aren't connected to the internet.");
+        Grubm.view.Overlay.show("Network error. Grubm requires an internet connection.");
         return false;
       }
     }
