@@ -1,8 +1,12 @@
 Ext.define('Grubm.view.Images', {
   extend: 'Ext.dataview.DataView',
   xtype: 'imagesview',
+  requires: [
+    'Grubm.store.Images',
+    'Grubm.plugin.ListPaging'
+  ],
   config: {
-    ui: 'images-view',
+    ui: 'images-view find-food',
     store: 'Images',
     loadingText: '',
     limit: 30,

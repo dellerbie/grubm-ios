@@ -7,7 +7,7 @@ Ext.define('Grubm.store.Images', {
     proxy: {
       type: 'jsonp',
       listeners: {
-        exception: function(proxy, response, operation) {
+        exception: function() {
           Grubm.view.Overlay.show("Couldn't get images.", Ext.Viewport);
         }
       }

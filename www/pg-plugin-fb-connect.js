@@ -17,7 +17,6 @@ PG.normalize_session_date = function(session) {
     y = _ref[0], M = _ref[1], d = _ref[2], h = _ref[3], m = _ref[4], s = _ref[5];
 
     var integer_date = new Date(y, M, d, h, m, s).valueOf();
-    console.log("Normalizing session.expires from '" + session.expires + "' to " + integer_date);
     session.expires = integer_date;
   }
 };

@@ -168,9 +168,18 @@ h3.more {
   -webkit-background-size: 320px 480px;
 }
 
-.x-dataview-images-view.empty {
+.x-dataview-images-view.x-dataview-find-food.empty {
 	background: url(../images/no-results@2x.png) no-repeat top left;
   -webkit-background-size: 320px 480px;
+}
+
+.x-dataview-images-view.x-dataview-find-food.empty .x-list-paging,
+.x-dataview-images-view.x-dataview-my-images.empty .x-list-paging {
+	display: none;
+}
+
+.x-list-paging-no-more {
+	display: none;
 }
 
 .logout {

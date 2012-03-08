@@ -5,16 +5,14 @@ Ext.define('Grubm.store.MyImages', {
     model: 'Grubm.model.MyImage',
     pageSize: 30,
     proxy: {
-      type: 'ajax',
+      type: 'jsonp',
+      reader: {
+        type: 'json',
+        rootProperty: 'images'
+      },
       listeners: {
-        exception: function(proxy, response, operation, opts) {
-          if(!operation.success) {
-            var msg = "Couldn't get images.";
-            if(response.status == 401) {
-              msg = "Authentication error. Log out and log back in.";
-            }
-            Grubm.view.Overlay.show(msg, Ext.Viewport);
-          }
+        exception: function() {
+          Grubm.view.Overlay.show("Couldn't get images.", Ext.Viewport);
         }
       }
     },

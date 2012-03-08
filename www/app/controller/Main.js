@@ -5,7 +5,8 @@ Ext.define('Grubm.controller.Main', {
   ],
   config: {
     baseUrl: "http://la.grubm.com",
-    apiServer: "http://192.168.1.71:3000",
+   apiServer: "http://192.168.1.76:3000",
+    // apiServer: 'http://www.grubm.com',
     profile: Ext.os.deviceType.toLowerCase(),
     currentPosition: null,
     currentPlace: null,
@@ -109,37 +110,37 @@ Ext.define('Grubm.controller.Main', {
     var self = this;
     Ext.Ajax.timeout = 30000;
     
-    Ext.create('Grubm.view.Login');
+    Ext.create('Grubm.view.Login').hide();
     Ext.create('Grubm.view.Main');
     
     Ext.getStore('MyImages').getProxy().setUrl(this.getApiServer() + '/v1/images.json');
     Ext.getStore('MyImages').on('beforeload', function() { self.showLoadingOverlay(); });
     Ext.getStore('Images').on('beforeload', function() { self.showLoadingOverlay(); });
     
-    // Ext.getStore('User').setData([{
-    //   accessToken: "BAADzyTXMlh0BADI1HKyQ4cEGVmViAwLTMth3nuaRZCENFZBZCYsgEo2SDTzRFBD72HoB3bGEtehNeQ5OaKmZCqyqmjq2PjApKP2ezzVyhWDPFEJhBFlzqYZA8n9VoDaqCNuZBuEePtNQZDZD",
-    //   secret: "630bc3266929913d0010b4a1bc79cd2a",
-    //   oauthType: 'facebook',
-    //   uid: '',
-    //   firstName: 'Derrick',
-    //   lastName: 'Ellerbie',
-    //   gender: 'Male',
-    //   email: 'derrick@grubm.com'
-    // }]);
-    // self.getLogin().hide();
-    // self.loadMyPhotos();
-    // self.getMain().show();
+    Ext.getStore('User').setData([{
+      accessToken: "BAADzyTXMlh0BADI1HKyQ4cEGVmViAwLTMth3nuaRZCENFZBZCYsgEo2SDTzRFBD72HoB3bGEtehNeQ5OaKmZCqyqmjq2PjApKP2ezzVyhWDPFEJhBFlzqYZA8n9VoDaqCNuZBuEePtNQZDZD",
+      secret: "630bc3266929913d0010b4a1bc79cd2a",
+      oauthType: 'facebook',
+      uid: '',
+      firstName: 'Derrick',
+      lastName: 'Ellerbie',
+      gender: 'Male',
+      email: 'derrick@grubm.com'
+    }]);
+    self.getLogin().hide();
+    self.loadMyPhotos();
+    self.getMain().show();
     
-    if(this.networkAvailable()) {
-      FB.getLoginStatus(function(response) {
-        if(response.status == 'connected') {
-          self.initUser(response.session);
-        } else {
-          self.getLogin().show();
-          self.getMain().hide();
-        }
-      });
-    }
+    // if(this.networkAvailable()) {
+    //   FB.getLoginStatus(function(response) {
+    //     if(response.status == 'connected') {
+    //       self.initUser(response.session);
+    //     } else {
+    //       self.getLogin().show();
+    //       self.getMain().hide();
+    //     }
+    //   });
+    // }
     
     Ext.getStore('MyImages').on('load', Ext.bind(this.onMyImagesStoreLoad, this));
     Ext.getStore('Images').on('load', Ext.bind(this.onImagesStoreLoad, this));
