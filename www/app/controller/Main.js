@@ -6,12 +6,13 @@ Ext.define('Grubm.controller.Main', {
   config: {
     baseUrl: "http://la.grubm.com",
     apiServer: 'http://www.grubm.com',
+    // apiServer: 'http://192.168.1.71:3000',
     profile: Ext.os.deviceType.toLowerCase(),
     currentPosition: null,
     currentPlace: null,
     currentImage: null,
     user: null,
-    production: false,
+    production: true,
     staticMapBaseUrl: "http://maps.googleapis.com/maps/api/staticmap?",
     refs: {
       main: 'mainview',
@@ -24,7 +25,7 @@ Ext.define('Grubm.controller.Main', {
       business: 'businessview',
       myPhotosNavigationView: 'myphotosnavview',
       myPhotosTab: 'myphotostab',
-      imageDetail: 'imagedetail',
+      imageDetail: 'myphotosnavview imagedetail',
       deleteButton: '#deletePhoto',
       uploadedImage: 'uploadphoto #uploaded-image',
       uploadPhoto: 'uploadphoto',
@@ -130,7 +131,7 @@ Ext.define('Grubm.controller.Main', {
       }
     } else {
       Ext.getStore('User').setData([{
-        accessToken: "BAADzyTXMlh0BADI1HKyQ4cEGVmViAwLTMth3nuaRZCENFZBZCYsgEo2SDTzRFBD72HoB3bGEtehNeQ5OaKmZCqyqmjq2PjApKP2ezzVyhWDPFEJhBFlzqYZA8n9VoDaqCNuZBuEePtNQZDZD",
+        accessToken: "BAADzyTXMlh0BAITVsHmlpW6uMGsIZBVH73f1hbym2HrcBerItxLTsmDLS22f8zVKGmCo9EM5okZAAZCr4GtJhhDagCAMop26ZANsRJtpAfHlzZC2GtoU3M7kCVMNBNnTerTCIilIJ6wZDZD",
         secret: "630bc3266929913d0010b4a1bc79cd2a",
         oauthType: 'facebook',
         uid: '',
