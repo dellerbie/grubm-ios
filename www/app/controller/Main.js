@@ -257,9 +257,11 @@ Ext.define('Grubm.controller.Main', {
 
   onCitySelect: function(list, city) {
     this.setBaseUrl(city.get('url'));
-    this.getFindFoodNavigationView().push({
-      xtype: 'imagesview'
-    });
+    
+    if(!this.findFoodImagesView) {
+      this.findFoodImagesView = Ext.create('Grubm.view.Images');
+    }
+    this.getFindFoodNavigationView().push(this.findFoodImagesView);
     
     Ext.getStore('Images').getProxy().setUrl(this.getBaseUrl() + '/.json');
     Ext.getStore('Images').load();
@@ -298,26 +300,28 @@ Ext.define('Grubm.controller.Main', {
   onFindFoodNavigationPush: function(view, item) {
     if(item.xtype == "imagesview") {
       this.showSearchBar();
-      view.element.select('.x-toolbar-grubm').addCls('no-logo');
+      view.element.down('.x-toolbar-grubm').addCls('no-logo');
     } else {
-      view.element.select('.x-toolbar-grubm').removeCls('no-logo');
+      view.element.down('.x-toolbar-grubm').removeCls('no-logo');
       this.hideSearchBar();
     }
   },
   
   onFindFoodNavigationPop: function(view, item) {  
     var activeItem = view.getActiveItem().xtype;
-    console.log(activeItem);
     if(activeItem == "citypickerview") {
       this.hideSearchBar();
-      view.element.select('.x-toolbar-grubm').removeCls('no-logo');
+      view.element.down('.x-toolbar-grubm').removeCls('no-logo');
     } else if(activeItem == "imagesview") {
-      view.element.select('.x-toolbar-grubm').addCls('no-logo');
+      view.element.down('.x-toolbar-grubm').addCls('no-logo');
       this.showSearchBar();
     } else {
       this.showSearchBar();
     }
-    this.findFoodImageDetail.getScrollable().getScroller().scrollTo(0, 0, false);
+    
+    if(this.findFoodImageDetail) {
+      this.findFoodImageDetail.getScrollable().getScroller().scrollTo(0, 0, false);
+    }
   },
   
   showSearchBar: function() {
