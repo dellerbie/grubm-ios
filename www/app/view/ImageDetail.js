@@ -16,7 +16,6 @@ Ext.define('Grubm.view.ImageDetail', {
     },
     image: null,
     items: [{
-      id: 'imageInfoPanel',
       xtype: 'imageinfo'
     },{
     	xtype: 'businessinfo'

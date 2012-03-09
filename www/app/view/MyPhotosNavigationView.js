@@ -5,6 +5,7 @@ Ext.define('Grubm.view.MyPhotosNavigationView', {
     'Grubm.view.MyPhotosTab'
   ],
   config: {
+    autoDestroy: false,
     navigationBar: {
       items: [{
         xtype: 'button',

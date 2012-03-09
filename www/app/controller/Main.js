@@ -11,6 +11,7 @@ Ext.define('Grubm.controller.Main', {
     currentPlace: null,
     currentImage: null,
     user: null,
+    production: false,
     staticMapBaseUrl: "http://maps.googleapis.com/maps/api/staticmap?",
     refs: {
       main: 'mainview',
@@ -113,32 +114,34 @@ Ext.define('Grubm.controller.Main', {
     Ext.getStore('MyImages').getProxy().setUrl(this.getApiServer() + '/v1/images.json');
     Ext.getStore('MyImages').on('beforeload', function() { self.showLoadingOverlay(); });
     Ext.getStore('Images').on('beforeload', function() { self.showLoadingOverlay(); });
-    
-    // Ext.getStore('User').setData([{
-    //   accessToken: "BAADzyTXMlh0BADI1HKyQ4cEGVmViAwLTMth3nuaRZCENFZBZCYsgEo2SDTzRFBD72HoB3bGEtehNeQ5OaKmZCqyqmjq2PjApKP2ezzVyhWDPFEJhBFlzqYZA8n9VoDaqCNuZBuEePtNQZDZD",
-    //   secret: "630bc3266929913d0010b4a1bc79cd2a",
-    //   oauthType: 'facebook',
-    //   uid: '',
-    //   firstName: 'Derrick',
-    //   lastName: 'Ellerbie',
-    //   gender: 'Male',
-    //   email: 'derrick@grubm.com'
-    // }]);
-    // self.getLogin().hide();
-    // self.loadMyPhotos();
-    // self.getMain().show();
-    
-    if(this.networkAvailable()) {
-      FB.getLoginStatus(function(response) {
-        if(response.status == 'connected') {
-          self.initUser(response.session);
-        } else {
-          self.getLogin().show();
-          self.getMain().hide();
-        }
-      });
+
+    if(this.getProduction()) {
+      if(this.networkAvailable()) {
+        FB.getLoginStatus(function(response) {
+          if(response.status == 'connected') {
+            self.initUser(response.session);
+          } else {
+            self.getLogin().show();
+            self.getMain().hide();
+          }
+        });
+      } else {
+        self.getLogin().show();
+      }
     } else {
-      self.getLogin().show();
+      Ext.getStore('User').setData([{
+        accessToken: "BAADzyTXMlh0BADI1HKyQ4cEGVmViAwLTMth3nuaRZCENFZBZCYsgEo2SDTzRFBD72HoB3bGEtehNeQ5OaKmZCqyqmjq2PjApKP2ezzVyhWDPFEJhBFlzqYZA8n9VoDaqCNuZBuEePtNQZDZD",
+        secret: "630bc3266929913d0010b4a1bc79cd2a",
+        oauthType: 'facebook',
+        uid: '',
+        firstName: 'Derrick',
+        lastName: 'Ellerbie',
+        gender: 'Male',
+        email: 'derrick@grubm.com'
+      }]);
+      self.getLogin().hide();
+      self.loadMyPhotos();
+      self.getMain().show();
     }
     
     Ext.getStore('MyImages').on('load', Ext.bind(this.onMyImagesStoreLoad, this));
@@ -273,6 +276,7 @@ Ext.define('Grubm.controller.Main', {
   
   onMyPhotosNavigationPop: function(view, item) {
     this.hideDeleteButton();
+    this.myPhotosImageDetail.getScrollable().getScroller().scrollTo(0, 0, false);
   },
   
   showDeleteButton: function() {
@@ -305,6 +309,7 @@ Ext.define('Grubm.controller.Main', {
     } else {
       this.showSearchBar();
     }
+    this.findFoodImageDetail.getScrollable().getScroller().scrollTo(0, 0, false);
   },
   
   showSearchBar: function() {
@@ -324,23 +329,28 @@ Ext.define('Grubm.controller.Main', {
   },
   
   showImageDetailsFromFindFoodView: function(list, index, target, image) {
-    var view = this.getFindFoodNavigationView().push({
-      xtype: 'imagedetail'
-    });
-    view.setImage(image);
+    if(!this.findFoodImageDetail) {
+      this.findFoodImageDetail = Ext.create('Grubm.view.ImageDetail');
+    }
+    
+    this.getFindFoodNavigationView().push(this.findFoodImageDetail);
+    this.findFoodImageDetail.setImage(image);
     
     var business = image.get('business'),
-        moreBusinessPhotosView = view.child('morebusinessphotos');
+        moreBusinessPhotosView = this.findFoodImageDetail.child('morebusinessphotos');
         
     var businessStore = Ext.getStore('Businesses');
     businessStore.getProxy().setUrl(this.getBaseUrl() + "/business/" + business.normalized_name + ".json");
     businessStore.load({params: {limit: 12}});
     
-    view.add(Ext.create('Grubm.view.MoreBusinessPhotos'));
+    if(this.findFoodImageDetail.query('morebusinessphotos').length == 0) {
+      this.findFoodImageDetail.add(Ext.create('Grubm.view.MoreBusinessPhotos'));
+    }
+    
     this.getImages().deselectAll();
     this.positionBusinessMap(business);
     
-    var imageDiv = Ext.select('#imageInfoPanel .image');
+    var imageDiv = this.findFoodImageDetail.down('imageinfo').element.down('.image');
     imageDiv.setStyle({
       width: image.data.width + "px",
       height: image.data.height + "px",
@@ -349,18 +359,14 @@ Ext.define('Grubm.controller.Main', {
   },
 
   showDetailsForMyPhotos: function(list, index, target, image) {
-    var view = this.getMyPhotosNavigationView().push({
-      xtype: 'imagedetail'
-    });
-    view.setImage(image);
+    if(!this.myPhotosImageDetail) {
+      this.myPhotosImageDetail = Ext.create('Grubm.view.ImageDetail');
+    }
     
+    this.myPhotosImageDetail.setImage(image);
+    this.getMyPhotosNavigationView().push(this.myPhotosImageDetail);
     this.getMyPhotosTab().deselectAll();
     this.positionBusinessMap(image.get('business'));
-    Ext.select('#imageInfoPanel .image').setStyle({
-      width: "306px",
-      height: "306px",
-      "-webkit-background-size": "306px 306px"
-    });
   },
 
   positionBusinessMap: function(business) {

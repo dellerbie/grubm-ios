@@ -127,13 +127,17 @@ h3.more {
 .x-panel-image-detail .image {
   margin: .5em auto;
   border: 1px solid #CCC;
-  background: white; 
+  background: white;
+	width: 306px;
+	height: 306px;
+	-webkit-background-size: 306px 306px;
 }
 
 .x-panel-image-detail .x-dataview-business-images .image {
 	margin: 0 .5em .5em 0;
   width: 67px;
   height: 67px;
+	-webkit-background-size: 67px 67px;
 }
 
 #uploaded-image {
