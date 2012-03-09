@@ -9,7 +9,7 @@ Ext.define('Grubm.view.MyPhotosTab', {
     ui: 'images-view my-images',
     store: 'MyImages',
     loadingText: '',
-    limit: 30,
+    limit: 32,
     plugins: [{ 
       xclass: 'Ext.plugin.PullRefresh'
     },{

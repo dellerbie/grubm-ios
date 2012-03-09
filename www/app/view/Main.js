@@ -19,7 +19,6 @@ Ext.define('Grubm.view.Main', {
       iconCls: 'photo1',
       xtype: 'uploadphoto'
     },{
-      id: 'maincontainer',
       xtype: 'findfoodnavview',
       title: 'Find Food',
       iconCls: 'search'

@@ -7,6 +7,7 @@ Ext.define('Grubm.view.MyPhotosNavigationView', {
   config: {
     autoDestroy: false,
     navigationBar: {
+      ui: 'grubm',
       items: [{
         xtype: 'button',
         id: 'deletePhoto',

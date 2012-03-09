@@ -1,9 +1,4 @@
-$base-color: #404040;
-$base-gradient: 'glossy';
-$active-color: #214E9C;
-$tabs-dark-active-color: #336fd4;
-$tabs-bottom-active-gradient: 'bevel';
-$loading-spinner-color: #ffffff;
+$base-gradient: matte;
 
 @import 'sencha-touch/default/all';
 
@@ -25,6 +20,22 @@ $loading-spinner-color: #ffffff;
 
 @include pictos-iconmask(photo1);
 @include pictos-iconmask(photos2);
+
+@include sencha-toolbar-ui('grubm', #0b4b75, matte);
+
+.x-toolbar-grubm {
+	background: url(../images/toolbar@2x.png);
+	background-size: 320px 47px;
+}
+
+.x-toolbar-grubm.no-logo {
+	background-color: #0B4B75;
+	background-image: -webkit-linear-gradient(#2EA0EB, #0E6096 2%, #083654);
+}
+
+.x-toolbar-grubm.x-docked-top {
+	border: none;
+}
 
 .x-list-citypicker .x-list-item {
 	border-bottom: 1px solid #dfdfdf;

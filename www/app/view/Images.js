@@ -9,7 +9,7 @@ Ext.define('Grubm.view.Images', {
     ui: 'images-view find-food',
     store: 'Images',
     loadingText: '',
-    limit: 30,
+    limit: 32,
     plugins: [{
       xclass: 'Ext.plugin.ListPaging'
     }],

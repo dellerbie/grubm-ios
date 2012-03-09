@@ -7,8 +7,10 @@ Ext.define('Grubm.view.FindFoodNavigationView', {
     'Grubm.view.Images'
   ],
   config: {
+    ui: 'find-food',
     autoDestroy: false,
     navigationBar: {
+      ui: 'grubm',
       items: [{ 
         xtype: 'searchbar', 
         width: '80%',

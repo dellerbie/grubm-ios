@@ -3,7 +3,7 @@ Ext.define('Grubm.store.Images', {
   requires: ['Grubm.model.Image'],
   config: {
     model: 'Grubm.model.Image',
-    pageSize: 30,
+    pageSize: 32,
     proxy: {
       type: 'jsonp',
       reader: {
