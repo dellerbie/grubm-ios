@@ -5,14 +5,14 @@ Ext.define('Grubm.controller.Main', {
   ],
   config: {
     baseUrl: "http://la.grubm.com",
-    apiServer: 'http://www.grubm.com',
-    // apiServer: 'http://192.168.1.71:3000',
+    //apiServer: 'http://www.grubm.com',
+    apiServer: 'http://192.168.1.76:3000',
     profile: Ext.os.deviceType.toLowerCase(),
     currentPosition: null,
     currentPlace: null,
     currentImage: null,
     user: null,
-    production: true,
+    production: false,
     staticMapBaseUrl: "http://maps.googleapis.com/maps/api/staticmap?",
     refs: {
       main: 'mainview',
@@ -654,7 +654,7 @@ Ext.define('Grubm.controller.Main', {
     
     if(this.networkAvailable()) {
       Ext.Ajax.request({
-        url: "https://maps.googleapis.com/maps/api/place/search/json?&radius=500&sensor=true&key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc",
+        url: "https://maps.googleapis.com/maps/api/place/search/json?&radius=1600&sensor=true&key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc",
         method: 'GET',
         params: {
           location: self.getCurrentPosition()
@@ -687,16 +687,23 @@ Ext.define('Grubm.controller.Main', {
         query = searchField ? searchField.getValue() : '';
         
     if(this.networkAvailable()) {
+      console.log('places request => ');
+      console.log("https://maps.googleapis.com/maps/api/place/autocomplete/json?&radius=1600&sensor=true&types=establishment&key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc&input=" + query + "&location=" + this.getCurrentPosition());
       Ext.Ajax.request({
-        url: "https://maps.googleapis.com/maps/api/place/search/json?&radius=500&sensor=true&key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc",
+        //url: "https://maps.googleapis.com/maps/api/place/search/json?&radius=1600&sensor=true&key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc",
+        url: "https://maps.googleapis.com/maps/api/place/autocomplete/json",
         method: 'GET',
         params: {
-          name: query,
-          location: this.getCurrentPosition()
+          input: query,
+          location: this.getCurrentPosition(),
+          types: 'establishment',
+          radius: 1600,
+          sensor: true,
+          key: 'AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc'
         },
         success: function(response) {
           var json = Ext.decode(response.responseText);
-          Ext.getStore('Places').setData(json.results, false);
+          Ext.getStore('Places').setData(json.predictions, false);
         } ,
         failure: function() {
           self.showOverlay("Couldn't find any places near you.");
@@ -708,6 +715,7 @@ Ext.define('Grubm.controller.Main', {
   onLocationSelected: function(dataview, place) {
     this.getUploadPhoto().setActiveItem(0);
     this.getLocationText().setHtml('&#64; ' + place.get('name'));
+    
     var self = this;
 
     if(this.networkAvailable()) {
