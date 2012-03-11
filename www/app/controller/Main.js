@@ -5,14 +5,14 @@ Ext.define('Grubm.controller.Main', {
   ],
   config: {
     baseUrl: "http://la.grubm.com",
-    //apiServer: 'http://www.grubm.com',
-    apiServer: 'http://192.168.1.76:3000',
+    apiServer: 'http://www.grubm.com',
+    // apiServer: 'http://192.168.1.76:3000',
     profile: Ext.os.deviceType.toLowerCase(),
     currentPosition: null,
     currentPlace: null,
     currentImage: null,
     user: null,
-    production: false,
+    production: true,
     staticMapBaseUrl: "http://maps.googleapis.com/maps/api/staticmap?",
     refs: {
       main: 'mainview',
@@ -54,7 +54,6 @@ Ext.define('Grubm.controller.Main', {
       },
       'uploadphoto': {
         show: 'onUploadPhotoShow',
-        hide: 'resetUploadPhoto'
       },
       'uploadphoto #select-location': {
         tap: 'selectLocation'
@@ -75,7 +74,6 @@ Ext.define('Grubm.controller.Main', {
         tap: 'selectImage'
       },
       'whereareyou searchfield': {
-        keyup: 'filterPlaces',
         clearicontap: 'resetPlacesFilter'
       },
       'whereareyou dataview': {
@@ -147,6 +145,7 @@ Ext.define('Grubm.controller.Main', {
     
     Ext.getStore('MyImages').on('load', Ext.bind(this.onMyImagesStoreLoad, this));
     Ext.getStore('Images').on('load', Ext.bind(this.onImagesStoreLoad, this));
+    this.getWhereAreYou().down('searchfield').on('keyup', Ext.Function.createBuffered(this.filterPlaces, 300, this));
   },
   
   initUser: function(session) {
@@ -496,7 +495,10 @@ Ext.define('Grubm.controller.Main', {
     if(!this.getChoosePhoto()) {
       Ext.Viewport.add(Ext.create('Grubm.view.ChoosePhoto'));
     }
-    this.getChoosePhoto().show();
+    
+    if(!this.getCurrentImage()) {
+      this.getChoosePhoto().show();
+    }
   },
 
   cancelUploadPhoto: function() {
@@ -578,7 +580,6 @@ Ext.define('Grubm.controller.Main', {
     }
 
     if(errors.length == 0) {
-      this.showLoadingOverlay("Uploading...");
       var options = new FileUploadOptions();
       options.fileKey = "image[photo]";
       options.fileName = img.substr(img.lastIndexOf('/') + 1);
@@ -609,6 +610,7 @@ Ext.define('Grubm.controller.Main', {
           ft = new FileTransfer();
           
       if(this.networkAvailable()) {
+        this.showLoadingOverlay("Uploading...");
         ft.upload(img, 
           this.getApiServer() + '/v1/images.json',
           function(r) {
@@ -682,29 +684,36 @@ Ext.define('Grubm.controller.Main', {
     return true;
   },
 
-  filterPlaces: function(searchField) {
-    var self = this,
-        query = searchField ? searchField.getValue() : '';
-        
+  filterPlaces: function(searchField) {        
     if(this.networkAvailable()) {
-      console.log('places request => ');
-      console.log("https://maps.googleapis.com/maps/api/place/autocomplete/json?&radius=1600&sensor=true&types=establishment&key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc&input=" + query + "&location=" + this.getCurrentPosition());
+      var self = this,
+          autocomplete = true,
+          query = searchField ? searchField.getValue() : '',
+          url = "https://maps.googleapis.com/maps/api/place/autocomplete/json",
+          params = {
+            location: this.getCurrentPosition(),
+            radius: 1600,
+            sensor: true,
+            key: 'AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc'
+          };
+      
+      if(Ext.String.trim(query) == '') {
+        autocomplete = false;
+        url = "https://maps.googleapis.com/maps/api/place/search/json";
+      } else {
+        params["input"] = query;
+        params["types"] = 'establishment';
+      }
+      
       Ext.Ajax.request({
-        //url: "https://maps.googleapis.com/maps/api/place/search/json?&radius=1600&sensor=true&key=AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc",
-        url: "https://maps.googleapis.com/maps/api/place/autocomplete/json",
+        url: url,
         method: 'GET',
-        params: {
-          input: query,
-          location: this.getCurrentPosition(),
-          types: 'establishment',
-          radius: 1600,
-          sensor: true,
-          key: 'AIzaSyC1r6ur7cJpsAZ8kldZ3wlvr2f7kfh_Xsc'
-        },
+        params: params,
         success: function(response) {
-          var json = Ext.decode(response.responseText);
-          Ext.getStore('Places').setData(json.predictions, false);
-        } ,
+          var json = Ext.decode(response.responseText),
+              results = autocomplete ? json.predictions : json.results;    
+          Ext.getStore('Places').setData(results, false);
+        },
         failure: function() {
           self.showOverlay("Couldn't find any places near you.");
         }
@@ -714,7 +723,13 @@ Ext.define('Grubm.controller.Main', {
 
   onLocationSelected: function(dataview, place) {
     this.getUploadPhoto().setActiveItem(0);
-    this.getLocationText().setHtml('&#64; ' + place.get('name'));
+    
+    var name = place.get('name');
+    if(!name && place.get('terms')) {
+      name = place.get('terms')[0].value;
+    }
+    
+    this.getLocationText().setHtml('&#64; ' + name);
     
     var self = this;
 
@@ -754,7 +769,7 @@ Ext.define('Grubm.controller.Main', {
           self.setCurrentPlace(place);
         },
         failure: function() {
-          self.showOverlay("Error checking in.");
+          self.showOverlay("Couldn't get location.");
         }
       });
     }
