@@ -11,7 +11,7 @@ Ext.define('Grubm.controller.Main', {
     currentPlace: null,
     currentImage: null,
     user: null,
-    production: true,
+    production: false,
     staticMapBaseUrl: "http://maps.googleapis.com/maps/api/staticmap?",
     refs: {
       main: 'mainview',
@@ -789,7 +789,20 @@ Ext.define('Grubm.controller.Main', {
         description += " in " + image.business.city + ", " + image.business.state;
       }
     }
-
+    
+    console.log('image => ');
+    console.log(JSON.stringify(image));
+    console.log('facebook post => ');
+    console.log(JSON.stringify({
+      access_token: user.get('accessToken'),
+      message: image.description,
+      link: this.getApiServer() + '/' + image.id,
+      "picture": image.url,  // it doesn't work if picture isn't quoted
+      description: description,
+      name: 'food',
+      caption: 'grubm.com'
+    }));
+    
     Ext.Ajax.request({
       url: "https://graph.facebook.com/me/feed",
       method: 'POST',
@@ -799,7 +812,7 @@ Ext.define('Grubm.controller.Main', {
         link: this.getApiServer() + '/' + image.id,
         "picture": image.url,  // it doesn't work if picture isn't quoted
         description: description,
-        name: 'mmm food',
+        name: 'food',
         caption: 'grubm.com'
       },
       success: Ext.emptyFn

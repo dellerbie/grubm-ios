@@ -56,24 +56,44 @@ Ext.define('Grubm.view.Overlay', {
       resize: function() { this.refreshPosition(panel, container) }
     });
     
-    container.show();
+    if(loading) {
+      if(this.container) {
+        this.container.hide();
+      }
+      this.loadingContainer.show();
+    } else {
+      if(this.loadingContainer) {
+        this.loadingContainer.hide();
+      }
+      this.container.show();
+    }
+    
     this.refreshPosition(panel, container);
     
-    var autoHideTime = loading ? 30000 : 2500;
-    var task = new Ext.util.DelayedTask(function() {
+    var autoHideTime = loading ? 90000 : 3000;
+    if(this.autoHideTask) {
+      this.autoHideTask.cancel();
+      this.autoHideTask = null;
+    }
+    
+    this.autoHideTask = new Ext.util.DelayedTask(function() {
       if(loading) {
         this.hideLoading();
       } else {
         this.hide();
       }
     }, this);
-    task.delay(autoHideTime); // auto-hide the overlay in 30 seconds, no matter what.
+    this.autoHideTask.delay(autoHideTime); // auto-hide the overlay in 30 seconds, no matter what.
   },
   
   hide: function(loading) {
-    var overlay = loading ? Ext.fly('grubm-loading-overlay') : Ext.fly('grubm-overlay');
-    if(overlay) {
+    var overlay = loading ? Ext.get('grubm-loading-overlay') : Ext.get('grubm-overlay');
+    if(overlay && !overlay.isStyle('display', 'none')) {
       overlay.hide();
+      if(this.autoHideTask) {
+        this.autoHideTask.cancel();
+        this.autoHideTask = null;
+      }
     }
   },
   
