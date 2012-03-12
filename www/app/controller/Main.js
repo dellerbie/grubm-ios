@@ -11,7 +11,7 @@ Ext.define('Grubm.controller.Main', {
     currentPlace: null,
     currentImage: null,
     user: null,
-    production: false,
+    production: true,
     staticMapBaseUrl: "http://maps.googleapis.com/maps/api/staticmap?",
     refs: {
       main: 'mainview',
@@ -28,6 +28,8 @@ Ext.define('Grubm.controller.Main', {
       deleteButton: '#deletePhoto',
       uploadedImage: 'uploadphoto #uploaded-image',
       uploadPhoto: 'uploadphoto',
+      savePhotoButton: '#save-photo',
+      selectLocationButton: '#select-location',
       photoDescription: 'uploadphoto textareafield',
       postToFacebook: 'uploadphoto checkboxfield',
       choosePhoto: 'choosephoto',
@@ -513,6 +515,8 @@ Ext.define('Grubm.controller.Main', {
     this.getPhotoDescription().setValue('');
     this.getPostToFacebook().setValue(1);
     this.getPostToFacebook().setChecked(true);
+    this.getSavePhotoButton().enable();
+    this.getSelectLocationButton().enable();
     this.setCurrentPlace(null);
     this.setCurrentImage(null);
   },
@@ -525,6 +529,7 @@ Ext.define('Grubm.controller.Main', {
           box.hide();
         } else if(this.networkAvailable()) {
           this.showLoadingOverlay("Deleting photo...");
+          this.getDeleteButton().disable();
           var image = view.getImage(),
               user = Ext.getStore('User').first(),
               self = this;
@@ -539,6 +544,7 @@ Ext.define('Grubm.controller.Main', {
             },
             success: function() {
               self.getMyPhotosNavigationView().pop();
+              self.getDeleteButton().enable();
               Ext.getStore('MyImages').load({
                 params: {
                   access_token: user.get('accessToken'), 
@@ -548,6 +554,7 @@ Ext.define('Grubm.controller.Main', {
               self.hideLoadingOverlay();
             },
             failure: function() {
+              self.getDeleteButton().enable();
               self.hideLoadingOverlay();
               self.showOverlay("There was a problem deleting your photo. Please try again later.");
               var task = new Ext.util.DelayedTask(function(){
@@ -611,6 +618,8 @@ Ext.define('Grubm.controller.Main', {
           
       if(this.networkAvailable()) {
         this.showLoadingOverlay("Uploading...");
+        this.getSavePhotoButton().disable();
+        this.getSelectLocationButton().disable();
         ft.upload(img, 
           this.getApiServer() + '/v1/images.json',
           function(r) {
@@ -626,6 +635,8 @@ Ext.define('Grubm.controller.Main', {
             }
           },
           function(error) {
+            self.getSavePhotoButton().enable();
+            self.getSelectLocationButton().enable();
             self.hideLoadingOverlay();
             self.showOverlay("Couldn't upload photo. Try again later.");
           },
@@ -677,7 +688,7 @@ Ext.define('Grubm.controller.Main', {
 
   onGetCurrentPositionError: function(error) {
     this.getUploadPhoto().setActiveItem(0, {type: 'slide', direction: 'right'});
-    Ext.Msg.alert("Location Error", "Error getting your current location. You need to enable location for Grubm in your phone settings", Ext.emptyFn);
+    this.showOverlay("Error getting your current location. You need to enable location for Grubm in your phone settings.");
   },
   
   resetPlacesFilter: function() {
@@ -784,24 +795,11 @@ Ext.define('Grubm.controller.Main', {
 
     var description = '';
     if(image.business && image.business.name) {
-      description += user.get('firstName') + " just had something delicious at " + image.business.name;
+      description += user.get('firstName') + " just had something mighty good at " + image.business.name;
       if(image.business.city && image.business.state) {
         description += " in " + image.business.city + ", " + image.business.state;
       }
     }
-    
-    console.log('image => ');
-    console.log(JSON.stringify(image));
-    console.log('facebook post => ');
-    console.log(JSON.stringify({
-      access_token: user.get('accessToken'),
-      message: image.description,
-      link: this.getApiServer() + '/' + image.id,
-      "picture": image.url,  // it doesn't work if picture isn't quoted
-      description: description,
-      name: 'food',
-      caption: 'grubm.com'
-    }));
     
     Ext.Ajax.request({
       url: "https://graph.facebook.com/me/feed",
@@ -812,7 +810,7 @@ Ext.define('Grubm.controller.Main', {
         link: this.getApiServer() + '/' + image.id,
         "picture": image.url,  // it doesn't work if picture isn't quoted
         description: description,
-        name: 'food',
+        name: 'yum yum',
         caption: 'grubm.com'
       },
       success: Ext.emptyFn

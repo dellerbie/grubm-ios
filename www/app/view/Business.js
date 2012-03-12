@@ -18,7 +18,7 @@ Ext.define('Grubm.view.Business', {
         '<h3 class="more">More Photos from {name}</h3>',
       '</tpl>',
       '<tpl for="images">',
-        '<img src="{url}" width="{width}" height="{height}" />',
+        '<img src="{url}" />',
         '<span class="what">{description}</span>',
       '</tpl>'
     ),
