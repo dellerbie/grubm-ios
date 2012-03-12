@@ -6,7 +6,6 @@ Ext.define('Grubm.controller.Main', {
   config: {
     baseUrl: "http://la.grubm.com",
     apiServer: 'http://www.grubm.com',
-    // apiServer: 'http://192.168.1.76:3000',
     profile: Ext.os.deviceType.toLowerCase(),
     currentPosition: null,
     currentPlace: null,
@@ -257,6 +256,7 @@ Ext.define('Grubm.controller.Main', {
 
   onCitySelect: function(list, city) {
     this.setBaseUrl(city.get('url'));
+    this.getSearchBar().setValue('');
     
     if(!this.findFoodImagesView) {
       this.findFoodImagesView = Ext.create('Grubm.view.Images');
@@ -586,26 +586,26 @@ Ext.define('Grubm.controller.Main', {
       options.mimeType = "image/jpeg";
 
       var user = Ext.getStore('User').first();
-
+      
       options.params = {
         "access_token": user.get('accessToken'),
         "oauth_provider": "facebook",
         "image[description]": description,
-        "image[business][name]": place.data.name,        
-        "image[business][street]": place.data.street,
-        "image[business][city]": place.data.city,
-        "image[business][state]": place.data.state,
-        "image[business][zip]": place.data.zip,
-        "image[business][lat]": place.data.geometry.location.lat,
-        "image[business][lng]": place.data.geometry.location.lng,
-        "image[business][phone]": place.data.phone
+        "image[business][name]": place.get('name'),        
+        "image[business][street]": place.get('street'),
+        "image[business][city]": place.get('city'),
+        "image[business][state]": place.get('state'),
+        "image[business][zip]": place.get('zip'),
+        "image[business][lat]": place.get('geometry').lat,
+        "image[business][lng]": place.get('geometry').lng,
+        "image[business][phone]": place.get('phone')
       };
 
       var placeCategories = [];
       for(var i = 0; i < place.data.types.length; i++) {
         options.params["image[business][categories][]"] = place.data.types[i];
       }
-
+      
       var self = this,
           ft = new FileTransfer();
           
@@ -647,6 +647,7 @@ Ext.define('Grubm.controller.Main', {
   },
 
   cancelSelectLocation: function() {
+    this.getWhereAreYou().down('searchfield').setValue('');
     this.getUploadPhoto().setActiveItem(0, {type: 'slide', direction: 'right'});
   },
 
@@ -711,7 +712,8 @@ Ext.define('Grubm.controller.Main', {
         params: params,
         success: function(response) {
           var json = Ext.decode(response.responseText),
-              results = autocomplete ? json.predictions : json.results;    
+              results = autocomplete ? json.predictions : json.results;
+          
           Ext.getStore('Places').setData(results, false);
         },
         failure: function() {
@@ -760,12 +762,14 @@ Ext.define('Grubm.controller.Main', {
               zip = address[i].long_name;
             }
           }
-
-          place.data['street'] = street_number + ' ' + street;
-          place.data['city'] = city;
-          place.data['state'] = state;
-          place.data['zip'] = zip;
-          place.data['phone'] = json.result.formatted_phone_number;
+          
+          place.set('name', json.result.name);
+          place.set('street', street_number + ' ' + street);
+          place.set('city', city);
+          place.set('state', state);
+          place.set('zip', zip);
+          place.set('phone', json.result.formatted_phone_number);
+          place.set('geometry', {lat: json.result.geometry.location.lat, lng: json.result.geometry.location.lng});
           self.setCurrentPlace(place);
         },
         failure: function() {

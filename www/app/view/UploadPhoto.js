@@ -46,7 +46,8 @@ Ext.define('Grubm.view.UploadPhoto', {
             name: 'postToFB',
             label: 'Post to Facebook',
             labelWidth: '60%',
-            value: true
+            value: 1,
+            checked: true,
           }]
         },{
         	xtype: 'panel',
