@@ -5965,52 +5965,53 @@ input[type="search"]::-webkit-search-cancel-button {
   background: #fff;
   -webkit-border-radius: .5em; }
 
-/* line 57, ../scss/application.scss */
+/* line 60, ../scss/application.scss */
+.business-wrapper .taken-at, .business-wrapper .name, .business-wrapper .city-state, .business-wrapper .phone {
+  font: .75em 'Didact Gothic', sans-serif; }
+
+/* line 64, ../scss/application.scss */
 .business-wrapper .taken-at {
-  color: #8B8B8B;
-  font: bold .7em 'Didact Gothic', sans-serif; }
-
-/* line 62, ../scss/application.scss */
-.business-wrapper .name {
-  color: #2773A7;
-  font: bold 'Didact Gothic', sans-serif; }
-
-/* line 68, ../scss/application.scss */
-.business-wrapper .city-state, .business-wrapper .phone {
-  font: .7em 'Didact Gothic', sans-serif;
-  display: block;
   color: #8B8B8B; }
 
-/* line 74, ../scss/application.scss */
+/* line 68, ../scss/application.scss */
+.business-wrapper .name {
+  color: #2773A7; }
+
+/* line 73, ../scss/application.scss */
+.business-wrapper .city-state, .business-wrapper .phone {
+  color: #8B8B8B; }
+
+/* line 77, ../scss/application.scss */
 .business-wrapper span.phone {
+  display: block;
   margin-top: .2em; }
 
-/* line 78, ../scss/application.scss */
+/* line 82, ../scss/application.scss */
 .map {
   -webkit-border-radius: .5em;
   margin: 0 auto 0 auto; }
 
-/* line 83, ../scss/application.scss */
+/* line 87, ../scss/application.scss */
 h3.more {
   margin: 0 0 .5em 0;
   color: #666;
   text-align: left;
   font: bold .7em 'Didact Gothic', sans-serif; }
 
-/* line 90, ../scss/application.scss */
+/* line 94, ../scss/application.scss */
 .x-dataview-images-view {
   padding: .2em; }
 
-/* line 94, ../scss/application.scss */
+/* line 98, ../scss/application.scss */
 .x-dataview-images-view .x-dataview-item {
   display: inline-block; }
 
-/* line 98, ../scss/application.scss */
+/* line 102, ../scss/application.scss */
 .x-dataview-business-images {
   margin: 1em auto 0em auto;
   padding-left: .6em; }
 
-/* line 104, ../scss/application.scss */
+/* line 108, ../scss/application.scss */
 .x-dataview-images-view .image, .x-dataview-business-images .image {
   float: left;
   width: 69px;
@@ -6020,7 +6021,7 @@ h3.more {
   border: 1px solid #ccc;
   -webkit-background-size: 100% 100%; }
 
-/* line 114, ../scss/application.scss */
+/* line 118, ../scss/application.scss */
 .x-panel-image-detail {
   background: #f2f2f2;
   border: none;
@@ -6028,7 +6029,7 @@ h3.more {
   -webkit-border-top-right-radius: .5em;
   -webkit-border-bottom-left-radius: 0; }
 
-/* line 122, ../scss/application.scss */
+/* line 126, ../scss/application.scss */
 .x-panel-image-detail .what {
   display: block;
   padding: .5em;
@@ -6038,13 +6039,13 @@ h3.more {
   background: #E0E0E0;
   -webkit-border-radius: .5em; }
 
-/* line 132, ../scss/application.scss */
+/* line 136, ../scss/application.scss */
 .x-panel-image-detail .time {
   text-align: right;
   color: #8B8B8B;
   font: bold .7em 'Didact Gothic', sans-serif; }
 
-/* line 138, ../scss/application.scss */
+/* line 142, ../scss/application.scss */
 .x-panel-image-detail .image {
   margin: .5em auto;
   border: 1px solid #CCC;
@@ -6053,88 +6054,93 @@ h3.more {
   height: 306px;
   -webkit-background-size: 306px 306px; }
 
-/* line 147, ../scss/application.scss */
+/* line 151, ../scss/application.scss */
 .x-panel-image-detail .x-dataview-business-images .image {
   margin: 0 .5em .5em 0;
   width: 67px;
   height: 67px;
   -webkit-background-size: 67px 67px; }
 
-/* line 154, ../scss/application.scss */
+/* line 158, ../scss/application.scss */
 #uploaded-image {
   display: block;
   margin: 0 auto;
   padding: .2em; }
 
-/* line 160, ../scss/application.scss */
+/* line 164, ../scss/application.scss */
 #uploaded-image img {
   display: block;
   margin: 0 auto; }
 
-/* line 165, ../scss/application.scss */
+/* line 169, ../scss/application.scss */
 .x-dataview-places {
   text-align: left;
   color: #666; }
 
-/* line 170, ../scss/application.scss */
+/* line 174, ../scss/application.scss */
 .x-dataview-places div.place-wrapper {
   padding: .2em;
   border-bottom: 1px solid #ccc;
   min-height: 50px; }
 
-/* line 176, ../scss/application.scss */
+/* line 180, ../scss/application.scss */
 .x-dataview-places .place {
   font-weight: bold;
   font-size: .7em; }
 
-/* line 181, ../scss/application.scss */
+/* line 185, ../scss/application.scss */
 .x-dataview-places .category {
   font-size: .6em; }
 
-/* line 185, ../scss/application.scss */
+/* line 189, ../scss/application.scss */
 .x-dataview-images-view.x-dataview-my-images.empty {
   background: url(../images/empty@2x.png) no-repeat top left;
   -webkit-background-size: 320px 480px; }
 
-/* line 190, ../scss/application.scss */
+/* line 194, ../scss/application.scss */
 .x-dataview-images-view.x-dataview-find-food.empty {
   background: url(../images/no-results@2x.png) no-repeat top left;
   -webkit-background-size: 320px 480px; }
 
-/* line 196, ../scss/application.scss */
+/* line 200, ../scss/application.scss */
 .x-dataview-images-view.x-dataview-find-food.empty .x-list-paging, .x-dataview-images-view.x-dataview-my-images.empty .x-list-paging {
   display: none; }
 
-/* line 200, ../scss/application.scss */
+/* line 204, ../scss/application.scss */
 .x-list-paging-no-more {
   display: none; }
 
-/* line 204, ../scss/application.scss */
+/* line 208, ../scss/application.scss */
 .logout {
   -webkit-mask-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAYAAAA6/NlyAAAD30lEQVRoBe2a24tNURzHHQbDDBFpksuU4sHlzSVJJyMp8YCQRFFSNOUP8Mg8ubxKw4sH4YGSJA/z4IUSpfCAXKZRcr8zGJ/vtPfJXPass8/6rZlz9pxffdrX9Vu/7163vX/n5Lq6ukYMJxs5nMRKa1Vw1lu82sJZb+GaEAJzudw4/E6DldAAsyAX8Z5tB9yBR/CFleIP20GxnOWyhNCxRL0E9kAT1IMe6miI7S87nfAD2uEkXCKO12zDmwRbQKR10AwS8Q20wLv4zT3v4Cw0WsTh8mElVi14BNRdXSL7u/6dctdhjitg3+tWgpcR7JsSxcYP4Cflz/gKcpX3XpYYtxMJdAdMAR8bQ+G1+Fvj48RV1lswFSyEna6KiryuGX03okcVeX/q27wER4EtpdYJqWtOLjCfSxIexLwEE1EtLDCObCr+tIYHMV/BCkpjz9LUWyZbOvzfl4VgzbKWpvGrl5UgZiHYOrCvOPxo7TT2V66CP8cBWm/LUbC1xh7+qoJ7PI4MHlRbOGWj6vPubcoyrtuVKAjWEL6OfxHcU5eClNeVGNDSFMS8BPMpppeOx8aRdeDvhbHPgjsvwZEXCX5Y8Oi3o9TPTZ5jsByXheDnBHnFT2ehtPJaFwtHAXa8BdMaylRcBaVpfEzD4zb+7vk4cZX1FhxVcJftfVdljusSfNpxj/dlE8G0il72z4NPK9+i/DVvRQ4HJoKjOlrZ+szYR3lwWteDmplggv1ApKeglBn2AuVuBFUaOydQk1St/GD6eG8DHRSLEvF5yzgG8mXWwgStB6fWPQivdFyE6U2thXJtRdxrcotZKoUMZp6IVoDStmnGonLR4ylzHOGf2Aa1kn5MI0D1DCXvZsImaIJ5MB3UrdPaMwosR3ChZ1DHAc4pI5rm4XH7wJaqhSOh+il0EWyEbaC0qtK1PqYPht62gROroXty6H2x1OOiBCNUn2z6wUxJ8u2wF5RO1flQJt8xZnUMKDgSqq7bCOugGWZDxVqiYMRKaAPsg/Vg/QsDLgff+ghGqLruJNgFm2ExmC5f+BsyKwiOum89kWyF/TAXtFwMlWn8mk5YEtItGLFqwUY4DJp91Z2H2toJ4AmYiq6JWlYvCycgD+VihwikDmwF43AGHIM8lI3xEvIyRDDqyi2wKoTzcvSpMbylDALTBFXL8PJ9Y4uldNJD9CHTx4LMhH1qcZ/Q350ug/7f5Wt6lz+H4LYkR5oUsobeCLs/jBDe43tfYziLljizZ1VwYiNq0lJeOUumeanfCUsiJbhVOxkyaXqQpKekjEeSs0o4P+zGcFVwJXRLnxirLezz9Cqh7D/Mah3gW7DRSQAAAABJRU5ErkJggg=='); }
 
-/* line 208, ../scss/application.scss */
+/* line 212, ../scss/application.scss */
 .login-panel {
   background: url(../images/login-panel@2x.png) no-repeat top left;
   -webkit-background-size: 320px 480px; }
 
-/* line 213, ../scss/application.scss */
+/* line 217, ../scss/application.scss */
 .facebook-login {
   background: url(../images/facebook-login-btn@2x.png) no-repeat top left;
   -webkit-background-size: 261px 41px;
   width: 261px;
   height: 41px; }
 
-/* line 220, ../scss/application.scss */
-.x-list-pullrefresh-message {
-  font-size: 1.2em; }
-
 /* line 224, ../scss/application.scss */
+.x-list-pullrefresh-message {
+  font-size: 1em;
+  color: #666; }
+
+/* line 229, ../scss/application.scss */
+.x-list-pullrefresh-updated {
+  color: #666; }
+
+/* line 233, ../scss/application.scss */
 .x-list-paging {
   clear: both;
   padding-top: .5em; }
 
-/* line 229, ../scss/application.scss */
+/* line 238, ../scss/application.scss */
 .x-list-paging .x-list-paging-msg {
   width: 10em;
   margin: 1em auto;
@@ -6149,11 +6155,11 @@ h3.more {
   font-weight: bold;
   box-shadow: 0 0 1px 1px #888; }
 
-/* line 244, ../scss/application.scss */
+/* line 253, ../scss/application.scss */
 .x-dataview-emptytext {
   font-size: .8em; }
 
-/* line 249, ../scss/application.scss */
+/* line 258, ../scss/application.scss */
 #grubm-overlay, #grubm-loading-overlay {
   width: 161px;
   height: 94px;
@@ -6165,14 +6171,14 @@ h3.more {
   right: auto;
   bottom: auto; }
 
-/* line 262, ../scss/application.scss */
+/* line 271, ../scss/application.scss */
 #grubm-overlay .x-mask-message, #grubm-loading-overlay .x-mask-message {
   font-size: .75em; }
 
-/* line 267, ../scss/application.scss */
+/* line 276, ../scss/application.scss */
 #grubm-overlay.x-mask .x-mask-inner, #grubm-loading-overlay.x-mask .x-mask-inner {
   background: rgba(0, 0, 0, 0.5); }
 
-/* line 272, ../scss/application.scss */
+/* line 281, ../scss/application.scss */
 #grubm-overlay.x-mask .x-loading-spinner-outer, #grubm-loading-overlay.x-mask .x-loading-spinner-outer {
   height: 3.5em; }

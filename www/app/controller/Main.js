@@ -263,8 +263,9 @@ Ext.define('Grubm.controller.Main', {
     if(!this.findFoodImagesView) {
       this.findFoodImagesView = Ext.create('Grubm.view.Images');
     }
-    this.getFindFoodNavigationView().push(this.findFoodImagesView);
     
+    this.getFindFoodNavigationView().push(this.findFoodImagesView);
+    list.deselectAll();
     Ext.getStore('Images').getProxy().setUrl(this.getBaseUrl() + '/.json');
     Ext.getStore('Images').load();
   },

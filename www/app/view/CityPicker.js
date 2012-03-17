@@ -3,6 +3,7 @@ Ext.define('Grubm.view.CityPicker', {
   xtype: 'citypickerview',
   config: {
     ui: 'citypicker',
+    allowDeselect: true,
     store: 'Cities',
     itemTpl: '{name}'
   }

@@ -10,7 +10,6 @@ Ext.application({
    'Main',
    'Login',
    'FindFoodNavigationView',
-   'Business',
    'MyPhotosNavigationView',
    'MyPhotosTab',
    'ImageDetail',
@@ -28,7 +27,5 @@ Ext.application({
    'Businesses', 
    'Places', 
    'User'
-  ],
-  launch: function() {
-  }
+  ]
 });

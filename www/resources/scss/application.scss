@@ -54,24 +54,28 @@ $base-gradient: matte;
 	-webkit-border-radius: .5em;
 }
 
+.business-wrapper .taken-at, 
+.business-wrapper .name,
+.business-wrapper .city-state,
+.business-wrapper .phone {
+	font: .75em 'Didact Gothic', sans-serif;
+}
+
 .business-wrapper .taken-at {
 	color: #8B8B8B;
-	font: bold .7em 'Didact Gothic', sans-serif;
 }
 
 .business-wrapper .name {
 	color: #2773A7;
-	font: bold 'Didact Gothic', sans-serif;
 }
 
 .business-wrapper .city-state,
 .business-wrapper .phone {
-  font: .7em 'Didact Gothic', sans-serif;
-  display: block;
 	color: #8B8B8B;
 }
 
 .business-wrapper span.phone {
+	display: block;
 	margin-top: .2em;
 }
 
@@ -218,7 +222,12 @@ h3.more {
 }
 
 .x-list-pullrefresh-message {
-	font-size: 1.2em;
+	font-size: 1em;
+	color: #666;
+}
+
+.x-list-pullrefresh-updated {
+	color: #666;
 }
 
 .x-list-paging { 
