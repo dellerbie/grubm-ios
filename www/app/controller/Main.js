@@ -130,7 +130,7 @@ Ext.define('Grubm.controller.Main', {
       }
     } else {
       Ext.getStore('User').setData([{
-        accessToken: "BAADzyTXMlh0BAITVsHmlpW6uMGsIZBVH73f1hbym2HrcBerItxLTsmDLS22f8zVKGmCo9EM5okZAAZCr4GtJhhDagCAMop26ZANsRJtpAfHlzZC2GtoU3M7kCVMNBNnTerTCIilIJ6wZDZD",
+        accessToken: "BAADzyTXMlh0BAINFJZAetOGDWtCPiD3I4AZAgVvDV4Hp1YmpfjID8LB5XnIM7XsB3cUH47bjRIgr3kIylKYhBMIZCFXhAz5YtUT885cqgTwsZC3WlTQRAyfa3ZBsyczw8ujrMxGdn8wZDZD",
         secret: "630bc3266929913d0010b4a1bc79cd2a",
         oauthType: 'facebook',
         uid: '',
