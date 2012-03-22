@@ -70,7 +70,7 @@ Ext.define('Grubm.view.Overlay', {
     
     this.refreshPosition(panel, container);
     
-    var autoHideTime = loading ? 90000 : 3000;
+    var autoHideTime = loading ? 180000 : 3000;
     if(this.autoHideTask) {
       this.autoHideTask.cancel();
       this.autoHideTask = null;
