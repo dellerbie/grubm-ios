@@ -448,7 +448,9 @@ Ext.define('Grubm.controller.Main', {
       encodingType: Camera.EncodingType.JPEG, 
       allowEdit: true,
       sourceType: Camera.PictureSourceType.CAMERA,
-      destinationType: Camera.DestinationType.FILE_URI
+      destinationType: Camera.DestinationType.FILE_URI,
+      targetWidth: 612,
+      targetHeight: 612
     };
 
     if(takePhoto == true) {
