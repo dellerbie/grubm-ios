@@ -6126,20 +6126,27 @@ h3.more {
   height: 41px; }
 
 /* line 223, ../scss/application.scss */
+.twitter-login {
+  background: url(../images/twitter-login-btn@2x.png) no-repeat top left;
+  -webkit-background-size: 261px 41px;
+  width: 261px;
+  height: 41px; }
+
+/* line 230, ../scss/application.scss */
 .x-list-pullrefresh-message {
   font-size: 1em;
   color: #666; }
 
-/* line 228, ../scss/application.scss */
+/* line 235, ../scss/application.scss */
 .x-list-pullrefresh-updated {
   color: #666; }
 
-/* line 232, ../scss/application.scss */
+/* line 239, ../scss/application.scss */
 .x-list-paging {
   clear: both;
   padding-top: .5em; }
 
-/* line 237, ../scss/application.scss */
+/* line 244, ../scss/application.scss */
 .x-list-paging .x-list-paging-msg {
   width: 10em;
   margin: 1em auto;
@@ -6154,11 +6161,11 @@ h3.more {
   font-weight: bold;
   box-shadow: 0 0 1px 1px #888; }
 
-/* line 252, ../scss/application.scss */
+/* line 259, ../scss/application.scss */
 .x-dataview-emptytext {
   font-size: .8em; }
 
-/* line 257, ../scss/application.scss */
+/* line 264, ../scss/application.scss */
 #grubm-overlay, #grubm-loading-overlay {
   width: 161px;
   height: 94px;
@@ -6170,14 +6177,14 @@ h3.more {
   right: auto;
   bottom: auto; }
 
-/* line 270, ../scss/application.scss */
+/* line 277, ../scss/application.scss */
 #grubm-overlay .x-mask-message, #grubm-loading-overlay .x-mask-message {
   font-size: .75em; }
 
-/* line 275, ../scss/application.scss */
+/* line 282, ../scss/application.scss */
 #grubm-overlay.x-mask .x-mask-inner, #grubm-loading-overlay.x-mask .x-mask-inner {
   background: rgba(0, 0, 0, 0.5); }
 
-/* line 280, ../scss/application.scss */
+/* line 287, ../scss/application.scss */
 #grubm-overlay.x-mask .x-loading-spinner-outer, #grubm-loading-overlay.x-mask .x-loading-spinner-outer {
   height: 3.5em; }

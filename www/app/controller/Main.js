@@ -5,7 +5,7 @@ Ext.define('Grubm.controller.Main', {
   ],
   config: {
     baseUrl: "http://la.grubm.com",
-    apiServer: 'http://www.grubm.com',
+    apiServer: 'http://192.168.1.71:3000',
     profile: Ext.os.deviceType.toLowerCase(),
     currentPosition: null,
     currentPlace: null,
@@ -13,6 +13,7 @@ Ext.define('Grubm.controller.Main', {
     user: null,
     production: true,
     staticMapBaseUrl: "http://maps.googleapis.com/maps/api/staticmap?",
+    twitterKey: 'twttrKey',
     refs: {
       main: 'mainview',
       login: 'loginview',
@@ -86,6 +87,7 @@ Ext.define('Grubm.controller.Main', {
       },
       'loginview': {
         fbtap: 'loginToFacebook',
+        twtap: 'loginToTwitter',
         show: 'networkAvailable'
       },
       'mainview': {
@@ -119,10 +121,16 @@ Ext.define('Grubm.controller.Main', {
       if(this.networkAvailable()) {
         FB.getLoginStatus(function(response) {
           if(response.status == 'connected') {
-            self.initUser(response.session);
+            self.initFBUser(response.session);
           } else {
-            self.getLogin().show();
-            self.getMain().hide();
+            // try twitter
+            var data = localStorage.getItem(self.getTwitterKey());
+            if(data) {
+              self.initTWUser(data);
+            } else {
+              self.getLogin().show();
+              self.getMain().hide();
+            }
           }
         });
       } else {
@@ -149,7 +157,7 @@ Ext.define('Grubm.controller.Main', {
     this.getWhereAreYou().down('searchfield').on('keyup', Ext.Function.createBuffered(this.filterPlaces, 300, this));
   },
   
-  initUser: function(session) {
+  initFBUser: function(session) {
     var self = this;
     if(this.networkAvailable()) {
       FB.api('/me', function(res) {
@@ -158,6 +166,7 @@ Ext.define('Grubm.controller.Main', {
           self.getMain().hide();
           self.showOverlay("Facebook authentication error.");
         } else {
+          console.log(session.access_token);
           Ext.getStore('User').setData([{
             accessToken: session.access_token,
             secret: session.secret,
@@ -177,13 +186,65 @@ Ext.define('Grubm.controller.Main', {
     }
   },
   
+  initTWUser: function(data) {
+    var self = this;
+    console.log("data => ");
+    console.log(JSON.stringify(data));
+    data = JSON.parse(data);
+
+    var options = { 
+      consumerKey: 'AMc9zbuqNjjnlhjSXaHA',
+      consumerSecret: '0TgXnrdDR6Vi7QeC48uWN36fblke6E49tmJ40YDQAUI',
+      callbackUrl: "http://grubm.com",
+      accessTokenKey: data.accessTokenKey,
+      accessTokenSecret: data.accessTokenSecret,
+    };
+    
+    console.log('here');
+    console.log(options);
+		
+		// get twitter user info
+		oauth = OAuth(options);
+		console.log(5);
+		oauth.get('https://api.twitter.com/1/account/verify_credentials.json?skip_status=true',
+      function(data) {
+        console.log('got user info');
+        var entry = JSON.parse(data.text);
+        console.log("twitter account info => ");
+        console.log(JSON.stringify(data.text));
+        console.log("USERNAME: " + entry.screen_name);
+
+        var nameTokens = entry.name.replace(/(\w)([A-Z])/, "$1 $2").split(/ /),
+            firstName = nameTokens[0],
+            lastName = (nameTokens.length > 1) ? nameTokens[1] : '';
+
+        Ext.getStore('User').setData([{
+          accessToken: options.accessTokenKey,
+          secret: options.accessTokenSecret,
+          oauthType: 'twitter',
+          uid: entry.id,
+          firstName: firstName,
+          lastName: lastName
+        }]);
+
+        self.getLogin().hide();
+        self.loadMyPhotos();
+        self.getMain().show();
+      },
+      function(data) {
+        console.log('error verifying credentials');
+      }
+		);
+  },
+  
   loginToFacebook: function() {
     var self = this;
 
     FB.login(function(response) {
       if(response.session) {
         self.getLogin().hide();
-        self.initUser(response.session);
+        self.initFBUser(response.session);
+        self.getMain().setActiveItem(0);
         self.getMain().show(); 
       } else {
         self.getLogin().show();
@@ -193,23 +254,67 @@ Ext.define('Grubm.controller.Main', {
       perms: "email,publish_stream,offline_access" 
     });
   },
+  
+  loginToTwitter: function() {
+    var self = this;
+    console.log('login to twitter');
+    Twitter.login(function(data) {
+      var entry = JSON.parse(data.text);
+      console.log("TWITTER USER: "+entry.screen_name);
+      var nameTokens = entry.name.replace(/(\w)([A-Z])/, "$1 $2").split(/ /),
+          firstName = nameTokens[0],
+          lastName = (nameTokens.length > 1) ? nameTokens[1] : '',
+          credentials = JSON.parse(localStorage.getItem(self.getTwitterKey()));
+          
+      console.log(JSON.stringify(credentials));
+
+      Ext.getStore('User').setData([{
+        accessToken: credentials.accessTokenKey,
+        secret: credentials.accessTokenSecret,
+        oauthType: 'twitter',
+        uid: entry.id,
+        firstName: firstName,
+        lastName: lastName
+      }]);
+      
+      console.log(Ext.getStore('User').first().get('accessToken'));
+      console.log(Ext.getStore('User').first().get('secret'));
+
+      self.getLogin().hide();
+      self.loadMyPhotos();
+      self.getMain().setActiveItem(0);
+      self.getMain().show();
+    }, 
+    function(error) {
+      console.log("ERROR: " + data); 
+    });
+  },
 
   onMainTabChange: function(mainTabPanel, newVal, oldVal) {
     var self = this;
     if(newVal.getId() == 'logout') {
       self.showLoadingOverlay();
-      FB.logout(function(response) {
+      
+      // get user and see which oauth type is being used
+      var user = Ext.getStore('User').first();
+      if(user && user.get('oauthType') == 'twitter') {
+        localStorage.removeItem(self.getTwitterKey());
         self.logout();
         self.hideLoadingOverlay();
-      }, function() {
-        self.logout();
-        self.hideLoadingOverlay();
-      });
+      } else {
+        FB.logout(function(response) {
+          self.logout();
+          self.hideLoadingOverlay();
+        }, function() {
+          self.logout();
+          self.hideLoadingOverlay();
+        });
+      }
     }
   },
   
   logout: function() {
-    Ext.getStore('MyImages').setData({});
+    Ext.getStore('MyImages').removeAll();
     this.getMain().setActiveItem(0);
     this.getMain().hide();
     this.getLogin().show();
@@ -223,7 +328,7 @@ Ext.define('Grubm.controller.Main', {
       var store = Ext.getStore('MyImages');
       store.getProxy().setExtraParams({
         access_token: user.get('accessToken'),
-        oauth_provider: 'facebook'
+        oauth_provider: user.get('oauthType')
       })
       Ext.getStore('MyImages').load();
     }

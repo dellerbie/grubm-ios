@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		495D875514AAA1E2003B2459 /* FacebookConnectPlugin.m in Sources */ = {isa = PBXBuildFile; fileRef = 495D875414AAA1E2003B2459 /* FacebookConnectPlugin.m */; };
+		49A6746E15264F8200BD1067 /* ChildBrowserViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 49A6746C15264F8200BD1067 /* ChildBrowserViewController.xib */; };
+		49A6746F15264F8200BD1067 /* ChildBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 49A6746D15264F8200BD1067 /* ChildBrowser.bundle */; };
+		49A6747515264FF100BD1067 /* ChildBrowserCommand.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A6747115264FF100BD1067 /* ChildBrowserCommand.m */; };
+		49A6747615264FF100BD1067 /* ChildBrowserViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 49A6747215264FF100BD1067 /* ChildBrowserViewController.m */; };
 		49B2290D148428EE0061EBB1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B2290C148428EE0061EBB1 /* Foundation.framework */; };
 		49B2290F148428EE0061EBB1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B2290E148428EE0061EBB1 /* UIKit.framework */; };
 		49B22911148428EE0061EBB1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49B22910148428EE0061EBB1 /* CoreGraphics.framework */; };
@@ -51,6 +55,12 @@
 /* Begin PBXFileReference section */
 		495D875314AAA1E2003B2459 /* FacebookConnectPlugin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookConnectPlugin.h; sourceTree = "<group>"; };
 		495D875414AAA1E2003B2459 /* FacebookConnectPlugin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FacebookConnectPlugin.m; sourceTree = "<group>"; };
+		49A6746C15264F8200BD1067 /* ChildBrowserViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChildBrowserViewController.xib; sourceTree = "<group>"; };
+		49A6746D15264F8200BD1067 /* ChildBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ChildBrowser.bundle; sourceTree = "<group>"; };
+		49A6747115264FF100BD1067 /* ChildBrowserCommand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChildBrowserCommand.m; sourceTree = "<group>"; };
+		49A6747215264FF100BD1067 /* ChildBrowserViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChildBrowserViewController.m; sourceTree = "<group>"; };
+		49A6747315264FF100BD1067 /* ChildBrowserCommand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChildBrowserCommand.h; sourceTree = "<group>"; };
+		49A6747415264FF100BD1067 /* ChildBrowserViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChildBrowserViewController.h; sourceTree = "<group>"; };
 		49B22908148428EE0061EBB1 /* Grubm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Grubm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		49B2290C148428EE0061EBB1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		49B2290E148428EE0061EBB1 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -214,6 +224,8 @@
 		49B22931148428EE0061EBB1 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				49A6746C15264F8200BD1067 /* ChildBrowserViewController.xib */,
+				49A6746D15264F8200BD1067 /* ChildBrowser.bundle */,
 				49B22946148428EE0061EBB1 /* Capture.bundle */,
 				49B22932148428EE0061EBB1 /* en.lproj */,
 				49B22936148428EE0061EBB1 /* es.lproj */,
@@ -280,6 +292,10 @@
 		49B32F0F151BCEEC0011EFBF /* src */ = {
 			isa = PBXGroup;
 			children = (
+				49A6747115264FF100BD1067 /* ChildBrowserCommand.m */,
+				49A6747215264FF100BD1067 /* ChildBrowserViewController.m */,
+				49A6747315264FF100BD1067 /* ChildBrowserCommand.h */,
+				49A6747415264FF100BD1067 /* ChildBrowserViewController.h */,
 				49B32F10151BCEEC0011EFBF /* Facebook.h */,
 				49B32F11151BCEEC0011EFBF /* Facebook.m */,
 				49B32F12151BCEEC0011EFBF /* FBConnect.h */,
@@ -382,6 +398,8 @@
 				49B22949148428EE0061EBB1 /* PhoneGap.plist in Resources */,
 				49B22956148429990061EBB1 /* www in Resources */,
 				49B32F29151BCEEC0011EFBF /* FBDialog.bundle in Resources */,
+				49A6746E15264F8200BD1067 /* ChildBrowserViewController.xib in Resources */,
+				49A6746F15264F8200BD1067 /* ChildBrowser.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -421,6 +439,8 @@
 				49B32F30151BCEEC0011EFBF /* SBJsonBase.m in Sources */,
 				49B32F31151BCEEC0011EFBF /* SBJsonParser.m in Sources */,
 				49B32F32151BCEEC0011EFBF /* SBJsonWriter.m in Sources */,
+				49A6747515264FF100BD1067 /* ChildBrowserCommand.m in Sources */,
+				49A6747615264FF100BD1067 /* ChildBrowserViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

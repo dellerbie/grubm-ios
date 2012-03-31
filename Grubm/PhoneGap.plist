@@ -16,9 +16,10 @@
 	<false/>
 	<key>ExternalHosts</key>
 	<array>
+		<string>*</string>
 		<string>themes.googleusercontent.com</string>
 		<string>graph.facebook.com</string>
-		<string>192.168.1.76</string>
+		<string>192.168.1.71</string>
 		<string>*.facebook.com</string>
 		<string>*.gstatic.com</string>
 		<string>*googleapis.com</string>
@@ -33,6 +34,8 @@
 	<false/>
 	<key>Plugins</key>
 	<dict>
+		<key>ChildBrowserCommand</key>
+		<string>ChildBrowserCommand</string>
 		<key>com.phonegap.accelerometer</key>
 		<string>PGAccelerometer</string>
 		<key>com.phonegap.camera</key>
