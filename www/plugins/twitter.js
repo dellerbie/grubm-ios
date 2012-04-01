@@ -1,16 +1,3 @@
-// PROJECT: Phonegap Twitter with ChildBrowser
-// AUTHOR: Drew Dahlman ( www.drewdahlman.com )
-// DATE: 1.25.2012
-
-/* 
-NOTES:
-We will use the ChildBrowser to get a user to sign in to Twitter.
-We will store this information in our localStorage and be able to reuse this when we need!
-
-You can read into this more, but storing these keys like this is VERY dangerous!!
-So make sure you don't share your source code until you've removed your keys and secrets!
-*/
-
 var Twitter = {
   options: { 
     consumerKey: 'AMc9zbuqNjjnlhjSXaHA', 
@@ -18,14 +5,11 @@ var Twitter = {
     callbackUrl: "http://grubm.com" 
   },
   
-	/*
-	When The ChildBrowser URL changes we will track it here.
-	We will also determine if the request was a success or not here
-	*/
+  twitterKey: "twttrKey",
+  
 	login:function(success, failure){
 	  console.log('twitter login');
 		var cb = ChildBrowser.install();
-		var twitterKey = "twttrKey";
 
     var oauth = OAuth(this.options);
     oauth.get('https://api.twitter.com/oauth/request_token',
@@ -34,7 +18,6 @@ var Twitter = {
         cb.showWebPage('https://api.twitter.com/oauth/authorize?'+data.text); // This opens the Twitter authorization / sign in page     
         cb.onLocationChange = function(loc) { 
           if (loc.indexOf("http://grubm.com/?") >= 0) {
-            // Parse the returned URL
             var index, verifier = '';            
             var params = loc.substr(loc.indexOf('?') + 1);
 
@@ -83,41 +66,23 @@ var Twitter = {
       }
     );
 	},
-	tweet:function(){
-		var storedAccessData, rawData = localStorage.getItem(twitterKey);
-		
-		storedAccessData = JSON.parse(rawData); // Parse our JSON object
-		this.options.accessTokenKey = storedAccessData.accessTokenKey; // This is saved when they first sign in
-		this.options.accessTokenSecret = storedAccessData.accessTokenSecret; // this is saved when they first sign in
-		
-		// jsOAuth takes care of everything for us we just need to provide the options
-		oauth = OAuth(this.options);
-		oauth.get('https://api.twitter.com/1/account/verify_credentials.json?skip_status=true',
-				function(data) {
-					var entry = JSON.parse(data.text);
-					Twitter.post();
-				}
-		);
-	},
-	/*
-	Now that we have the information we can Tweet!
-	*/
-	post:function(){
-		var theTweet = $("#tweet").val(); // Change this out for what ever you want!
-		
-		oauth.post('https://api.twitter.com/1/statuses/update.json',
-                    { 'status' : theTweet,  // jsOAuth encodes for us
-                      'trim_user' : 'true' },
-                    function(data) {
-                        var entry = JSON.parse(data.text);
-						console.log(entry);
-						
-						// FOR THE EXAMPLE
-						app.done();
-                    },
-                    function(data) { 
-						console.log(data);
-                    }
-            );		
+	
+	post: function(msg, success, failure) {
+	  console.log('inside post');
+	  var rawData = localStorage.getItem(this.twitterKey),
+	      storedAccessData = JSON.parse(rawData);
+	      
+	  console.log(20);
+		this.options.accessTokenKey = storedAccessData.accessTokenKey;
+		console.log(21);
+		this.options.accessTokenSecret = storedAccessData.accessTokenSecret; 
+		console.log(22);
+		var oauth = OAuth(this.options);
+		console.log(23);
+		oauth.post('https://api.twitter.com/1/statuses/update.json', {
+		  "status": msg,
+		  "trim_user": 'true'
+		}, success, failure);
+		console.log(24);
 	}
 };

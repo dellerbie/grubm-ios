@@ -32,7 +32,7 @@ Ext.define('Grubm.controller.Main', {
       savePhotoButton: '#save-photo',
       selectLocationButton: '#select-location',
       photoDescription: 'uploadphoto textareafield',
-      postToFacebook: 'uploadphoto checkboxfield',
+      postToSocialNetwork: 'uploadphoto checkboxfield',
       choosePhoto: 'choosephoto',
       whereAreYou: 'whereareyou',
       locationText: 'uploadphoto #location-text',
@@ -157,6 +157,10 @@ Ext.define('Grubm.controller.Main', {
     this.getWhereAreYou().down('searchfield').on('keyup', Ext.Function.createBuffered(this.filterPlaces, 300, this));
   },
   
+  isUsingFacebook: function() {
+    return Ext.getStore('User').first().get('oauthType') == 'facebook'
+  },
+  
   initFBUser: function(session) {
     var self = this;
     if(this.networkAvailable()) {
@@ -230,8 +234,10 @@ Ext.define('Grubm.controller.Main', {
         self.getLogin().hide();
         self.loadMyPhotos();
         self.getMain().show();
+        self.getPostToSocialNetwork().setLabel('Post to Twitter');
       },
       function(data) {
+        // show error msg and the login screen
         console.log('error verifying credentials');
       }
 		);
@@ -261,7 +267,7 @@ Ext.define('Grubm.controller.Main', {
     Twitter.login(function(data) {
       var entry = JSON.parse(data.text);
       console.log("TWITTER USER: "+entry.screen_name);
-      var nameTokens = entry.name.replace(/(\w)([A-Z])/, "$1 $2").split(/ /),
+      var nameTokens = entry.name.split(),
           firstName = nameTokens[0],
           lastName = (nameTokens.length > 1) ? nameTokens[1] : '',
           credentials = JSON.parse(localStorage.getItem(self.getTwitterKey()));
@@ -328,6 +334,7 @@ Ext.define('Grubm.controller.Main', {
       var store = Ext.getStore('MyImages');
       store.getProxy().setExtraParams({
         access_token: user.get('accessToken'),
+        access_token_secret: user.get('secret'),
         oauth_provider: user.get('oauthType')
       })
       Ext.getStore('MyImages').load();
@@ -622,8 +629,8 @@ Ext.define('Grubm.controller.Main', {
     this.getUploadedImage().setHtml('');
     this.getLocationText().setHtml('');
     this.getPhotoDescription().setValue('');
-    this.getPostToFacebook().setValue(1);
-    this.getPostToFacebook().setChecked(true);
+    this.getPostToSocialNetwork().setValue(1);
+    this.getPostToSocialNetwork().setChecked(true);
     this.getSavePhotoButton().enable();
     this.getSelectLocationButton().enable();
     this.setCurrentPlace(null);
@@ -679,7 +686,7 @@ Ext.define('Grubm.controller.Main', {
   savePhoto: function() {
     var img = this.getCurrentImage();
     var description = this.getPhotoDescription().getValue();
-    var postToFB = this.getPostToFacebook().getValue();
+    var postToFB = this.getPostToSocialNetwork().getValue();
     var place = this.getCurrentPlace();
     var errors = [];
 
@@ -705,7 +712,8 @@ Ext.define('Grubm.controller.Main', {
       
       options.params = {
         "access_token": user.get('accessToken'),
-        "oauth_provider": "facebook",
+        "access_token_secret": user.get('secret'),
+        "oauth_provider": Ext.getStore('User').first().get('oauthType'),
         "image[description]": description,
         "image[business][name]": place.get('name'),        
         "image[business][street]": place.get('street'),
@@ -737,9 +745,17 @@ Ext.define('Grubm.controller.Main', {
             self.loadMyPhotos();
             self.hideLoadingOverlay();
             if(postToFB == 1) {
+              
               var task = new Ext.util.DelayedTask(function(){
-                self.postToFacebook(Ext.JSON.decode(r.response));
+                if(self.isUsingFacebook()) {
+                  console.log('calling postToFB');
+                  self.postToFacebook(Ext.JSON.decode(r.response));
+                } else {
+                  console.log('calling postToTwitter');
+                  self.postToTwitter(Ext.JSON.decode(r.response));
+                }
               });
+              
               task.delay(5000);
             }
           },
@@ -919,10 +935,34 @@ Ext.define('Grubm.controller.Main', {
         link: this.getApiServer() + '/' + image.id,
         "picture": image.url,  // it doesn't work if picture isn't quoted
         description: description,
-        name: 'yum yum',
+        name: 'food',
         caption: 'grubm.com'
       },
       success: Ext.emptyFn
+    });
+  },
+  
+  postToTwitter: function(image) {
+    console.log(1);
+    var user = Ext.getStore('User').first();
+    console.log(2);
+    var description = '';
+    console.log(3);
+    if(image.business && image.business.name) {
+      console.log(4);
+      description += image.description + " at " + image.business.name;
+      console.log(5);
+      description += " http://grubm.com/" + image.id;
+      console.log(6);
+    }
+    
+    console.log(7);
+    Twitter.post(description, function(data) {
+      console.log('successfully tweeted');
+      console.log(JSON.stringify(data));
+    }, function(data) {
+      console.log('error posting to twitter');
+      console.log(JSON.stringify(data));
     });
   },
   
